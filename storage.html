@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Certificate Checker Storage</title>
+		<link rel="icon" href="icons/cc_128.png" />
+		<style>
+			table {
+				border-collapse: collapse;
+			}
+			table, th, td {
+				border: 1px solid black;
+			}
+			th, td {
+				padding: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<table border="1" id="storageTable">
+			<tr class="header">
+				<th rowspan="2">Domain</th>
+				<th colspan="4">Certificate</th>
+				<th rowspan="2">Remove</th>
+			</tr>
+			<tr class="header">
+				<th>Subject</th>
+				<th>Issuer</th>
+				<th>Valid From</th>
+				<th>Valid Until</th>
+				<!--
+				<th>Serial Number</th>
+				<th>Public Key Hash</th>
+				<th>Fingerprint</th>
+				-->
+			</tr>
+		</table>
+		<script src="storage.js"></script>
+	</body>
+</html>

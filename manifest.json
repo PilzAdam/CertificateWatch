@@ -1,0 +1,39 @@
+{
+	"manifest_version": 2,
+	"name": "Certificate Checker",
+	"description": "Warns when TLS certificates change over time.",
+	"author": "PilzAdam",
+	"version": "0.9.1",
+
+	"icons": {
+		"16": "icons/cc_16.png",
+		"128": "icons/cc_128.png"
+	},
+	
+	"background": {
+		"scripts": ["background.js"]
+	},
+	
+	"browser_action": {
+		"browser_style": false,
+		"default_icon": "icons/cc_16.png",
+		"default_title": "Certificate Checker",
+		"default_popup": "popup.html"
+	},
+	
+	"permissions": [
+		"https://*/*",
+		"wss://*/*",
+		"webRequest",
+		"webRequestBlocking",
+		"storage",
+		"unlimitedStorage",
+		"tabs"
+	],
+	
+	"applications": {
+		"gecko": {
+			"id": "{ab8c066f-9e3e-4aa3-997e-dca3520fecd0}"
+		}
+	}
+}
