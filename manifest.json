@@ -3,7 +3,7 @@
 	"name": "Certificate Checker",
 	"description": "Warns when TLS certificates change over time.",
 	"author": "PilzAdam",
-	"version": "0.9.1",
+	"version": "1.0.0",
 
 	"icons": {
 		"16": "icons/cc_16.png",
