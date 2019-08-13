@@ -1,0 +1,13 @@
+1.0.1
+-----
+- Added options page
+- It is now possible to specify that only certificates for the domain in the URL
+  bar are checked (e.g. on www.youtube.com connections to ytimg.com are not
+  checked).
+- It is now possible to specify domains that should be excluded from certificate
+  checking (including wildcard support, e.g. *.googlevideo.com).
+
+
+1.0.0
+-----
+- Initial version
