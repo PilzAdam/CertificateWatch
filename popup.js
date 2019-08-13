@@ -64,7 +64,7 @@ async function populate() {
 						button.setAttribute("type", "button");
 						button.setAttribute("value", "Store This New Certificate");
 						button.addEventListener("click", function() {
-							//console.log("[Certificate Checker]", "[Info]", "Storing new certificate for", result.host);
+							logInfo("Storing new certificate for", result.host);
 							
 							let newCert = result.got;
 							browser.storage.local.set({

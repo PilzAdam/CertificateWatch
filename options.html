@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Certificate Checker Options</title>
+		<link rel="icon" href="icons/cc_128.png" />
+		<style>
+			
+		</style>
+	</head>
+	<body>
+		<form>
+			<p>
+				<label for="certChecks">Certificates to check:</label>
+				<select id="certChecks">
+					<option value="all">Check certificates of all connections</option>
+					<option value="domain">Check only certificates of page domain</option>
+				</select>
+			</p>
+			
+			<p>
+			<label for="logLevel">Console log level:</label>
+			<select id="logLevel">
+				<option value="none">None</option>
+				<option value="info">Info</option>
+				<option value="debug">Debug</option>
+			</select>
+			</p>
+			
+			<p>
+				<label for="ignoredDomains">Domains to ignore:</label>
+				<br />
+				<textarea id="ignoredDomains" rows="15" cols="80"></textarea>
+			</p>
+		</form>
+		
+		<script src="common.js"></script>
+		<script src="options.js"></script>
+	</body>
+</html>

@@ -1,6 +1,7 @@
 function removeEntry(event) {
 	const host = event.target.getAttribute("host");
 	if (host) {
+		logInfo("Removing stored certificate for", host);
 		browser.storage.local.remove(host).then(populateTable);
 	}
 }
@@ -50,6 +51,9 @@ async function populateTable() {
 	let certs = await browser.storage.local.get();
 
 	for (var host in certs) {
+		if (host === SETTING_KEY) {
+			continue;
+		}
 		let cert = certs[host];
 		
 		let tr = document.createElement("tr");

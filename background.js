@@ -1,3 +1,9 @@
+/*
+ * The main background script.
+ * - Intercepts all HTTPS network requests and examines the certificates.
+ * - Sets the browserAction icons for the tabs.
+ * - Contains the tabs state (this accessed by other scripts).
+ */
 
 const CertStatus = {
 	ERROR: {
@@ -44,12 +50,6 @@ function getCertStati() {
 	return CertStatus;
 }
 
-function logDebug() {
-	//var args = Array.prototype.slice.call(arguments);
-	//args.unshift("[Certificate Checker] [Debug]");
-	//console.log.apply(console, args);
-}
-
 function convertCert(browserCert) {
 	return {
 		fingerprint: browserCert.fingerprint.sha256,
@@ -69,6 +69,32 @@ function convertDate(unix){
 			+ " " + date.getHours().toString().padStart(2, "0")
 			+ ":" + date.getMinutes().toString().padStart(2, "0")
 			+ ":" + date.getSeconds().toString().padStart(2, "0");
+}
+
+function isIgnoredDomain(host, ignoredDomains) {
+	let hostParts = host.split(".");
+	for (let filter of ignoredDomains) {
+		filter = filter.trim();
+		if (filter.length > 0) {
+			let filterParts = filter.split(".");
+			if (filterParts.length === hostParts.length) {
+				let match = true;
+				for (let i = 0; i < filterParts.length; i++) {
+					if (filterParts[i] !== "*" && filterParts[i] !== hostParts[i]) {
+						match = false;
+						break;
+					}
+				}
+				
+				if (match) {
+					logDebug("Ignoring domain", host, "because it matches", filter);
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
 }
 
 async function analyzeCert(host, securityInfo, result) {
@@ -126,6 +152,22 @@ async function onHeadersReceived(details) {
 	if (details.tabId === -1) {
 		logDebug("Request to", details.url, "not made in a tab", details);
 		// TODO: what to do with requests not attached to tabs?
+		return;
+	}
+	
+	const certChecksSetting = await getSetting("certChecks");
+	if (certChecksSetting === "domain") {
+		const tab = await browser.tabs.get(details.tabId);
+		const tabHost = new RegExp("://([^/]+)").exec(tab.url)[1];
+		if (host !== tabHost) {
+			logDebug("Ignoring request to", host, "from tab with host", tabHost,
+					"(setting is", certChecksSetting, ")");
+			return;
+		}
+	}
+	
+	const ignoredDomains = await getSetting("ignoredDomains", []);
+	if (isIgnoredDomain(host, ignoredDomains)) {
 		return;
 	}
 	
