@@ -148,20 +148,20 @@ async function analyzeCert(host, securityInfo, result) {
 	}
 }
 
-async function onHeadersReceived(details) {
-	const match = new RegExp("(https|wss)://([^/]+)").exec(details.url);
+async function checkConnection(url, securityInfo, tabId) {
+	const match = new RegExp("(https|wss)://([^/]+)").exec(url);
 	const baseUrl = match[0];
 	const host = match[2];
 	
-	if (details.tabId === -1) {
-		logDebug("Request to", details.url, "not made in a tab", details);
+	if (tabId === -1) {
+		logDebug("Request to", url, "not made in a tab");
 		// TODO: what to do with requests not attached to tabs?
 		return;
 	}
 	
 	const certChecksSetting = await getSetting("certChecks");
 	if (certChecksSetting === "domain") {
-		const tab = await browser.tabs.get(details.tabId);
+		const tab = await browser.tabs.get(tabId);
 		const tabHost = new RegExp("://([^/]+)").exec(tab.url)[1];
 		if (host !== tabHost) {
 			logDebug("Ignoring request to", host, "from tab with host", tabHost,
@@ -175,8 +175,6 @@ async function onHeadersReceived(details) {
 		return;
 	}
 	
-	const securityInfo = await browser.webRequest.getSecurityInfo(details.requestId, {});
-	
 	if (securityInfo.state === "secure" || securityInfo.state === "weak") {
 		const result = {
 			status: CertStatus.ERROR,
@@ -187,20 +185,29 @@ async function onHeadersReceived(details) {
 		
 		logDebug(host, result.status.text);
 		
-		if (!tabs[details.tabId]) {
+		if (!tabs[tabId]) {
 			// this shouldn't happen, but just in case create an empty tabAdded
-			tabs[details.tabId] = {
+			tabs[tabId] = {
 				highestStatus: CertStatus.NONE,
 				results: [],
 			};
 		}
 		
-		tabs[details.tabId].results.push(result);
-		if (result.status.precedence > tabs[details.tabId].highestStatus.precedence) {
-			tabs[details.tabId].highestStatus = result.status;
+		tabs[tabId].results.push(result);
+		if (result.status.precedence > tabs[tabId].highestStatus.precedence) {
+			tabs[tabId].highestStatus = result.status;
 		}
-		updateTabIcon(details.tabId);
+		updateTabIcon(tabId);
 	}
+}
+
+async function onHeadersReceived(details) {
+	// only query securityInfo and then quickly return
+	// checkConnection() is executed async
+	// this makes blocking the request as short as possible
+	const securityInfo = await browser.webRequest.getSecurityInfo(details.requestId, {});
+	checkConnection(details.url, securityInfo, details.tabId);
+	return;
 }
 
 browser.webRequest.onHeadersReceived.addListener(
@@ -209,6 +216,7 @@ browser.webRequest.onHeadersReceived.addListener(
 		"https://*/*",
 		"wss://*/*"
 	]},
+	// we have to set the option "blocking" for browser.webRequest.getSecurityInfo
 	["blocking"]
 );
 
