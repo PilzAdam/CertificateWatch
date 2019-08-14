@@ -9,29 +9,29 @@ const CertStatus = {
 	ERROR: {
 		text: "An internal error occured",
 		precedence: 4,
-		icon: "icons/cc_16_error.png",
+		icon: "icons/cw_16_error.png",
 	},
 
 	CHANGED: {
 		text: "Certificate differs from stored version",
 		precedence: 3,
-		icon: "icons/cc_16_changed.png",
+		icon: "icons/cw_16_changed.png",
 	},
 	TOFU: {
 		text: "New certificate trusted on first use",
 		precedence: 2,
-		icon: "icons/cc_16_tofu.png",
+		icon: "icons/cw_16_tofu.png",
 	},
 	STORED: {
 		text: "All certificates known",
 		precedence: 1,
-		icon: "icons/cc_16_stored.png",
+		icon: "icons/cw_16_stored.png",
 	},
 	
 	NONE: {
 		text: "No TLS encrypted request has been made yet",
 		precedence: 0,
-		icon: "icons/cc_16.png",
+		icon: "icons/cw_16.png",
 	},
 }
 // make this enum unmodifiable
@@ -222,7 +222,7 @@ function updateTabIcon(tabId) {
 	});
 	browser.browserAction.setTitle({
 		tabId: tabId,
-		title: "Certificate Checker\n" + status.text,
+		title: "Certificate Watch\n" + status.text,
 	});
 }
 
@@ -265,3 +265,19 @@ function tabUpdated(tabId, changeInfo, tab) {
 	}
 }
 browser.tabs.onUpdated.addListener(tabUpdated);
+
+// migrate from old settings key
+(function() {
+	const oldSettingsKey = "certificate_checker:settings";
+	browser.storage.local.get(oldSettingsKey).then(
+		(result) => {
+			let oldSettings = result[oldSettingsKey];
+			if (oldSettings) {
+				// we found old settings, delete and store as new one
+				browser.storage.local.set({[SETTING_KEY]: oldSettings});
+				browser.storage.local.remove(oldSettingsKey);
+				logInfo("Migrated old storage");
+			}
+		}
+	);
+})();

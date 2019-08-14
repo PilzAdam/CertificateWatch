@@ -1,13 +1,13 @@
 {
 	"manifest_version": 2,
-	"name": "Certificate Checker",
+	"name": "Certificate Watch",
 	"description": "Warns when TLS certificates change over time.",
 	"author": "PilzAdam",
 	"version": "1.1.0",
 
 	"icons": {
-		"16": "icons/cc_16.png",
-		"128": "icons/cc_128.png"
+		"16": "icons/cw_16.png",
+		"128": "icons/cw_128.png"
 	},
 	
 	"background": {
@@ -19,8 +19,8 @@
 	
 	"browser_action": {
 		"browser_style": false,
-		"default_icon": "icons/cc_16.png",
-		"default_title": "Certificate Checker",
+		"default_icon": "icons/cw_16.png",
+		"default_title": "Certificate Watch",
 		"default_popup": "popup.html"
 	},
 	

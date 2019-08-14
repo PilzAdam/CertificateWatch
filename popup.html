@@ -2,22 +2,38 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Certificate Checker Popup</title>
+		<title>Certificate Watch Popup</title>
+		<link rel="icon" href="icons/cw_128.png" />
+		<style>
+			#logo {
+				position: absolute;
+				top: 0px;
+				right: 0px;
+			}
+			#header {
+				position: relative;
+				display:inline-block;
+				padding-right: 128px;
+			}
+		</style>
 	</head>
 	<body>
-		<h1>Certificate Checker</h1>
+		<div id="header">
+			<h1>Certificate Watch</h1>
+			<img id="logo" src="icons/cw_128.png" alt="" width="128" height="128" />
+		</div>
 		<p>
-			<img src="icons/cc_16_changed.png" alt="" width="16" height="16" />
+			<img src="icons/cw_16_changed.png" alt="" width="16" height="16" />
 			<b><span id="numChanged">0</span></b> changed certificates
 			<ul hidden id="changedList"></ul>
 		</p>
 		<p>
-			<img src="icons/cc_16_tofu.png" alt="" width="16" height="16" />
+			<img src="icons/cw_16_tofu.png" alt="" width="16" height="16" />
 			<b><span id="numTofu">0</span></b> new certificates
 			<ul hidden id="tofuList"></ul>
 		</p>
 		<p>
-			<img src="icons/cc_16_stored.png" alt="" width="16" height="16" />
+			<img src="icons/cw_16_stored.png" alt="" width="16" height="16" />
 			<b><span id="numStored">0</span></b> stored certificates
 			<ul hidden id="storedList"></ul>
 		</p>

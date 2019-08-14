@@ -8,7 +8,7 @@ function logDebug() {
 	getSetting("logLevel").then((result) => {
 		if (result == "debug") {
 			var args = Array.prototype.slice.call(arguments);
-			args.unshift("[Certificate Checker]", "[Debug]");
+			args.unshift("[Certificate Watch]", "[Debug]");
 			console.log.apply(console, args);
 		}
 	});
@@ -18,13 +18,13 @@ function logInfo() {
 	getSetting("logLevel").then((result) => {
 		if (result == "debug" || result == "info") {
 			var args = Array.prototype.slice.call(arguments);
-			args.unshift("[Certificate Checker]", "[Info]");
+			args.unshift("[Certificate Watch]", "[Info]");
 			console.log.apply(console, args);
 		}
 	});
 }
 
-const SETTING_KEY = "certificate_checker:settings";
+const SETTING_KEY = "certificate_watch:settings";
 
 function getSetting(key, fallback) {
 	return browser.storage.local.get(SETTING_KEY).then(
