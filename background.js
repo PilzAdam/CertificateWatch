@@ -115,20 +115,24 @@ async function analyzeCert(host, securityInfo, result) {
 
 	} else {
 		let changes = {};
-		for (let field of ["fingerprint", "issuer", "serialNumber", "subject", "subjectPublicKeyInfoDigest"]) {
-			if (cert[field] !== storedCert[field]) {
-				changes[field] = {
-					stored: storedCert[field],
-					got: cert[field],
+		// fields are roughly sorted by importance
+		for (let field of ["subject", "issuer", "validity", "subjectPublicKeyInfoDigest", "serialNumber", "fingerprint"]) {
+			if (field === "validity") {
+				// validity needs extra comparison logic
+				if (cert.validity.start !== storedCert.validity.start
+						|| cert.validity.end !== storedCert.validity.end) {
+					changes["validity"] = {
+						stored: "start: " + convertDate(storedCert.validity.start) +", end: " + convertDate(storedCert.validity.end),
+						got: "start: " + convertDate(cert.validity.start) +", end: " + convertDate(cert.validity.end),
+					}
 				}
-			}
-		}
-		
-		if (cert.validity.start !== storedCert.validity.start
-				|| cert.validity.end !== storedCert.validity.end) {
-			changes["validity"] = {
-				stored: "start=" + convertDate(storedCert.validity.start) +", end=" + convertDate(storedCert.validity.end),
-				got: "start=" + convertDate(cert.validity.start) +", end=" + convertDate(cert.validity.end),
+			} else {
+				if (cert[field] !== storedCert[field]) {
+					changes[field] = {
+						stored: storedCert[field],
+						got: cert[field],
+					}
+				}
 			}
 		}
 		

@@ -49,13 +49,53 @@ async function populate() {
 						for (var field in result.changes) {
 							let nestedLi = document.createElement("li");
 							let b = document.createElement("b");
-							b.textContent = field;
-							let span = document.createElement("span");
-							span.textContent = " changed from \""
-									+ result.changes[field].stored + "\" to \""
-									+ result.changes[field].got + "\"";
+							if (field === "subject") {
+								b.textContent = "Subject";
+							} else if (field === "issuer") {
+								b.textContent = "Issuer";
+							} else if (field === "validity") {
+								b.textContent = "Validity";
+							} else if (field === "subjectPublicKeyInfoDigest") {
+								b.textContent = "Public Key";
+							} else if (field === "fingerprint") {
+								b.textContent = "Fingerprint";
+							} else if (field === "serialNumber") {
+								b.textContent = "Serial Number";
+							} else {
+								b.textContent = field;
+							}
 							nestedLi.appendChild(b);
-							nestedLi.appendChild(span);
+							
+							if (field === "subject" || field === "issuer" || field === "validity") {
+								nestedLi.appendChild(document.createTextNode(" changed"));
+								
+								let table = document.createElement("table");
+								let r1 = document.createElement("tr");
+								let r2 = document.createElement("tr");
+								let e11 = document.createElement("td");
+								let e12 = document.createElement("td");
+								let e21 = document.createElement("td");
+								let e22 = document.createElement("td");
+								
+								e11.textContent = "stored:";
+								e12.textContent = result.changes[field].stored;
+								e12.style.color = "blue";
+								
+								e21.textContent = "new:";
+								e22.textContent = result.changes[field].got;
+								e22.style.color = "orange";
+								
+								r1.appendChild(e11);
+								r1.appendChild(e12);
+								r2.appendChild(e21);
+								r2.appendChild(e22);
+								table.appendChild(r1);
+								table.appendChild(r2);
+								nestedLi.appendChild(table);
+							} else {
+								nestedLi.appendChild(document.createTextNode(" changed"));
+							}
+							
 							ul.appendChild(nestedLi);
 						}
 						li.appendChild(ul);
