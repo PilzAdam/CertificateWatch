@@ -81,12 +81,22 @@ CW.Tab = class {
 		if (result.status.precedence > this.highestStatus.precedence) {
 			this.highestStatus = result.status;
 		}
+		browser.runtime.sendMessage({
+			type: "tab.newResult",
+			tabId: this.tabId,
+			resultIndex: this.results.length - 1
+		}).then(() => {}, () => {}); // ignore errors
 	}
 	
 	clear() {
 		this.results = [];
 		this.highestStatus = CW.CERT_NONE;
+		browser.runtime.sendMessage({
+			type: "tab.resultsCleared",
+			tabId: this.tabId
+		}).then(() => {}, () => {}); // ignore errors
 	}
+	
 };
 
 CW.tabs = {
