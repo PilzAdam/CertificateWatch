@@ -49,6 +49,11 @@ async function analyzeCert(host, securityInfo, result) {
 	if (!storedCert) {
 		result.status = CW.CERT_TOFU;
 		cert.store(host);
+		browser.runtime.sendMessage({
+			type: "storage.newHost",
+			host: host,
+			cert: cert
+		}).then(() => {}, () => {}); // ignore errors
 
 	} else {
 		let changes = {};

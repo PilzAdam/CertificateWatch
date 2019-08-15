@@ -104,6 +104,12 @@ function addResult(result) {
 					[result.host]: newCert
 				}).then(() => {
 					button.setAttribute("value", "Stored New Certificate");
+					
+					browser.runtime.sendMessage({
+						type: "storage.certChanged",
+						host: result.host,
+						newCert: newCert
+					}).then(() => {}, () => {}); // ignore errors
 				});
 			});
 			li.appendChild(button);

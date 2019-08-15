@@ -148,6 +148,16 @@ function updateTableFilter() {
 
 populateTable();
 
+browser.runtime.onMessage.addListener((message) => {
+	if (message.type === "storage.newHost") {
+		// this event is sent when a new host appears
+		populateTable().then(updateTableFilter);
+	} else if (message.type === "storage.certChanged") {
+		// this event is sent when an existing host certificate is updated
+		populateTable().then(updateTableFilter);
+	}
+});
+
 async function clearStorage() {
 	logInfo("Clearing all hosts");
 	let certs = await browser.storage.local.get();
