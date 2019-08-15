@@ -1,4 +1,11 @@
-1.0.1
+1.2.0
+-----
+- Rebranding as "Certificate Watch" with new icons
+- Improved the display of changed certificates
+- Improved networking performance overhead
+- Improved storage display page
+
+1.1.0
 -----
 - Added options page
 - It is now possible to specify that only certificates for the domain in the URL
