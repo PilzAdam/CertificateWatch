@@ -8,11 +8,18 @@ function removeEntry(event) {
 	}
 }
 
-function convertSubjectToHtml(str) {
+function addSubjectHtml(subject, parent) {
 	let result = "";
 	
-	for (var part of str.match(new RegExp("[A-Z]+=([^,\"]+|\"[^\"]+\")", "g"))) {
-		result += escapeHtml(part) + "<br />";
+	let lastBr;
+	for (var part of subject.match(new RegExp("[A-Z]+=([^,\"]+|\"[^\"]+\")", "g"))) {
+		parent.appendChild(document.createTextNode(part));
+		lastBr = document.createElement("br");
+		parent.appendChild(lastBr);
+	}
+	// remove trailing <br>
+	if (lastBr) {
+		parent.removeChild(lastBr);
 	}
 	
 	return result;
@@ -74,11 +81,11 @@ async function populateTable() {
 		tr.appendChild(td);
 		
 		td = document.createElement("td");
-		td.innerHTML = convertSubjectToHtml(cert.subject);
+		addSubjectHtml(cert.subject, td);
 		tr.appendChild(td);
 		
 		td = document.createElement("td");
-		td.innerHTML = convertSubjectToHtml(cert.issuer);
+		addSubjectHtml(cert.issuer, td);
 		tr.appendChild(td);
 		
 		td = document.createElement("td");
