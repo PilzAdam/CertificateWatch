@@ -5,7 +5,14 @@
 		<title>Certificate Watch Options</title>
 		<link rel="icon" href="icons/cw_128.png" />
 		<style>
-			
+			#ignoredDomains {
+				min-width: 100%;
+				max-width: 100%;
+			}
+			.textarea {
+				width: 100%;
+				max-width: 600px;
+			}
 		</style>
 	</head>
 	<body>
@@ -30,7 +37,9 @@
 			<p>
 				<label for="ignoredDomains">Domains to ignore:</label>
 				<br />
-				<textarea id="ignoredDomains" rows="15" cols="80"></textarea>
+				<div class="textarea">
+					<textarea id="ignoredDomains" rows="15"></textarea>
+				</div>
 			</p>
 		</form>
 		
