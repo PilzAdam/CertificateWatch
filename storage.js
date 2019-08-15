@@ -4,7 +4,9 @@ function removeEntry(event) {
 	const host = event.target.getAttribute("host");
 	if (host) {
 		logInfo("Removing stored certificate for", host);
-		browser.storage.local.remove(host).then(populateTable);
+		browser.storage.local.remove(host).then(() => {
+			populateTable().then(updateTableFilter);
+		});
 	}
 }
 
@@ -126,6 +128,24 @@ async function populateTable() {
 	numSpan.textContent = num;
 }
 
+function updateTableFilter() {
+	let domainFilter = document.getElementById("domainFilter");
+	let storageTable = document.getElementById("storageTable");
+	
+	storageTable.childNodes.forEach((row) => {
+		if (row.nodeName !== "TR") {
+			return;
+		}
+		let td = row.firstChild;
+		let domain = td.textContent;
+		if (domain.indexOf(domainFilter.value) === -1) {
+			row.style.display = "none";
+		} else {
+			row.style.display = "table-row";
+		}
+	});
+}
+
 populateTable();
 
 async function clearStorage() {
@@ -151,20 +171,5 @@ async function clearStorage() {
 	
 	let domainFilter = document.getElementById("domainFilter");
 	domainFilter.value = ""; // clear after reload
-	domainFilter.addEventListener("input", function() {
-		let storageTable = document.getElementById("storageTable");
-		
-		storageTable.childNodes.forEach((row) => {
-			if (row.nodeName !== "TR") {
-				return;
-			}
-			let td = row.firstChild;
-			let domain = td.textContent;
-			if (domain.indexOf(domainFilter.value) === -1) {
-				row.style.display = "none";
-			} else {
-				row.style.display = "table-row";
-			}
-		});
-	})
+	domainFilter.addEventListener("input", updateTableFilter);
 })();
