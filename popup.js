@@ -103,11 +103,15 @@ async function populate() {
 				button.setAttribute("type", "button");
 				button.setAttribute("value", "Store This New Certificate");
 				button.addEventListener("click", function() {
+					button.disabled = true;
+					button.setAttribute("value", "Storing...");
 					logInfo("Storing new certificate for", result.host);
 					
 					let newCert = result.got;
 					browser.storage.local.set({
 						[result.host]: newCert
+					}).then(() => {
+						button.setAttribute("value", "Stored New Certificate");
 					});
 				});
 				li.appendChild(button);
