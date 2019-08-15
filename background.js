@@ -4,74 +4,12 @@
  * The main background script.
  * - Intercepts all HTTPS network requests and examines the certificates.
  * - Sets the browserAction icons for the tabs.
- * - Contains the tabs state (this accessed by other scripts).
+ * - Updates the tab states
  */
 
-const CertStatus = {
-	ERROR: {
-		text: "An internal error occured",
-		precedence: 4,
-		icon: "icons/cw_16_error.png",
-	},
-
-	CHANGED: {
-		text: "Certificate differs from stored version",
-		precedence: 3,
-		icon: "icons/cw_16_changed.png",
-	},
-	TOFU: {
-		text: "New certificate trusted on first use",
-		precedence: 2,
-		icon: "icons/cw_16_tofu.png",
-	},
-	STORED: {
-		text: "All certificates known",
-		precedence: 1,
-		icon: "icons/cw_16_stored.png",
-	},
-	
-	NONE: {
-		text: "No TLS encrypted request has been made yet",
-		precedence: 0,
-		icon: "icons/cw_16.png",
-	},
-}
-// make this enum unmodifiable
-Object.freeze(CertStatus);
-for (var element in CertStatus) {
-	Object.freeze(element);
-}
-
-const tabs = {};
-
-// access for popup script
-function getTabs() {
-	return tabs;
-}
-function getCertStati() {
-	return CertStatus;
-}
-
-function convertCert(browserCert) {
-	return {
-		fingerprint: browserCert.fingerprint.sha256,
-		issuer: browserCert.issuer,
-		serialNumber: browserCert.serialNumber,
-		subject: browserCert.subject,
-		subjectPublicKeyInfoDigest: browserCert.subjectPublicKeyInfoDigest.sha256,
-		validity: browserCert.validity,
-	};
-}
-
-function convertDate(unix){
-	var date = new Date(unix);
-	return date.getFullYear() + "-"
-			+ date.getMonth().toString().padStart(2, "0")
-			+ "-" + date.getDate().toString().padStart(2, "0")
-			+ " " + date.getHours().toString().padStart(2, "0")
-			+ ":" + date.getMinutes().toString().padStart(2, "0")
-			+ ":" + date.getSeconds().toString().padStart(2, "0");
-}
+/*
+ * Certificate checking
+ */
 
 function isIgnoredDomain(host, ignoredDomains) {
 	let hostParts = host.split(".");
@@ -101,19 +39,16 @@ function isIgnoredDomain(host, ignoredDomains) {
 
 async function analyzeCert(host, securityInfo, result) {
 	if (!securityInfo.certificates || securityInfo.certificates.length !== 1) {
-		result.status = CertStatus.ERROR;
+		result.status = CW.CERT_ERROR;
 		return;
 	}
 	
-	const cert = convertCert(securityInfo.certificates[0]);
-	const storedCert = (await browser.storage.local.get(host))[host];
+	const cert = CW.Certificate.fromBrowserCert(securityInfo.certificates[0]);
+	const storedCert = await (CW.Certificate.fromStorage(host));
 	
 	if (!storedCert) {
-		result.status = CertStatus.TOFU;
-		
-		browser.storage.local.set({
-			[host]: cert
-		});
+		result.status = CW.CERT_TOFU;
+		cert.store(host);
 
 	} else {
 		let changes = {};
@@ -139,20 +74,20 @@ async function analyzeCert(host, securityInfo, result) {
 		}
 		
 		if (Object.keys(changes).length > 0) {
-			result.status = CertStatus.CHANGED;
+			result.status = CW.CERT_CHANGED;
 			result.changes = changes;
 			result.stored = storedCert;
 			result.got = cert;
 			
 		} else {
-			result.status = CertStatus.STORED;
+			result.status = CW.CERT_STORED;
 		}
 	}
 }
 
 async function checkConnection(url, securityInfo, tabId) {
 	const match = new RegExp("(https|wss)://([^/]+)").exec(url);
-	const baseUrl = match[0];
+	//const baseUrl = match[0];
 	const host = match[2];
 	
 	if (tabId === -1) {
@@ -178,27 +113,13 @@ async function checkConnection(url, securityInfo, tabId) {
 	}
 	
 	if (securityInfo.state === "secure" || securityInfo.state === "weak") {
-		const result = {
-			status: CertStatus.ERROR,
-			baseUrl: baseUrl,
-			host: host,
-		};
+		const result = new CW.CheckResult(host);
 		await analyzeCert(host, securityInfo, result);
 		
 		logDebug(host, result.status.text);
 		
-		if (!tabs[tabId]) {
-			// this shouldn't happen, but just in case create an empty tabAdded
-			tabs[tabId] = {
-				highestStatus: CertStatus.NONE,
-				results: [],
-			};
-		}
-		
-		tabs[tabId].results.push(result);
-		if (result.status.precedence > tabs[tabId].highestStatus.precedence) {
-			tabs[tabId].highestStatus = result.status;
-		}
+		let tab = CW.getTab(tabId);
+		tab.addResult(result);
 		updateTabIcon(tabId);
 	}
 }
@@ -222,12 +143,14 @@ browser.webRequest.onHeadersReceived.addListener(
 	["blocking"]
 );
 
+/*
+ * Tab handling
+ */
+
 function updateTabIcon(tabId) {
-	if (!tabs[tabId] || !tabs[tabId].highestStatus) {
-		return;
-	}
+	let tab = CW.getTab(tabId);
 	
-	let status = tabs[tabId].highestStatus;
+	let status = tab.highestStatus;
 	browser.browserAction.setIcon({
 		tabId: tabId,
 		path: {
@@ -241,46 +164,37 @@ function updateTabIcon(tabId) {
 }
 
 function tabAdded(tab) {
-	tabs[tab.id] = {
-		highestStatus: CertStatus.NONE,
-		results: [],
-	};
+	CW.tabs[tab.id] = new CW.Tab(tab.id);
 }
 browser.tabs.onCreated.addListener(tabAdded);
 
 function tabRemoved(tabId) {
-	delete tabs[tabId];
+	delete CW.tabs[tabId];
 }
 browser.tabs.onRemoved.addListener(tabRemoved);
 
-function tabUpdated(tabId, changeInfo, tab) {
-	if (!tabs[tabId]) {
-		tabs[tabId] = {
-			highestStatus: CertStatus.NONE,
-			results: [],
-		};
-	}
+function tabUpdated(tabId, changeInfo) {
+	let tab = CW.getTab(tabId);
 
 	if (changeInfo.status === "loading") {
 		// only use the first "loading" state until the next complete comes through
 		// this is because there is another "loading" event when the first request went through
-		if (!tabs[tabId].lastState || tabs[tabId].lastState === "complete") {
+		if (!tab.lastState || tab.lastState === "complete") {
 			logDebug("Clearing tab", tabId);
-			tabs[tabId] = {
-				highestStatus: CertStatus.NONE,
-				results: [],
-			};
+			tab.clear();
 			updateTabIcon(tabId);
 		}
-		tabs[tabId].lastState = "loading";
+		tab.lastState = "loading";
 		
 	} else if (changeInfo.status === "complete") {
-		tabs[tabId].lastState = "complete";
+		tab.lastState = "complete";
 	}
 }
 browser.tabs.onUpdated.addListener(tabUpdated);
 
-// migrate from old settings key
+/*
+ * Migrate old settings key
+ */
 (function() {
 	const oldSettingsKey = "certificate_checker:settings";
 	browser.storage.local.get(oldSettingsKey).then(

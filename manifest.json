@@ -13,6 +13,7 @@
 	"background": {
 		"scripts": [
 			"common.js",
+			"cw_data.js",
 			"background.js"
 		]
 	},
