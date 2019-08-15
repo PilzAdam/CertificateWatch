@@ -1,3 +1,5 @@
+'use strict';
+
 async function populate() {
 	let activeTab = await browser.tabs.query({active: true, currentWindow: true});
 	let bgPage = await browser.runtime.getBackgroundPage();

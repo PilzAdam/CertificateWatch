@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * The main background script.
  * - Intercepts all HTTPS network requests and examines the certificates.

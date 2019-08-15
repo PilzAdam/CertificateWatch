@@ -1,3 +1,5 @@
+'use strict';
+
 function removeEntry(event) {
 	const host = event.target.getAttribute("host");
 	if (host) {

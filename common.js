@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Common functions included in all other scripts
  * - Logging
