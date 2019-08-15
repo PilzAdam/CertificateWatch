@@ -49,11 +49,40 @@ async function populateTable() {
 	}
 	
 	let certs = await browser.storage.local.get();
-
-	for (var host in certs) {
+	let hosts = Object.keys(certs);
+	
+	// sort by rightmost domain first
+	hosts.sort((h1, h2) => {
+		let h1p = h1.split(".");
+		let h2p = h2.split(".");
+		let i1, i2;
+		for (i1 = h1p.length, i2 = h2p.length; i1 >= 0 && i2 >= 0; i1--, i2--) {
+			if (h1p[i1] !== h2p[i2]) {
+				if (h1p[i1] < h2p[i2]) {
+					return -1;
+				} else {
+					return 1;
+				}
+			}
+		}
+		if (i1 >= 0) {
+			// h2 is shorter
+			return 1;
+		} else if (i2 >= 0) {
+			// h1 is shorter
+			return -1;
+		} else {
+			// equal
+			return 0;
+		}
+	});
+	
+	let num = 0;
+	for (var host of hosts) {
 		if (host === SETTING_KEY) {
 			continue;
 		}
+		num++;
 		let cert = certs[host];
 		
 		let tr = document.createElement("tr");
@@ -103,6 +132,50 @@ async function populateTable() {
 		
 		table.appendChild(tr);
 	}
+	
+	let numSpan = document.getElementById("numDomains");
+	numSpan.textContent = num;
 }
 
 populateTable();
+
+async function clearStorage() {
+	logInfo("Clearing all hosts");
+	let certs = await browser.storage.local.get();
+	let clearers = [];
+	for (var host in certs) {
+		if (host === SETTING_KEY) {
+			continue;
+		}
+		clearers.push(browser.storage.local.remove(host));
+	}
+	await Promise.all(clearers);
+}
+
+(function() {
+	let removeAll = document.getElementById("removeAll");
+	removeAll.addEventListener("click", function() {
+		if (confirm("Really clear complete storage?")) {
+			clearStorage().then(populateTable);
+		}
+	});
+	
+	let domainFilter = document.getElementById("domainFilter");
+	domainFilter.value = ""; // clear after reload
+	domainFilter.addEventListener("input", function() {
+		let storageTable = document.getElementById("storageTable");
+		
+		storageTable.childNodes.forEach((row) => {
+			if (row.nodeName !== "TR") {
+				return;
+			}
+			let td = row.firstChild;
+			let domain = td.textContent;
+			if (domain.indexOf(domainFilter.value) === -1) {
+				row.style.display = "none";
+			} else {
+				row.style.display = "table-row";
+			}
+		});
+	})
+})();
