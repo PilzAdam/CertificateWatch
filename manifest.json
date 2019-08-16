@@ -20,8 +20,8 @@
 	
 	"browser_action": {
 		"browser_style": false,
-		"default_icon": "icons/cw_16.png",
-		"default_title": "Certificate Watch",
+		"default_icon": "icons/cw_16_none.png",
+		"default_title": "Certificate Watch\nNo (relevant) TLS encrypted request in this tab",
 		"default_popup": "popup.html"
 	},
 	

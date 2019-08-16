@@ -39,7 +39,7 @@ CW.CERT_ERROR = new CW.CertStatus("An internal error occured", 4, "icons/cw_16_e
 CW.CERT_CHANGED = new CW.CertStatus("Certificate differs from stored version", 3, "icons/cw_16_changed.png");
 CW.CERT_TOFU = new CW.CertStatus("New certificate trusted on first use", 2, "icons/cw_16_tofu.png");
 CW.CERT_STORED = new CW.CertStatus("All certificates known", 1, "icons/cw_16_stored.png");
-CW.CERT_NONE = new CW.CertStatus("No TLS encrypted request has been made yet", 0, "icons/cw_16.png");
+CW.CERT_NONE = new CW.CertStatus("No (relevant) TLS encrypted request in this tab", 0, "icons/cw_16_none.png");
 
 
 CW.CheckResult = class {
