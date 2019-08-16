@@ -1,3 +1,11 @@
+1.4.0
+-----
+- Added option in the pop-up to (temporarily) disable the add-on
+- Added estimated storage size to storage display page
+- Added link to settings page in pop-up
+- Small visual improvements in settings page and pop-up
+- More internal refactoring for increased maintainability
+
 1.3.0
 -----
 - Storage display: A domain filter now persists clicking a "Remove" button
@@ -15,7 +23,7 @@
 
 1.1.0
 -----
-- Added options page
+- Added settings page
 - It is now possible to specify that only certificates for the domain in the URL
   bar are checked (e.g. on www.youtube.com connections to ytimg.com are not
   checked).

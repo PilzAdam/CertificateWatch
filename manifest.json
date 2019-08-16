@@ -3,7 +3,7 @@
 	"name": "Certificate Watch",
 	"description": "Warns when TLS certificates change over time.",
 	"author": "PilzAdam",
-	"version": "1.3.0",
+	"version": "1.4.0",
 
 	"icons": {
 		"16": "icons/cw_16.png",
