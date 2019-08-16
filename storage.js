@@ -73,8 +73,14 @@ function populateTable() {
 		}
 	});
 	
+	let size = [0, 0];
+	
 	for (var host of hosts) {
 		let cert = certs[host];
+		
+		let certSize = cert.estimateSize();
+		size[0] += certSize[0];
+		size[1] += certSize[1];
 		
 		let tr = document.createElement("tr");
 		
@@ -123,6 +129,11 @@ function populateTable() {
 		
 		table.appendChild(tr);
 	}
+	
+	let sizeLower = document.getElementById("sizeLower");
+	sizeLower.textContent = formatBytes(size[0]);
+	let sizeUpper = document.getElementById("sizeUpper");
+	sizeUpper.textContent = formatBytes(size[1]);
 }
 
 function updateTableFilter() {

@@ -235,6 +235,35 @@ CW.Certificate = class {
 		storeCertificate(host);
 	}
 	
+	// returns [lowerEstimate, upperEstimate]
+	estimateSize() {
+		// function for getting the string memory size, assuming UTF-8
+		function getStringSizeUTF8(str) {
+			return unescape(encodeURIComponent(str)).length;
+		}
+		function getStringSizeUTF16(str) {
+			return str.length * 2;
+		}
+		
+		let lower = 0;
+		lower += getStringSizeUTF8(this.subject);
+		lower += getStringSizeUTF8(this.issuer);
+		lower += getStringSizeUTF8(this.subjectPublicKeyInfoDigest);
+		lower += getStringSizeUTF8(this.serialNumber);
+		lower += getStringSizeUTF8(this.fingerprint);
+		lower += 8 + 8; // validty start and end
+		
+		let upper = 0;
+		upper += getStringSizeUTF16(this.subject);
+		upper += getStringSizeUTF16(this.issuer);
+		upper += getStringSizeUTF16(this.subjectPublicKeyInfoDigest);
+		upper += getStringSizeUTF16(this.serialNumber);
+		upper += getStringSizeUTF16(this.fingerprint);
+		upper += 8 + 8; // validty start and end
+		
+		return [lower, upper];
+	}
+	
 }
 
 /*
