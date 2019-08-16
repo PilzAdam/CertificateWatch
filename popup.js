@@ -135,6 +135,12 @@ function clearResults() {
 }
 
 async function init() {
+	let settingsLink = document.getElementById("settingsLink");
+	settingsLink.addEventListener("click", function(event) {
+		event.preventDefault();
+		browser.runtime.openOptionsPage();
+	});
+	
 	let currentTab = await CW.Tab.getActiveTab();
 	if (!currentTab) {
 		return;
