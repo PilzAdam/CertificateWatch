@@ -37,23 +37,18 @@ function isIgnoredDomain(host, ignoredDomains) {
 	return false;
 }
 
-async function analyzeCert(host, securityInfo, result) {
+function analyzeCert(host, securityInfo, result) {
 	if (!securityInfo.certificates || securityInfo.certificates.length !== 1) {
 		result.status = CW.CERT_ERROR;
 		return;
 	}
 	
 	const cert = CW.Certificate.fromBrowserCert(securityInfo.certificates[0]);
-	const storedCert = await (CW.Certificate.fromStorage(host));
+	const storedCert = CW.Certificate.fromStorage(host);
 	
 	if (!storedCert) {
 		result.status = CW.CERT_TOFU;
 		cert.store(host);
-		browser.runtime.sendMessage({
-			type: "storage.newHost",
-			host: host,
-			cert: cert
-		}).then(() => {}, () => {}); // ignore errors
 
 	} else {
 		let changes = {};

@@ -7,9 +7,8 @@ function removeEntry(event) {
 	const host = event.target.getAttribute("host");
 	if (host) {
 		CW.logInfo("Removing stored certificate for", host);
-		browser.storage.local.remove(host).then(() => {
-			populateTable().then(updateTableFilter);
-		});
+		CW.Certificate.removeFromStorage(host);
+		// this generates an event that will trigger the update
 	}
 }
 
@@ -30,7 +29,7 @@ function addSubjectHtml(subject, parent) {
 	return result;
 }
 
-async function populateTable() {
+function populateTable() {
 	let table = document.getElementById("storageTable");
 	
 	// clear any old entries
@@ -42,8 +41,11 @@ async function populateTable() {
 		}
 	}
 	
-	let certs = await browser.storage.local.get();
+	let certs = CW.Certificate.getAllFromStorage();
 	let hosts = Object.keys(certs);
+	
+	let numSpan = document.getElementById("numDomains");
+	numSpan.textContent = hosts.length;
 	
 	// sort by rightmost domain first
 	hosts.sort((h1, h2) => {
@@ -71,12 +73,7 @@ async function populateTable() {
 		}
 	});
 	
-	let num = 0;
 	for (var host of hosts) {
-		if (host === SETTING_KEY) {
-			continue;
-		}
-		num++;
 		let cert = certs[host];
 		
 		let tr = document.createElement("tr");
@@ -126,9 +123,6 @@ async function populateTable() {
 		
 		table.appendChild(tr);
 	}
-	
-	let numSpan = document.getElementById("numDomains");
-	numSpan.textContent = num;
 }
 
 function updateTableFilter() {
@@ -154,31 +148,33 @@ populateTable();
 browser.runtime.onMessage.addListener((message) => {
 	if (message.type === "storage.newHost") {
 		// this event is sent when a new host appears
-		populateTable().then(updateTableFilter);
+		populateTable();
+		updateTableFilter();
 	} else if (message.type === "storage.certChanged") {
 		// this event is sent when an existing host certificate is updated
-		populateTable().then(updateTableFilter);
+		populateTable();
+		updateTableFilter();
+	} else if (message.type === "storage.removedHost") {
+		// this event is sent when an existing host is removed
+		populateTable();
+		updateTableFilter();
 	}
 });
 
-async function clearStorage() {
+function clearStorage() {
 	CW.logInfo("Clearing all hosts");
-	let certs = await browser.storage.local.get();
-	let clearers = [];
+	let certs = CW.Certificate.getAllFromStorage();
 	for (var host in certs) {
-		if (host === SETTING_KEY) {
-			continue;
-		}
-		clearers.push(browser.storage.local.remove(host));
+		CW.Certificate.removeFromStorage(host);
 	}
-	await Promise.all(clearers);
 }
 
 (function() {
 	let removeAll = document.getElementById("removeAll");
 	removeAll.addEventListener("click", function() {
 		if (confirm("Really clear complete storage?")) {
-			clearStorage().then(populateTable);
+			clearStorage();
+			populateTable();
 		}
 	});
 	

@@ -124,6 +124,37 @@ CW.getTab = function(tabId) {
  * Certificate
  */
 
+const certStore = {
+	// [host]: CW.Certificate
+};
+
+// initialize storage
+browser.storage.local.get().then((result) => {
+	for (var host of Object.keys(result)) {
+		if (host === SETTING_KEY) {
+			continue;
+		}
+		
+		let stored = result[host];
+		certStore[host] = new CW.Certificate(
+			stored.subject,
+			stored.issuer,
+			stored.validity,
+			stored.subjectPublicKeyInfoDigest,
+			stored.serialNumber,
+			stored.fingerprint
+		);
+	}
+});
+
+// helper function
+function storeCertificate(host) {
+	browser.storage.local.set({
+		[host]: certStore[host]
+	});
+}
+
+
 CW.Certificate = class {
 	//subject;
 	//issuer;
@@ -152,25 +183,56 @@ CW.Certificate = class {
 		);
 	}
 	
-	static async fromStorage(host) {
-		let stored = (await browser.storage.local.get(host))[host];
-		
-		if (stored) {
-			return new CW.Certificate(
-				stored.subject,
-				stored.issuer,
-				stored.validity,
-				stored.subjectPublicKeyInfoDigest,
-				stored.serialNumber,
-				stored.fingerprint
-			);
+	static fromStorage(host) {
+		if (host === SETTING_KEY) {
+			return;
+		}
+		return certStore[host];
+	}
+	
+	// returns {[host]: CW.Certificate}
+	// do not write to this
+	static getAllFromStorage() {
+		let certs = Object.assign({}, certStore);
+		delete certs[SETTING_KEY];
+		return certs;
+	}
+	
+	static removeFromStorage(host) {
+		if (certStore[host]) {
+			browser.runtime.sendMessage({
+				type: "storage.removedHost",
+				host: host,
+				oldCert: certStore[host]
+			}).then(() => {}, () => {}); // ignore errors
+			
+			delete certStore[host];
+			browser.storage.local.remove(host);
 		}
 	}
 	
-	async store(host) {
-		await browser.storage.local.set({
-			[host]: this
-		});
+	store(host) {
+		if (host === SETTING_KEY) {
+			return;
+		}
+		
+		if (!certStore[host]) {
+			browser.runtime.sendMessage({
+				type: "storage.newHost",
+				host: host,
+				newCert: this
+			}).then(() => {}, () => {}); // ignore errors
+		} else {
+			browser.runtime.sendMessage({
+				type: "storage.certChanged",
+				host: host,
+				oldCert: certStore[host],
+				newCert: this
+			}).then(() => {}, () => {}); // ignore errors
+		}
+		
+		certStore[host] = this;
+		storeCertificate(host);
 	}
 	
 }
@@ -179,12 +241,12 @@ CW.Certificate = class {
  * Settings
  */
 
-CW.SETTING_KEY = "certificate_watch:settings"; // TODO: don't expose in future
+const SETTING_KEY = "certificate_watch:settings";
 let settings = {};
 
 // initialize settings
-browser.storage.local.get(CW.SETTING_KEY).then((result) => {
-	let stored = result[CW.SETTING_KEY];
+browser.storage.local.get(SETTING_KEY).then((result) => {
+	let stored = result[SETTING_KEY];
 	if (stored) {
 		settings = stored;
 	}
@@ -192,7 +254,7 @@ browser.storage.local.get(CW.SETTING_KEY).then((result) => {
 
 // helper function
 function storeSettings() {
-	browser.storage.local.set({[CW.SETTING_KEY]: settings});
+	browser.storage.local.set({[SETTING_KEY]: settings});
 }
 
 
@@ -205,6 +267,16 @@ CW.getSetting = function(key, dflt) {
 }
 
 CW.setSetting = function(key, value) {
+	// copy any arrays or objects to not have references to dead objects
+	// shallow copy should be enough...
+	if (typeof(value) === "object") {
+		if (Array.isArray(value)) {
+			value = [...value];
+		} else {
+			value = Object.assign({}, value);
+		}
+	}
+	
 	settings[key] = value;
 	storeSettings();
 }
@@ -217,7 +289,7 @@ CW.deleteSetting = function(key) {
 /*
  * Migrate old settings key
  */
-(function() {
+function migrateOldSettings() {
 	const oldSettingsKey = "certificate_checker:settings";
 	browser.storage.local.get(oldSettingsKey).then(
 		(result) => {
@@ -231,7 +303,8 @@ CW.deleteSetting = function(key) {
 			}
 		}
 	);
-})();
+}
+migrateOldSettings();
 
 /*
  * Logging

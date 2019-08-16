@@ -99,18 +99,9 @@ function addResult(result) {
 				button.setAttribute("value", "Storing...");
 				CW.logInfo("Storing new certificate for", result.host);
 				
-				let newCert = result.got;
-				browser.storage.local.set({
-					[result.host]: newCert
-				}).then(() => {
-					button.setAttribute("value", "Stored New Certificate");
-					
-					browser.runtime.sendMessage({
-						type: "storage.certChanged",
-						host: result.host,
-						newCert: newCert
-					}).then(() => {}, () => {}); // ignore errors
-				});
+				result.got.store(result.host);
+				
+				button.setAttribute("value", "Stored New Certificate");
 			});
 			li.appendChild(button);
 		}
