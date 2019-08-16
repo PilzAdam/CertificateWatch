@@ -152,11 +152,11 @@
 		"description": "Signals that the add-on is currently inactive."
 	},
 	"popupStateEnabledTooltip": {
-		"message": "Verbindungsüberprüfung temporär deaktivieren",
+		"message": "Klicken um Verbindungsüberprüfung temporär zu deaktivieren",
 		"description": "Tooltip for button to temporarily inactivate the connection checking."
 	},
 	"popupStateDisabledTooltip": {
-		"message": "Verbindungsüberprüfung wieder aktivieren",
+		"message": "Klicken um Verbindungsüberprüfung wieder zu aktivieren",
 		"description": "Tooltip for button to re-activate the connection checking."
 	},
 	"storageTitle": {

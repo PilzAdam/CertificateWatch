@@ -152,11 +152,11 @@
 		"description": "Signals that the add-on is currently inactive."
 	},
 	"popupStateEnabledTooltip": {
-		"message": "Temporarily disable checking new connections",
+		"message": "Click to temporarily disable checking connections",
 		"description": "Tooltip for button to temporarily inactivate the connection checking."
 	},
 	"popupStateDisabledTooltip": {
-		"message": "Re-enable checking new connections",
+		"message": "Click to re-enable checking connections",
 		"description": "Tooltip for button to re-activate the connection checking."
 	},
 	"storageTitle": {
