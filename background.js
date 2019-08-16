@@ -86,6 +86,10 @@ function analyzeCert(host, securityInfo, result) {
 }
 
 async function checkConnection(url, securityInfo, tabId) {
+	if (CW.enabled === false) {
+		return;
+	}
+	
 	const match = new RegExp("(https|wss)://([^/]+)").exec(url);
 	//const baseUrl = match[0];
 	const host = match[2];
@@ -148,27 +152,43 @@ browser.webRequest.onHeadersReceived.addListener(
  */
 
 function updateTabIcon(tabId) {
-	let tab = CW.getTab(tabId);
+	if (CW.enabled === false) {
+		browser.browserAction.setIcon({
+			tabId: tabId,
+			path: {
+				16: "icons/cw_16_disabled.png",
+			}
+		});
+		browser.browserAction.setTitle({
+			tabId: tabId,
+			title: "Certificate Watch\nDisabled",
+		});
+		
+	} else {
+		let tab = CW.getTab(tabId);
+		let status = tab.highestStatus;
+		browser.browserAction.setIcon({
+			tabId: tabId,
+			path: {
+				16: status.icon,
+			}
+		});
+		browser.browserAction.setTitle({
+			tabId: tabId,
+			title: "Certificate Watch\n" + status.text,
+		});
+	}
 	
-	let status = tab.highestStatus;
-	browser.browserAction.setIcon({
-		tabId: tabId,
-		path: {
-			16: status.icon,
-		}
-	});
-	browser.browserAction.setTitle({
-		tabId: tabId,
-		title: "Certificate Watch\n" + status.text,
-	});
 }
 
 function tabAdded(tab) {
+	CW.logDebug("New tab", tab.id);
 	CW.tabs[tab.id] = new CW.Tab(tab.id);
 }
 browser.tabs.onCreated.addListener(tabAdded);
 
 function tabRemoved(tabId) {
+	CW.logDebug("Tab removed", tabId);
 	delete CW.tabs[tabId];
 }
 browser.tabs.onRemoved.addListener(tabRemoved);
@@ -182,12 +202,15 @@ function tabUpdated(tabId, changeInfo) {
 		if (!tab.lastState || tab.lastState === "complete") {
 			CW.logDebug("Clearing tab", tabId);
 			tab.clear();
-			updateTabIcon(tabId);
 		}
 		tab.lastState = "loading";
 		
 	} else if (changeInfo.status === "complete") {
 		tab.lastState = "complete";
 	}
+	
+	// always update on any change event, as sometimes the default icon is
+	// applied automatically...
+	updateTabIcon(tabId);
 }
 browser.tabs.onUpdated.addListener(tabUpdated);

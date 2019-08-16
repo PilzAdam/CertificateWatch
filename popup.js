@@ -132,6 +132,25 @@ async function init() {
 		browser.runtime.openOptionsPage();
 	});
 	
+	let state = document.getElementById("state");
+	function updateStateText() {
+		if (CW.enabled) {
+			state.textContent = "Enabled";
+			state.style.color = "";
+			state.setAttribute("title", "Temporarily disable checking new connections");
+		} else {
+			state.textContent = "Disabled";
+			state.style.color = "red";
+			state.setAttribute("title", "Re-enable checking new connections");
+		}
+	}
+	updateStateText();
+	state.addEventListener("click", function(event) {
+		event.preventDefault();
+		CW.toggleEnabled();
+		updateStateText();
+	});
+	
 	let currentTab = await CW.Tab.getActiveTab();
 	if (!currentTab) {
 		return;
