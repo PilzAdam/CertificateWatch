@@ -58,11 +58,12 @@ CW.CertStatus = class {
 		this.icon = icon;
 	}
 };
-CW.CERT_ERROR = new CW.CertStatus("An internal error occured", 4, "icons/cw_16_error.png");
-CW.CERT_CHANGED = new CW.CertStatus("Certificate differs from stored version", 3, "icons/cw_16_changed.png");
-CW.CERT_TOFU = new CW.CertStatus("New certificate trusted on first use", 2, "icons/cw_16_tofu.png");
-CW.CERT_STORED = new CW.CertStatus("All certificates known", 1, "icons/cw_16_stored.png");
-CW.CERT_NONE = new CW.CertStatus("No (relevant) TLS encrypted request in this tab", 0, "icons/cw_16.png");
+
+CW.CERT_ERROR = new CW.CertStatus(browser.i18n.getMessage("tooltipCertError"), 4, "icons/cw_16_error.png");
+CW.CERT_CHANGED = new CW.CertStatus(browser.i18n.getMessage("tooltipCertChanged"), 3, "icons/cw_16_changed.png");
+CW.CERT_TOFU = new CW.CertStatus(browser.i18n.getMessage("tooltipCertTofu"), 2, "icons/cw_16_tofu.png");
+CW.CERT_STORED = new CW.CertStatus(browser.i18n.getMessage("tooltipCertStored"), 1, "icons/cw_16_stored.png");
+CW.CERT_NONE = new CW.CertStatus(browser.i18n.getMessage("tooltipCertNone"), 0, "icons/cw_16.png");
 
 
 CW.CheckResult = class {

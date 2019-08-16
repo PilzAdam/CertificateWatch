@@ -41,24 +41,24 @@ function addResult(result) {
 				let nestedLi = document.createElement("li");
 				let b = document.createElement("b");
 				if (field === "subject") {
-					b.textContent = "Subject";
+					b.textContent = browser.i18n.getMessage("popupChangedFieldSubject");
 				} else if (field === "issuer") {
-					b.textContent = "Issuer";
+					b.textContent = browser.i18n.getMessage("popupChangedFieldIssuer");
 				} else if (field === "validity") {
-					b.textContent = "Validity";
+					b.textContent = browser.i18n.getMessage("popupChangedFieldValidity")
 				} else if (field === "subjectPublicKeyInfoDigest") {
-					b.textContent = "Public Key";
+					b.textContent = browser.i18n.getMessage("popupChangedFieldPublicKey");
 				} else if (field === "fingerprint") {
-					b.textContent = "Fingerprint";
+					b.textContent = browser.i18n.getMessage("popupChangedFieldFingerprint")
 				} else if (field === "serialNumber") {
-					b.textContent = "Serial Number";
+					b.textContent = browser.i18n.getMessage("popupChangedFieldSerialNumber");
 				} else {
 					b.textContent = field;
 				}
 				nestedLi.appendChild(b);
 				
 				if (field === "subject" || field === "issuer" || field === "validity") {
-					nestedLi.appendChild(document.createTextNode(" changed"));
+					nestedLi.appendChild(document.createTextNode(" " + browser.i18n.getMessage("popupChanged")));
 					
 					let table = document.createElement("table");
 					let r1 = document.createElement("tr");
@@ -68,11 +68,11 @@ function addResult(result) {
 					let e21 = document.createElement("td");
 					let e22 = document.createElement("td");
 					
-					e11.textContent = "stored:";
+					e11.textContent = browser.i18n.getMessage("popupChangedStored");
 					e12.textContent = result.changes[field].stored;
 					e12.style.color = "blue";
 					
-					e21.textContent = "new:";
+					e21.textContent = browser.i18n.getMessage("popupChangedNew");
 					e22.textContent = result.changes[field].got;
 					e22.style.color = "orange";
 					
@@ -84,7 +84,7 @@ function addResult(result) {
 					table.appendChild(r2);
 					nestedLi.appendChild(table);
 				} else {
-					nestedLi.appendChild(document.createTextNode(" changed"));
+					nestedLi.appendChild(document.createTextNode(" " + browser.i18n.getMessage("popupChanged")));
 				}
 				
 				ul.appendChild(nestedLi);
@@ -93,15 +93,14 @@ function addResult(result) {
 			
 			let button = document.createElement("input");
 			button.setAttribute("type", "button");
-			button.setAttribute("value", "Store This New Certificate");
+			button.setAttribute("value", browser.i18n.getMessage("popupAddChanged"));
 			button.addEventListener("click", function() {
 				button.disabled = true;
-				button.setAttribute("value", "Storing...");
 				CW.logInfo("Storing new certificate for", result.host);
 				
 				result.got.store(result.host);
 				
-				button.setAttribute("value", "Stored New Certificate");
+				button.setAttribute("value", browser.i18n.getMessage("popupAddedChanged"));
 			});
 			li.appendChild(button);
 		}
@@ -135,13 +134,13 @@ async function init() {
 	let state = document.getElementById("state");
 	function updateStateText() {
 		if (CW.enabled) {
-			state.textContent = "Enabled";
+			state.textContent = browser.i18n.getMessage("popupStateEnabled");
 			state.style.color = "";
-			state.setAttribute("title", "Temporarily disable checking new connections");
+			state.setAttribute("title", browser.i18n.getMessage("popupStateEnabledTooltip"));
 		} else {
-			state.textContent = "Disabled";
+			state.textContent = browser.i18n.getMessage("popupStateDisabled");
 			state.style.color = "red";
-			state.setAttribute("title", "Re-enable checking new connections");
+			state.setAttribute("title", browser.i18n.getMessage("popupStateDisabledTooltip"));
 		}
 	}
 	updateStateText();

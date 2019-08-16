@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Certificate Watch Popup</title>
+		<title data-i18n="popupTitle"></title>
 		<link rel="icon" href="icons/cw_128.png" />
 		<style>
 			#logo {
@@ -19,31 +19,31 @@
 	</head>
 	<body>
 		<div id="header">
-			<h1>Certificate Watch</h1>
+			<h1 data-i18n="extensionName"></h1>
 			<img id="logo" src="icons/cw_128.png" alt="" width="128" height="128" />
 		</div>
 		<p>
 			<img src="icons/cw_16_changed.png" alt="" width="16" height="16" />
-			<b><span id="numChanged">?</span></b> changed certificates
+			<b><span id="numChanged">?</span></b> <span data-i18n="popupChangedCerts"></span>
 			<ul id="changedList"></ul>
 		</p>
 		<p>
 			<img src="icons/cw_16_tofu.png" alt="" width="16" height="16" />
-			<b><span id="numTofu">?</span></b> new certificates
+			<b><span id="numTofu">?</span></b> <span data-i18n="popupTofuCerts"></span>
 			<ul id="tofuList"></ul>
 		</p>
 		<p>
 			<img src="icons/cw_16_stored.png" alt="" width="16" height="16" />
-			<b><span id="numStored">?</span></b> stored certificates
+			<b><span id="numStored">?</span></b> <span data-i18n="popupStoredCerts"></span>
 			<ul id="storedList"></ul>
 		</p>
 		
 		<p>
 			<a id="state" href="#"></a>
 			|
-			<a id="settingsLink" title="Show settings page" href="#">Settings</a>
+			<a id="settingsLink" href="#" data-i18n="popupSettings;title=popupSettingsTooltip"></a>
 			|
-			<a title="Show storage page" href="storage.html" target="_blank">Show Storage</a>
+			<a href="storage.html" target="_blank" data-i18n="popupStorage;title=popupStorageTooltip" ></a>
 		</p>
 		<script src="common.js"></script>
 		<script src="popup.js"></script>

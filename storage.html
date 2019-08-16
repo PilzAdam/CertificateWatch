@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Certificate Watch Storage</title>
+		<title data-i18n="storageTitle"></title>
 		<link rel="icon" href="icons/cw_128.png" />
 		<style>
 			#logo {
@@ -30,28 +30,28 @@
 	</head>
 	<body>
 		<img id="logo" src="icons/cw_128.png" alt="" width="128" height="128" />
-		<h1>Certificate Watch Storage</h1>
-		<span id="numDomains">?</span> domains stored.
-		Estimated storage size is between <span id="sizeLower">?</span> and <span id="sizeUpper">?</span>.
+		<h1 data-i18n="storageTitle"></h1>
+		<span id="numDomains">?</span> <span data-i18n="storageNumStoredDomains"></span>
+		<span id="storageSize"></span>
 		<br />
 		<br />
-		<input id="removeAll" type="button" value="Remove All" />
+		<input id="removeAll" type="button" data-i18n="value=storageRemoveAll" />
 		
 		<table border="1" id="storageTable">
 			<tr class="header">
 				<th rowspan="2">
-					Domain
+					<span data-i18n="storageFieldDomain"></span>
 					<br />
-					<span class="noBold">Filter:</span> <input id="domainFilter" type="text" />
+					<span class="noBold" data-i18n="storageFieldDomainFilter"></span> <input id="domainFilter" type="text" />
 				</th>
-				<th colspan="4">Certificate</th>
-				<th rowspan="2">Remove</th>
+				<th colspan="4" data-i18n="storageFieldCert"></th>
+				<th rowspan="2" data-i18n="storageRemoveHost"></th>
 			</tr>
 			<tr class="header">
-				<th>Subject</th>
-				<th>Issuer</th>
-				<th>Valid From</th>
-				<th>Valid Until</th>
+				<th data-i18n="storageFieldCertSubject"></th>
+				<th data-i18n="storageFieldCertIssuer"></th>
+				<th data-i18n="storageFieldCertValidityStart"></th>
+				<th data-i18n="storageFieldCertValidityEnd"></th>
 				<!--
 				<th>Serial Number</th>
 				<th>Public Key Hash</th>

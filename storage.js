@@ -121,7 +121,7 @@ function populateTable() {
 		td = document.createElement("td");
 		let removeButton = document.createElement("input");
 		removeButton.setAttribute("type", "button");
-		removeButton.setAttribute("value", "Remove");
+		removeButton.setAttribute("value", browser.i18n.getMessage("storageRemoveHost"));
 		removeButton.setAttribute("host", host);
 		removeButton.addEventListener("click", removeEntry);
 		td.appendChild(removeButton);
@@ -130,10 +130,8 @@ function populateTable() {
 		table.appendChild(tr);
 	}
 	
-	let sizeLower = document.getElementById("sizeLower");
-	sizeLower.textContent = formatBytes(size[0]);
-	let sizeUpper = document.getElementById("sizeUpper");
-	sizeUpper.textContent = formatBytes(size[1]);
+	let storageSize = document.getElementById("storageSize");
+	storageSize.textContent = browser.i18n.getMessage("storageSize", [formatBytes(size[0]), formatBytes(size[1])]);
 }
 
 function updateTableFilter() {
@@ -183,7 +181,7 @@ function clearStorage() {
 (function() {
 	let removeAll = document.getElementById("removeAll");
 	removeAll.addEventListener("click", function() {
-		if (confirm("Really clear complete storage?")) {
+		if (confirm(browser.i18n.getMessage("storageRemoveAllConfirm"))) {
 			clearStorage();
 			populateTable();
 		}

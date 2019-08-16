@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Certificate Watch Options</title>
+		<title data-i18n="optionsTitle"></title>
 		<link rel="icon" href="icons/cw_128.png" />
 		<style>
 			body {
@@ -21,24 +21,24 @@
 	<body>
 		<form>
 			<p>
-				<label for="certChecks">Certificates to check:</label>
+				<label for="certChecks" data-i18n="optionsLblCheckCerts"></label>
 				<select id="certChecks">
-					<option value="all">Check certificates of all connections</option>
-					<option value="domain">Check only certificates of page domain</option>
+					<option value="all" data-i18n="optionsCheckAllCert"></option>
+					<option value="domain" data-i18n="optionsCheckDomainCert"></option>
 				</select>
 			</p>
 			
 			<p>
-			<label for="logLevel">Console log level:</label>
+			<label for="logLevel" data-i18n="optionsLblLogLevel"></label>
 			<select id="logLevel">
-				<option value="none">None</option>
-				<option value="info">Info</option>
-				<option value="debug">Debug</option>
+				<option value="none" data-i18n="optionsLogLevelNone"></option>
+				<option value="info" data-i18n="optionsLogLevelInfo"></option>
+				<option value="debug" data-i18n="optionsLogLevelDebug"></option>
 			</select>
 			</p>
 			
 			<p>
-				<label for="ignoredDomains">Domains to ignore:</label>
+				<label for="ignoredDomains" data-i18n="optionsLblIgnoredDomains"></label>
 				<br />
 				<div class="textarea">
 					<textarea id="ignoredDomains" rows="15"></textarea>

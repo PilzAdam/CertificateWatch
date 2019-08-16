@@ -1,10 +1,12 @@
 {
 	"manifest_version": 2,
-	"name": "Certificate Watch",
-	"description": "Warns when TLS certificates change over time.",
+	"name": "__MSG_extensionName__",
+	"description": "__MSG_extensionDescription__",
 	"author": "PilzAdam",
 	"version": "1.4.0",
-
+	
+	"default_locale": "en",
+	
 	"icons": {
 		"16": "icons/cw_16.png",
 		"128": "icons/cw_128.png"
@@ -21,7 +23,7 @@
 	"browser_action": {
 		"browser_style": false,
 		"default_icon": "icons/cw_16.png",
-		"default_title": "Certificate Watch\nNo (relevant) TLS encrypted request in this tab",
+		"default_title": "__MSG_extensionName__\n__MSG_tooltipCertNone__",
 		"default_popup": "popup.html"
 	},
 	

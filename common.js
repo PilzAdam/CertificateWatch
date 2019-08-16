@@ -30,3 +30,19 @@ function formatBytes(bytes) {
 	
 	return bytes + " " + prefixes[prefixIndex];
 }
+
+/*
+ * I18N automatically applied to all HTML
+ * adapted from: https://github.com/erosman/HTML-Internationalization
+ */
+for (const node of document.querySelectorAll('[data-i18n]')) {
+	for (const i18n of node.dataset.i18n.split(';')) {
+		let [attr, key] = i18n.split("=");
+		if (!key) {
+			key = attr;
+			attr = null;
+		}
+		const translated= browser.i18n.getMessage(key);
+		attr ? node[attr] = translated : node.appendChild(document.createTextNode(translated));
+	}
+}

@@ -161,7 +161,7 @@ function updateTabIcon(tabId) {
 		});
 		browser.browserAction.setTitle({
 			tabId: tabId,
-			title: "Certificate Watch\nDisabled",
+			title: browser.i18n.getMessage("extensionName") + "\n" + browser.i18n.getMessage("tooltipDisabled"),
 		});
 		
 	} else {
@@ -175,7 +175,7 @@ function updateTabIcon(tabId) {
 		});
 		browser.browserAction.setTitle({
 			tabId: tabId,
-			title: "Certificate Watch\n" + status.text,
+			title: browser.i18n.getMessage("extensionName") + "\n" + status.text,
 		});
 	}
 	

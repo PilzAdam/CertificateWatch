@@ -1,0 +1,224 @@
+{
+	"extensionName": {
+		"message": "Certificate Watch",
+		"description": "The name of this add-on; should be English if possible."
+	},
+	"extensionDescription": {
+		"message": "Warns when TLS certificates change over time.",
+		"description": "Description of this add-on."
+	},
+	"tooltipCertNone": {
+		"message": "No (relevant) TLS encrypted request in this tab",
+		"description": "Tooltip shown when no relevant connection was inspected in this tab yet."
+	},
+	"tooltipCertStored": {
+		"message": "All certificates known",
+		"description": "Tooltip shown when all certificates match the stored ones."
+	},
+	"tooltipCertTofu": {
+		"message": "New certificate stored",
+		"description": "Tooltip shown when at least one new certificate was added to the store automatically."
+	},
+	"tooltipCertChanged": {
+		"message": "Certificate differs from stored version",
+		"description": "Tooltip shown when at least one certificate differs from the stored one."
+	},
+	"tooltipCertError": {
+		"message": "An internal error occured",
+		"description": "Tooltip shown when an internal error occured during certificate checking."
+	},
+	"tooltipDisabled": {
+		"message": "Disabled",
+		"description": "Tooltip shown when the add-on is temporarily disabled."
+	},
+	"optionsTitle": {
+		"message": "Certificate Watch Settings",
+		"description": "Title for the settings page."
+	},
+	"optionsLblCheckCerts": {
+		"message": "Certificates to check:",
+		"description": "Label for the selection of which kind of connections should be checked."
+	},
+	"optionsCheckAllCert": {
+		"message": "Check certificates of all connections",
+		"description": "Setting to check all connections."
+	},
+	"optionsCheckDomainCert": {
+		"message": "Check only certificates of page domain",
+		"description": "Setting to check only certificates of the page domain (the domain in the URL bar)."
+	},
+	"optionsLblLogLevel": {
+		"message": "Console log level:",
+		"description": "Label for the selection of the log level (debugging informatin in the browser console)."
+	},
+	"optionsLogLevelNone": {
+		"message": "None",
+		"description": "Setting to have no logging in the browser console."
+	},
+	"optionsLogLevelInfo": {
+		"message": "Info",
+		"description": "Setting to have info-level logging in the browser console."
+	},
+	"optionsLogLevelDebug": {
+		"message": "Debug",
+		"description": "Setting to have debug-level logging in the browser console."
+	},
+	"optionsLblIgnoredDomains": {
+		"message": "Domains to ignore:",
+		"description": "Label for the textbox to insert domains to ignore."
+	},
+	"popupTitle": {
+		"message": "Certificate Watch Popup",
+		"description": "Title for the pop-up page (usually not visible)."
+	},
+	"popupChangedCerts": {
+		"message": "changed certificates",
+		"description": "The pop-up description for the displayed certificates that don't equal the stored version. This comes directly after the displayed number."
+	},
+	"popupTofuCerts": {
+		"message": "new certificates",
+		"description": "The pop-up description for the displayed newly stored certificates. This comes directly after the displayed number."
+	},
+	"popupStoredCerts": {
+		"message": "stored certificates",
+		"description": "The pop-up description for the displayed certificates that equal the stored version. This comes directly after the displayed number."
+	},
+	"popupSettings": {
+		"message": "Settings",
+		"description": "The link in the pop-up to the settings page."
+	},
+	"popupSettingsTooltip": {
+		"message": "Show settings page",
+		"description": "The tooltip for the link in the pop-up to the settings page."
+	},
+	"popupStorage": {
+		"message": "Storage",
+		"description": "The link in the pop-up to the storage page."
+	},
+	"popupStorageTooltip": {
+		"message": "Show storage page",
+		"description": "The tooltip for the link in the pop-up to the storage page."
+	},
+	"popupChanged": {
+		"message": "changed",
+		"description": "Message signaling that the certificate field directly in front of this was changed."
+	},
+	"popupChangedFieldSubject": {
+		"message": "Subject",
+		"description": "The subject field in the certificate."
+	},
+	"popupChangedFieldIssuer": {
+		"message": "Issuer",
+		"description": "The issuer field in the certificate."
+	},
+	"popupChangedFieldValidity": {
+		"message": "Validity",
+		"description": "The validity field in the certificate."
+	},
+	"popupChangedFieldPublicKey": {
+		"message": "Public Key",
+		"description": "The public key in the certificate."
+	},
+	"popupChangedFieldFingerprint": {
+		"message": "Fingerprint",
+		"description": "The fingerprint of the certificate."
+	},
+	"popupChangedFieldSerialNumber": {
+		"message": "Serial Number",
+		"description": "The serial number of the certificate."
+	},
+	"popupChangedStored": {
+		"message": "Stored:",
+		"description": "Label in front of the stored version of a changed field."
+	},
+	"popupChangedNew": {
+		"message": "New:",
+		"description": "Label in front of the new version of a changed field."
+	},
+	"popupAddChanged": {
+		"message": "Store this new certificate",
+		"description": "Label of the button to store the new version of the certificate."
+	},
+	"popupAddedChanged": {
+		"message": "Stored new certificate",
+		"description": "Label of the button after the new certificate was stored."
+	},
+	"popupStateEnabled": {
+		"message": "Enabled",
+		"description": "Signals that the add-on is currently active."
+	},
+	"popupStateDisabled": {
+		"message": "Disabled",
+		"description": "Signals that the add-on is currently inactive."
+	},
+	"popupStateEnabledTooltip": {
+		"message": "Temporarily disable checking new connections",
+		"description": "Tooltip for button to temporarily inactivate the connection checking."
+	},
+	"popupStateDisabledTooltip": {
+		"message": "Re-enable checking new connections",
+		"description": "Tooltip for button to re-activate the connection checking."
+	},
+	"storageTitle": {
+		"message": "Certificate Watch Storage",
+		"description": "The title of the storage display page"
+	},
+	"storageNumStoredDomains": {
+		"message": "stored domains.",
+		"description": "Describing the number of stored domains that comes directly in front of it."
+	},
+	"storageSize": {
+		"message": "Estimated storage size is between $LOWER$ and $UPPER$.",
+		"description": "Describing the estimated size of the certificate storage.",
+		"placeholders": {
+			"lower": {
+				"content": "$1",
+				"example": "14.52 KiB"
+			},
+			"upper": {
+				"content": "$2",
+				"example": "16.24 MiB"
+			}
+		}
+	},
+	"storageRemoveHost": {
+		"message": "Remove",
+		"description": "Remove a single host from storage"
+	},
+	"storageRemoveAll": {
+		"message": "Remove All",
+		"description": "Button to clear the complete certifcate storage."
+	},
+	"storageRemoveAllConfirm": {
+		"message": "Really clear complete storage?",
+		"description": "Confirmation question to really clear the full storage."
+	},
+	"storageFieldDomain": {
+		"message": "Domain",
+		"description": "The table header for the domains."
+	},
+	"storageFieldDomainFilter": {
+		"message": "Filter:",
+		"description": "Description for the filter by domain name."
+	},
+	"storageFieldCert": {
+		"message": "Certificate",
+		"description": "The table header for the certificate."
+	},
+	"storageFieldCertSubject": {
+		"message": "Subject",
+		"description": "The table header for the certificate subject."
+	},
+	"storageFieldCertIssuer": {
+		"message": "Issuer",
+		"description": "The table header for the certificate issuer."
+	},
+	"storageFieldCertValidityStart": {
+		"message": "Valid From",
+		"description": "The table header for the certificate validity (start)."
+	},
+	"storageFieldCertValidityEnd": {
+		"message": "Valid Until",
+		"description": "The table header for the certificate validity (end)."
+	}
+}
