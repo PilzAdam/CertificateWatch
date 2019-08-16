@@ -27,7 +27,7 @@ function isIgnoredDomain(host, ignoredDomains) {
 				}
 				
 				if (match) {
-					logDebug("Ignoring domain", host, "because it matches", filter);
+					CW.logDebug("Ignoring domain", host, "because it matches", filter);
 					return true;
 				}
 			}
@@ -96,23 +96,23 @@ async function checkConnection(url, securityInfo, tabId) {
 	const host = match[2];
 	
 	if (tabId === -1) {
-		logDebug("Request to", url, "not made in a tab");
+		CW.logDebug("Request to", url, "not made in a tab");
 		// TODO: what to do with requests not attached to tabs?
 		return;
 	}
 	
-	const certChecksSetting = await getSetting("certChecks");
+	const certChecksSetting = CW.getSetting("certChecks");
 	if (certChecksSetting === "domain") {
 		const tab = await browser.tabs.get(tabId);
 		const tabHost = new RegExp("://([^/]+)").exec(tab.url)[1];
 		if (host !== tabHost) {
-			logDebug("Ignoring request to", host, "from tab with host", tabHost,
+			CW.logDebug("Ignoring request to", host, "from tab with host", tabHost,
 					"(setting is", certChecksSetting, ")");
 			return;
 		}
 	}
 	
-	const ignoredDomains = await getSetting("ignoredDomains", []);
+	const ignoredDomains = CW.getSetting("ignoredDomains", []);
 	if (isIgnoredDomain(host, ignoredDomains)) {
 		return;
 	}
@@ -121,7 +121,7 @@ async function checkConnection(url, securityInfo, tabId) {
 		const result = new CW.CheckResult(host);
 		await analyzeCert(host, securityInfo, result);
 		
-		logDebug(host, result.status.text);
+		CW.logDebug(host, result.status.text);
 		
 		let tab = CW.getTab(tabId);
 		tab.addResult(result);
@@ -185,7 +185,7 @@ function tabUpdated(tabId, changeInfo) {
 		// only use the first "loading" state until the next complete comes through
 		// this is because there is another "loading" event when the first request went through
 		if (!tab.lastState || tab.lastState === "complete") {
-			logDebug("Clearing tab", tabId);
+			CW.logDebug("Clearing tab", tabId);
 			tab.clear();
 			updateTabIcon(tabId);
 		}
@@ -196,21 +196,3 @@ function tabUpdated(tabId, changeInfo) {
 	}
 }
 browser.tabs.onUpdated.addListener(tabUpdated);
-
-/*
- * Migrate old settings key
- */
-(function() {
-	const oldSettingsKey = "certificate_checker:settings";
-	browser.storage.local.get(oldSettingsKey).then(
-		(result) => {
-			let oldSettings = result[oldSettingsKey];
-			if (oldSettings) {
-				// we found old settings, delete and store as new one
-				browser.storage.local.set({[SETTING_KEY]: oldSettings});
-				browser.storage.local.remove(oldSettingsKey);
-				logInfo("Migrated old storage");
-			}
-		}
-	);
-})();

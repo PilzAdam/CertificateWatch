@@ -20,6 +20,10 @@ function getCW() {
 	return CW;
 }
 
+/*
+ * Certficate status
+ */
+
 CW.CertStatus = class {
 	//text;
 	//precedence;
@@ -54,6 +58,9 @@ CW.CheckResult = class {
 	}
 }
 
+/*
+ * Tabs
+ */
 
 CW.Tab = class {
 	//tabId;
@@ -113,6 +120,10 @@ CW.getTab = function(tabId) {
 	}
 }
 
+/*
+ * Certificate
+ */
+
 CW.Certificate = class {
 	//subject;
 	//issuer;
@@ -162,4 +173,84 @@ CW.Certificate = class {
 		});
 	}
 	
+}
+
+/*
+ * Settings
+ */
+
+CW.SETTING_KEY = "certificate_watch:settings"; // TODO: don't expose in future
+let settings = {};
+
+// initialize settings
+browser.storage.local.get(CW.SETTING_KEY).then((result) => {
+	let stored = result[CW.SETTING_KEY];
+	if (stored) {
+		settings = stored;
+	}
+});
+
+// helper function
+function storeSettings() {
+	browser.storage.local.set({[CW.SETTING_KEY]: settings});
+}
+
+
+CW.getSetting = function(key, dflt) {
+	if (key in settings) {
+		return settings[key];
+	} else {
+		return dflt;
+	}
+}
+
+CW.setSetting = function(key, value) {
+	settings[key] = value;
+	storeSettings();
+}
+
+CW.deleteSetting = function(key) {
+	delete settings[key];
+	storeSettings();
+}
+
+/*
+ * Migrate old settings key
+ */
+(function() {
+	const oldSettingsKey = "certificate_checker:settings";
+	browser.storage.local.get(oldSettingsKey).then(
+		(result) => {
+			let oldSettings = result[oldSettingsKey];
+			if (oldSettings) {
+				// we found old settings, delete and store as new one
+				browser.storage.local.set({[SETTING_KEY]: oldSettings});
+				browser.storage.local.remove(oldSettingsKey);
+				settings = oldSettings;
+				CW.logInfo("Migrated old storage");
+			}
+		}
+	);
+})();
+
+/*
+ * Logging
+ */
+
+CW.logDebug = function() {
+	let level = CW.getSetting("logLevel");
+	if (level === "debug") {
+		var args = Array.prototype.slice.call(arguments);
+		args.unshift("[Certificate Watch]", "[Debug]");
+		console.log.apply(console, args);
+	}
+}
+
+CW.logInfo = function() {
+	let level = CW.getSetting("logLevel");
+	if (level === "debug" || level === "info") {
+		var args = Array.prototype.slice.call(arguments);
+		args.unshift("[Certificate Watch]", "[Info]");
+		console.log.apply(console, args);
+	}
 }

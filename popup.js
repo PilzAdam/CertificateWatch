@@ -97,7 +97,7 @@ function addResult(result) {
 			button.addEventListener("click", function() {
 				button.disabled = true;
 				button.setAttribute("value", "Storing...");
-				logInfo("Storing new certificate for", result.host);
+				CW.logInfo("Storing new certificate for", result.host);
 				
 				let newCert = result.got;
 				browser.storage.local.set({
@@ -115,7 +115,7 @@ function addResult(result) {
 			li.appendChild(button);
 		}
 	} else {
-		logDebug("Got result that has no known type", result);
+		CW.logDebug("Got result that has no known type", result);
 	}
 }
 
@@ -156,7 +156,6 @@ async function init() {
 			addResult(currentTab.results[message.resultIndex]);
 			updateCounts();
 		} else if (message.type === "tab.resultsCleared" && message.tabId === currentTab.tabId) {
-			logDebug("got cleared message");
 			changed.clear();
 			tofu.clear();
 			stored.clear();

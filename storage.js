@@ -1,9 +1,12 @@
 'use strict';
 
+browser.runtime.getBackgroundPage().then((bg) => {
+const CW = bg.getCW();
+
 function removeEntry(event) {
 	const host = event.target.getAttribute("host");
 	if (host) {
-		logInfo("Removing stored certificate for", host);
+		CW.logInfo("Removing stored certificate for", host);
 		browser.storage.local.remove(host).then(() => {
 			populateTable().then(updateTableFilter);
 		});
@@ -159,7 +162,7 @@ browser.runtime.onMessage.addListener((message) => {
 });
 
 async function clearStorage() {
-	logInfo("Clearing all hosts");
+	CW.logInfo("Clearing all hosts");
 	let certs = await browser.storage.local.get();
 	let clearers = [];
 	for (var host in certs) {
@@ -183,3 +186,6 @@ async function clearStorage() {
 	domainFilter.value = ""; // clear after reload
 	domainFilter.addEventListener("input", updateTableFilter);
 })();
+
+
+}); // CW getter
