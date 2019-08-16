@@ -168,6 +168,11 @@ browser.storage.local.get().then((result) => {
 			stored.serialNumber,
 			stored.fingerprint
 		);
+		browser.runtime.sendMessage({
+			type: "storage.newHost",
+			host: host,
+			newCert: certStore[host]
+		}).then(() => {}, () => {}); // ignore errors
 	}
 });
 
