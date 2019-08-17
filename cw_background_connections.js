@@ -85,7 +85,7 @@ async function checkConnection(url, securityInfo, tabId) {
 
 	let host;
 	try {
-		const match = new RegExp("(https|wss)://([^/]+)").exec(url);
+		const match = new RegExp("([a-z]+)://([^/:]+)").exec(url);
 		//const baseUrl = match[0];
 		host = match[2];
 
