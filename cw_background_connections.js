@@ -83,40 +83,48 @@ async function checkConnection(url, securityInfo, tabId) {
 		return;
 	}
 
-	const match = new RegExp("(https|wss)://([^/]+)").exec(url);
-	//const baseUrl = match[0];
-	const host = match[2];
+	let host;
+	try {
+		const match = new RegExp("(https|wss)://([^/]+)").exec(url);
+		//const baseUrl = match[0];
+		host = match[2];
 
-	if (tabId === -1) {
-		CW.logDebug("Request to", url, "not made in a tab");
-		// TODO: what to do with requests not attached to tabs?
-		return;
-	}
-
-	const certChecksSetting = CW.getSetting("certChecks");
-	if (certChecksSetting === "domain") {
-		const tab = await browser.tabs.get(tabId);
-		const tabHost = new RegExp("://([^/]+)").exec(tab.url)[1];
-		if (host !== tabHost) {
-			CW.logDebug("Ignoring request to", host, "from tab with host", tabHost,
-					"(setting is", certChecksSetting, ")");
+		if (tabId === -1) {
+			CW.logDebug("Request to", url, "not made in a tab");
+			// TODO: what to do with requests not attached to tabs?
 			return;
 		}
-	}
 
-	const ignoredDomains = CW.getSetting("ignoredDomains", []);
-	if (isIgnoredDomain(host, ignoredDomains)) {
-		return;
-	}
+		const certChecksSetting = CW.getSetting("certChecks");
+		if (certChecksSetting === "domain") {
+			const tab = await browser.tabs.get(tabId);
+			const tabHost = new RegExp("://([^/]+)").exec(tab.url)[1];
+			if (host !== tabHost) {
+				CW.logDebug("Ignoring request to", host, "from tab with host", tabHost,
+						"(setting is", certChecksSetting, ")");
+				return;
+			}
+		}
 
-	if (securityInfo.state === "secure" || securityInfo.state === "weak") {
-		const result = new CW.CheckResult(host);
-		await analyzeCert(host, securityInfo, result);
+		const ignoredDomains = CW.getSetting("ignoredDomains", []);
+		if (isIgnoredDomain(host, ignoredDomains)) {
+			return;
+		}
 
-		CW.logDebug(host, result.status.text);
+		if (securityInfo.state === "secure" || securityInfo.state === "weak") {
+			const result = new CW.CheckResult(host);
+			await analyzeCert(host, securityInfo, result);
 
+			CW.logDebug(host, result.status.text);
+
+			let tab = CW.getTab(tabId);
+			tab.addResult(result);
+			updateTabIcon(tabId);
+		}
+	} catch (e) {
+		// add an internal error result
 		let tab = CW.getTab(tabId);
-		tab.addResult(result);
+		tab.addResult(new CW.CheckResult(host ? host : ""));
 		updateTabIcon(tabId);
 	}
 }
@@ -139,3 +147,17 @@ browser.webRequest.onHeadersReceived.addListener(
 	// we have to set the option "blocking" for browser.webRequest.getSecurityInfo
 	["blocking"]
 );
+
+/*
+ * create a listener that changes the "certChecks" setting if the "tabs"
+ * optional permission is removed.
+ * TODO: not yet implemented in firefox
+ */
+/*browser.permissions.onRemoved.addListener(function (removed) {
+	if (removed.permissions && removed.permissions.includes("tabs")) {
+		if (CW.getSetting("certChecks") === "domain") {
+			CW.logInfo("Optional \"tabs\" permission got removed; reverting to checking all domains");
+			CW.setSetting("certChecks", "all");
+		}
+	}
+});*/

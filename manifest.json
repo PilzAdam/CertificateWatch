@@ -40,7 +40,10 @@
 		"webRequest",
 		"webRequestBlocking",
 		"storage",
-		"unlimitedStorage",
+		"unlimitedStorage"
+	],
+
+	"optional_permissions": [
 		"tabs"
 	],
 

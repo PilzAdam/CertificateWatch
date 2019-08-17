@@ -67,6 +67,14 @@
 		"message": "Ignorierte Domains:",
 		"description": "Label for the textbox to insert domains to ignore."
 	},
+	"settingsSave": {
+		"message": "Speichern",
+		"description": "Button to save the modified settings."
+	},
+	"settingsReset": {
+		"message": "Zurücksetzen",
+		"description": "Button to reset the modified settings."
+	},
 	"popupTitle": {
 		"message": "Certificate Watch Popup",
 		"description": "Title for the pop-up page (usually not visible)."
