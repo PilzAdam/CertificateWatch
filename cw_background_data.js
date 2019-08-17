@@ -1,16 +1,17 @@
 'use strict';
 
 /*
- * A backgound script that holds the common data structures and state used
+ * Backgound script that holds the common data structures and state used
  * throughout all other scripts.
+ *
  * Access from non-background scripts via
  * (await browser.runtime.getBackgroundPage()).getCW()
  * or
  * browser.runtime.getBackgroundPage().then((bg) => {
  * const CW = bg.getCW();
- * 
+ *
  * //script content
- * 
+ *
  * });
  */
 

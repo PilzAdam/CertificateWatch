@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- The settings page. Automatically incldued in about:addons -->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title data-i18n="settingsTitle"></title>
+		<link rel="icon" href="icons/cw_128.png" />
+		<style>
+			body {
+				overflow: hidden;
+			}
+			#ignoredDomains {
+				min-width: 100%;
+				max-width: 100%;
+			}
+			.textarea {
+				width: 100%;
+				max-width: 600px;
+			}
+		</style>
+	</head>
+	<body>
+		<form>
+			<p>
+				<label for="certChecks" data-i18n="settingsLblCheckCerts"></label>
+				<select id="certChecks">
+					<option value="all" data-i18n="settingsCheckAllCert"></option>
+					<option value="domain" data-i18n="settingsCheckDomainCert"></option>
+				</select>
+			</p>
+			
+			<p>
+			<label for="logLevel" data-i18n="settingsLblLogLevel"></label>
+			<select id="logLevel">
+				<option value="none" data-i18n="settingsLogLevelNone"></option>
+				<option value="info" data-i18n="settingsLogLevelInfo"></option>
+				<option value="debug" data-i18n="settingsLogLevelDebug"></option>
+			</select>
+			</p>
+			
+			<p>
+				<label for="ignoredDomains" data-i18n="settingsLblIgnoredDomains"></label>
+				<br />
+				<div class="textarea">
+					<textarea id="ignoredDomains" rows="15"></textarea>
+				</div>
+			</p>
+		</form>
+		
+		<script src="cw_common.js"></script>
+		<script src="cw_settings.js"></script>
+	</body>
+</html>

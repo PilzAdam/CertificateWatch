@@ -1,5 +1,9 @@
 'use strict';
 
+/*
+ * The script for the settings page.
+ */
+
 browser.runtime.getBackgroundPage().then((bg) => {
 const CW = bg.getCW();
 

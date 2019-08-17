@@ -2,6 +2,7 @@
 
 /*
  * Utility functions included in all other scripts
+ * This also handles data-i18n attributes in all HTML files its included in
  */
 
 // convert a unix timestamp (in milliseconds) into ISO 8601 string (seconds resoultion)

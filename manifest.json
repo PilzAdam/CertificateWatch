@@ -15,9 +15,10 @@
 	
 	"background": {
 		"scripts": [
-			"common.js",
-			"cw_data.js",
-			"background.js"
+			"cw_common.js",
+			"cw_background_data.js",
+			"cw_background_tabs.js",
+			"cw_background_connections.js"
 		]
 	},
 	
@@ -25,11 +26,11 @@
 		"browser_style": false,
 		"default_icon": "icons/cw_16.png",
 		"default_title": "__MSG_extensionName__\n__MSG_tooltipCertNone__",
-		"default_popup": "popup.html"
+		"default_popup": "cw_popup.html"
 	},
 	
 	"options_ui": {
-		"page": "options.html",
+		"page": "cw_settings.html",
 		"browser_style": false
 	},
 	

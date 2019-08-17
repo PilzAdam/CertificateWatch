@@ -1,5 +1,9 @@
 'use strict';
 
+/*
+ * The script for the storage display page.
+ */
+
 browser.runtime.getBackgroundPage().then((bg) => {
 const CW = bg.getCW();
 

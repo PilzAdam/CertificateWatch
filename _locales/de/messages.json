@@ -31,39 +31,39 @@
 		"message": "Deaktiviert",
 		"description": "Tooltip shown when the add-on is temporarily disabled."
 	},
-	"optionsTitle": {
+	"settingsTitle": {
 		"message": "Certificate Watch Einstellungen",
 		"description": "Title for the settings page."
 	},
-	"optionsLblCheckCerts": {
+	"settingsLblCheckCerts": {
 		"message": "Zu prüfende Zertifikate:",
 		"description": "Label for the selection of which kind of connections should be checked."
 	},
-	"optionsCheckAllCert": {
+	"settingsCheckAllCert": {
 		"message": "Prüfe Zertifikate aller Verbindungen",
 		"description": "Setting to check all connections."
 	},
-	"optionsCheckDomainCert": {
+	"settingsCheckDomainCert": {
 		"message": "Prüfe nur Zertifikate für die Seiten-Domain",
 		"description": "Setting to check only certificates of the page domain (the domain in the URL bar)."
 	},
-	"optionsLblLogLevel": {
+	"settingsLblLogLevel": {
 		"message": "Log-Level in der Konsole:",
 		"description": "Label for the selection of the log level (debugging informatin in the browser console)."
 	},
-	"optionsLogLevelNone": {
+	"settingsLogLevelNone": {
 		"message": "Keine",
 		"description": "Setting to have no logging in the browser console."
 	},
-	"optionsLogLevelInfo": {
+	"settingsLogLevelInfo": {
 		"message": "Info",
 		"description": "Setting to have info-level logging in the browser console."
 	},
-	"optionsLogLevelDebug": {
+	"settingsLogLevelDebug": {
 		"message": "Debug",
 		"description": "Setting to have debug-level logging in the browser console."
 	},
-	"optionsLblIgnoredDomains": {
+	"settingsLblIgnoredDomains": {
 		"message": "Ignorierte Domains:",
 		"description": "Label for the textbox to insert domains to ignore."
 	},

@@ -1,5 +1,9 @@
 'use strict';
 
+/*
+ * The script for the browser action popup.
+ */
+
 browser.runtime.getBackgroundPage().then((bg) => {
 const CW = bg.getCW();
 
