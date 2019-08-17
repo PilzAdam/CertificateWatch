@@ -13,20 +13,26 @@ function removeEntry(event) {
 }
 
 function addSubjectHtml(subject, parent) {
-	let result = "";
-	
-	let lastBr;
-	for (var part of subject.match(new RegExp("[A-Z]+=([^,\"]+|\"[^\"]+\")", "g"))) {
-		parent.appendChild(document.createTextNode(part));
-		lastBr = document.createElement("br");
-		parent.appendChild(lastBr);
+	const split = subject.match(new RegExp("[A-Z]+=([^,\"]+|\"[^\"]+\")", "g"));
+	if (split) {
+		// common format: CN=something.com, OU="Some Org Inc."
+		// move each element of that to its own line, by adding <br /> tags
+		let lastBr;
+		for (var part of split) {
+			parent.appendChild(document.createTextNode(part));
+			lastBr = document.createElement("br");
+			parent.appendChild(lastBr);
+		}
+		// remove trailing <br>
+		if (lastBr) {
+			parent.removeChild(lastBr);
+		}
+		
+	} else {
+		// if somehow the subject does not match the common format, just add
+		// the subject content
+		parent.appendChild(document.createTextNode(subject));
 	}
-	// remove trailing <br>
-	if (lastBr) {
-		parent.removeChild(lastBr);
-	}
-	
-	return result;
 }
 
 function populateTable() {
