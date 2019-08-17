@@ -1,3 +1,8 @@
+1.7.0
+-----
+- User-interface improvements
+- Bugfix: Don't include port in hostname
+
 1.6.0
 -----
 - Made tab access an optional dependency. On upgrade, it may be required
