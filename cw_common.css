@@ -79,6 +79,6 @@ select option {
 	background: var(--color-blue);
 }
 
-.cwtable tr:nth-child(odd) {
+.cwtable tr:nth-child(even) {
 	background: var(--color-light-grey);
 }
