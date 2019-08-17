@@ -39,17 +39,16 @@ function addSubjectHtml(subject, parent) {
 	}
 }
 
+let rows = [];
+
 function populateTable() {
 	let table = document.getElementById("storageTable");
 
 	// clear any old entries
-	for (var i = 0; i < table.rows.length; i++) {
-		var row = table.rows[i];
-		if (row.getAttribute("class") != "header") {
-			row.remove();
-			i--;
-		}
+	while (storageTable.firstChild) {
+		storageTable.removeChild(storageTable.firstChild);
 	}
+	rows = [];
 
 	let certs = CW.Certificate.getAllFromStorage();
 	let hosts = Object.keys(certs);
@@ -138,6 +137,7 @@ function populateTable() {
 		td.appendChild(removeButton);
 		tr.appendChild(td);
 
+		rows.push(tr);
 		table.appendChild(tr);
 	}
 
@@ -149,18 +149,19 @@ function updateTableFilter() {
 	let domainFilter = document.getElementById("domainFilter");
 	let storageTable = document.getElementById("storageTable");
 
-	storageTable.childNodes.forEach((row) => {
-		if (row.nodeName !== "TR") {
-			return;
+	// remove all rows and then re-add the ones that match the filter
+	// this way, :nth-child() selectors still work properly on the table rows
+
+	while (storageTable.firstChild) {
+		storageTable.removeChild(storageTable.firstChild);
+	}
+
+	for (const row of rows) {
+		const domain = row.firstChild.textContent;
+		if (domain.indexOf(domainFilter.value) !== -1) {
+			storageTable.appendChild(row);
 		}
-		let td = row.firstChild;
-		let domain = td.textContent;
-		if (domain.indexOf(domainFilter.value) === -1) {
-			row.style.display = "none";
-		} else {
-			row.style.display = "table-row";
-		}
-	});
+	}
 }
 
 populateTable();
