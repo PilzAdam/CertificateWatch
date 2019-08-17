@@ -129,6 +129,7 @@ function populateTable() {
 		*/
 
 		td = document.createElement("td");
+		td.setAttribute("class", "remove");
 		let removeButton = document.createElement("input");
 		removeButton.setAttribute("type", "button");
 		removeButton.setAttribute("value", browser.i18n.getMessage("storageRemoveHost"));

@@ -54,11 +54,21 @@ select option {
  */
 
 .cwtable {
-	border-collapse: collapse;
+	border-collapse: separate;
+	border-spacing: 0;
 }
 
-.cwtable, .cwtable th, .cwtable td {
-	border: 1px solid black;
+.cwtable .top {
+	border-top: 1px solid black;
+}
+
+.cwtable td, .cwtable th {
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+.cwtable th:first-child, .cwtable td:first-child {
+	border-left: 1px solid black;
 }
 
 .cwtable th, .cwtable td {
