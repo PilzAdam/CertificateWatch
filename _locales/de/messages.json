@@ -39,17 +39,25 @@
 		"message": "Zu prüfende Zertifikate:",
 		"description": "Label for the selection of which kind of connections should be checked."
 	},
+	"settingsCheckCertsTooltip": {
+		"message": "Auswahl der zu prüfenden Zertifikate",
+		"description": "Tooltip for the selection of which kind of connections should be checked."
+	},
 	"settingsCheckAllCert": {
 		"message": "Prüfe Zertifikate aller Verbindungen",
 		"description": "Setting to check all connections."
 	},
 	"settingsCheckDomainCert": {
-		"message": "Prüfe nur Zertifikate für die Seiten-Domain",
+		"message": "Prüfe nur Zertifikate für die Domain in der Tab URL",
 		"description": "Setting to check only certificates of the page domain (the domain in the URL bar)."
 	},
 	"settingsLblLogLevel": {
 		"message": "Log-Level in der Konsole:",
 		"description": "Label for the selection of the log level (debugging informatin in the browser console)."
+	},
+	"settingsLogLevelTooltip": {
+		"message": "Meldungen in der Browser-Konsole können helfen, Fehler in diesem Add-on zu finden.",
+		"description": "Tooltip for the setting of the log level."
 	},
 	"settingsLogLevelNone": {
 		"message": "Keine",

@@ -39,17 +39,25 @@
 		"message": "Certificates to check:",
 		"description": "Label for the selection of which kind of connections should be checked."
 	},
+	"settingsCheckCertsTooltip": {
+		"message": "Select whether all connections or only connections to the host in the tab URL should be checked",
+		"description": "Tooltip for the selection of which kind of connections should be checked."
+	},
 	"settingsCheckAllCert": {
 		"message": "Check certificates of all connections",
 		"description": "Setting to check all connections."
 	},
 	"settingsCheckDomainCert": {
-		"message": "Check only certificates of page domain",
+		"message": "Check only certificates of host in tab URL",
 		"description": "Setting to check only certificates of the page domain (the domain in the URL bar)."
 	},
 	"settingsLblLogLevel": {
 		"message": "Console log level:",
 		"description": "Label for the selection of the log level (debugging informatin in the browser console)."
+	},
+	"settingsLogLevelTooltip": {
+		"message": "Logging to the browser console is useful for debugging this add-on",
+		"description": "Tooltip for the setting of the log level."
 	},
 	"settingsLogLevelNone": {
 		"message": "None",
@@ -68,7 +76,7 @@
 		"description": "Label for the textbox to insert domains to ignore."
 	},
 	"settingsIgnoredDomainsTooltip": {
-		"message": "Enter one ignored domain per line\nUse * as a match-all wildcard for a domain part\nExample: *.example.com",
+		"message": "Enter one ignored domain per line\nUse * as a match-all wildcard for a domain part\nE.g.: *.example.com",
 		"description": "Tooltip explaining the ignore domain textarea"
 	},
 	"settingsSave": {
