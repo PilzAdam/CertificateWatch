@@ -5,14 +5,14 @@
 	"author": "PilzAdam",
 	"homepage_url": "https://github.com/PilzAdam/CertificateWatch",
 	"version": "1.5.0",
-	
+
 	"default_locale": "en",
-	
+
 	"icons": {
 		"16": "icons/cw_16.png",
 		"128": "icons/cw_128.png"
 	},
-	
+
 	"background": {
 		"scripts": [
 			"cw_common.js",
@@ -21,19 +21,19 @@
 			"cw_background_connections.js"
 		]
 	},
-	
+
 	"browser_action": {
 		"browser_style": false,
 		"default_icon": "icons/cw_16.png",
 		"default_title": "__MSG_extensionName__\n__MSG_tooltipCertNone__",
 		"default_popup": "cw_popup.html"
 	},
-	
+
 	"options_ui": {
 		"page": "cw_settings.html",
 		"browser_style": false
 	},
-	
+
 	"permissions": [
 		"https://*/*",
 		"wss://*/*",
@@ -43,7 +43,7 @@
 		"unlimitedStorage",
 		"tabs"
 	],
-	
+
 	"applications": {
 		"gecko": {
 			"id": "{ab8c066f-9e3e-4aa3-997e-dca3520fecd0}"

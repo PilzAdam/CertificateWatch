@@ -24,11 +24,11 @@ function formatBytes(bytes) {
 		bytes = bytes / 1024;
 		prefixIndex++;
 	}
-	
+
 	if (prefixIndex > 0) {
 		bytes = bytes.toFixed(2);
 	}
-	
+
 	return bytes + " " + prefixes[prefixIndex];
 }
 

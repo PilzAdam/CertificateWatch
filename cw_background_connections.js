@@ -18,7 +18,7 @@ function isIgnoredDomain(host, ignoredDomains) {
 						break;
 					}
 				}
-				
+
 				if (match) {
 					CW.logDebug("Ignoring domain", host, "because it matches", filter);
 					return true;
@@ -26,7 +26,7 @@ function isIgnoredDomain(host, ignoredDomains) {
 			}
 		}
 	}
-	
+
 	return false;
 }
 
@@ -35,10 +35,10 @@ function analyzeCert(host, securityInfo, result) {
 		result.status = CW.CERT_ERROR;
 		return;
 	}
-	
+
 	const cert = CW.Certificate.fromBrowserCert(securityInfo.certificates[0]);
 	const storedCert = CW.Certificate.fromStorage(host);
-	
+
 	if (!storedCert) {
 		result.status = CW.CERT_TOFU;
 		cert.store(host);
@@ -65,13 +65,13 @@ function analyzeCert(host, securityInfo, result) {
 				}
 			}
 		}
-		
+
 		if (Object.keys(changes).length > 0) {
 			result.status = CW.CERT_CHANGED;
 			result.changes = changes;
 			result.stored = storedCert;
 			result.got = cert;
-			
+
 		} else {
 			result.status = CW.CERT_STORED;
 		}
@@ -82,17 +82,17 @@ async function checkConnection(url, securityInfo, tabId) {
 	if (CW.enabled === false) {
 		return;
 	}
-	
+
 	const match = new RegExp("(https|wss)://([^/]+)").exec(url);
 	//const baseUrl = match[0];
 	const host = match[2];
-	
+
 	if (tabId === -1) {
 		CW.logDebug("Request to", url, "not made in a tab");
 		// TODO: what to do with requests not attached to tabs?
 		return;
 	}
-	
+
 	const certChecksSetting = CW.getSetting("certChecks");
 	if (certChecksSetting === "domain") {
 		const tab = await browser.tabs.get(tabId);
@@ -103,18 +103,18 @@ async function checkConnection(url, securityInfo, tabId) {
 			return;
 		}
 	}
-	
+
 	const ignoredDomains = CW.getSetting("ignoredDomains", []);
 	if (isIgnoredDomain(host, ignoredDomains)) {
 		return;
 	}
-	
+
 	if (securityInfo.state === "secure" || securityInfo.state === "weak") {
 		const result = new CW.CheckResult(host);
 		await analyzeCert(host, securityInfo, result);
-		
+
 		CW.logDebug(host, result.status.text);
-		
+
 		let tab = CW.getTab(tabId);
 		tab.addResult(result);
 		updateTabIcon(tabId);

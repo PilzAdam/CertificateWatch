@@ -16,7 +16,7 @@ function updateTabIcon(tabId) {
 			tabId: tabId,
 			title: browser.i18n.getMessage("extensionName") + "\n" + browser.i18n.getMessage("tooltipDisabled"),
 		});
-		
+
 	} else {
 		let tab = CW.getTab(tabId);
 		let status = tab.highestStatus;
@@ -31,7 +31,7 @@ function updateTabIcon(tabId) {
 			title: browser.i18n.getMessage("extensionName") + "\n" + status.text,
 		});
 	}
-	
+
 }
 
 function tabAdded(tab) {
@@ -57,11 +57,11 @@ function tabUpdated(tabId, changeInfo) {
 			tab.clear();
 		}
 		tab.lastState = "loading";
-		
+
 	} else if (changeInfo.status === "complete") {
 		tab.lastState = "complete";
 	}
-	
+
 	// always update on any change event, as sometimes the default icon is
 	// applied automatically...
 	updateTabIcon(tabId);

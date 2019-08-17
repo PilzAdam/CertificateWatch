@@ -31,7 +31,7 @@ function addSubjectHtml(subject, parent) {
 		if (lastBr) {
 			parent.removeChild(lastBr);
 		}
-		
+
 	} else {
 		// if somehow the subject does not match the common format, just add
 		// the subject content
@@ -41,7 +41,7 @@ function addSubjectHtml(subject, parent) {
 
 function populateTable() {
 	let table = document.getElementById("storageTable");
-	
+
 	// clear any old entries
 	for (var i = 0; i < table.rows.length; i++) {
 		var row = table.rows[i];
@@ -50,13 +50,13 @@ function populateTable() {
 			i--;
 		}
 	}
-	
+
 	let certs = CW.Certificate.getAllFromStorage();
 	let hosts = Object.keys(certs);
-	
+
 	let numSpan = document.getElementById("numDomains");
 	numSpan.textContent = hosts.length;
-	
+
 	// sort by rightmost domain first
 	hosts.sort((h1, h2) => {
 		let h1p = h1.split(".");
@@ -82,52 +82,52 @@ function populateTable() {
 			return 0;
 		}
 	});
-	
+
 	let size = [0, 0];
-	
+
 	for (var host of hosts) {
 		let cert = certs[host];
-		
+
 		let certSize = cert.estimateSize();
 		size[0] += certSize[0];
 		size[1] += certSize[1];
-		
+
 		let tr = document.createElement("tr");
-		
+
 		let td = document.createElement("td");
 		td.textContent = host;
 		tr.appendChild(td);
-		
+
 		td = document.createElement("td");
 		addSubjectHtml(cert.subject, td);
 		tr.appendChild(td);
-		
+
 		td = document.createElement("td");
 		addSubjectHtml(cert.issuer, td);
 		tr.appendChild(td);
-		
+
 		td = document.createElement("td");
 		td.textContent = convertDate(cert.validity.start);
 		tr.appendChild(td);
-		
+
 		td = document.createElement("td");
 		td.textContent = convertDate(cert.validity.end);
 		tr.appendChild(td);
-		
+
 		/*
 		td = document.createElement("td");
 		td.textContent = cert.serialNumber;
 		tr.appendChild(td);
-		
+
 		td = document.createElement("td");
 		td.textContent = cert.subjectPublicKeyInfoDigest;
 		tr.appendChild(td);
-		
+
 		td = document.createElement("td");
 		td.textContent = cert.fingerprint;
 		tr.appendChild(td);
 		*/
-		
+
 		td = document.createElement("td");
 		let removeButton = document.createElement("input");
 		removeButton.setAttribute("type", "button");
@@ -136,10 +136,10 @@ function populateTable() {
 		removeButton.addEventListener("click", removeEntry);
 		td.appendChild(removeButton);
 		tr.appendChild(td);
-		
+
 		table.appendChild(tr);
 	}
-	
+
 	let storageSize = document.getElementById("storageSize");
 	storageSize.textContent = browser.i18n.getMessage("storageSize", [formatBytes(size[0]), formatBytes(size[1])]);
 }
@@ -147,7 +147,7 @@ function populateTable() {
 function updateTableFilter() {
 	let domainFilter = document.getElementById("domainFilter");
 	let storageTable = document.getElementById("storageTable");
-	
+
 	storageTable.childNodes.forEach((row) => {
 		if (row.nodeName !== "TR") {
 			return;
@@ -196,7 +196,7 @@ function clearStorage() {
 			populateTable();
 		}
 	});
-	
+
 	let domainFilter = document.getElementById("domainFilter");
 	domainFilter.value = ""; // clear after reload
 	domainFilter.addEventListener("input", updateTableFilter);

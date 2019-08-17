@@ -18,7 +18,7 @@ function addResult(result) {
 		li.textContent = host;
 		list.appendChild(li);
 	}
-	
+
 	if (result.status === CW.CERT_TOFU) {
 		if (!tofu.has(result.host)) {
 			tofu.add(result.host);
@@ -34,12 +34,12 @@ function addResult(result) {
 	} else if (result.status === CW.CERT_CHANGED) {
 		if (!changed.has(result.host)) {
 			changed.add(result.host);
-			
+
 			let list = document.getElementById("changedList");
 			let li = document.createElement("li");
 			li.textContent = result.host;
 			list.appendChild(li);
-			
+
 			let ul = document.createElement("ul");
 			for (var field in result.changes) {
 				let nestedLi = document.createElement("li");
@@ -60,10 +60,10 @@ function addResult(result) {
 					b.textContent = field;
 				}
 				nestedLi.appendChild(b);
-				
+
 				if (field === "subject" || field === "issuer" || field === "validity") {
 					nestedLi.appendChild(document.createTextNode(" " + browser.i18n.getMessage("popupChanged")));
-					
+
 					let table = document.createElement("table");
 					let r1 = document.createElement("tr");
 					let r2 = document.createElement("tr");
@@ -71,15 +71,15 @@ function addResult(result) {
 					let e12 = document.createElement("td");
 					let e21 = document.createElement("td");
 					let e22 = document.createElement("td");
-					
+
 					e11.textContent = browser.i18n.getMessage("popupChangedStored");
 					e12.textContent = result.changes[field].stored;
 					e12.style.color = "blue";
-					
+
 					e21.textContent = browser.i18n.getMessage("popupChangedNew");
 					e22.textContent = result.changes[field].got;
 					e22.style.color = "orange";
-					
+
 					r1.appendChild(e11);
 					r1.appendChild(e12);
 					r2.appendChild(e21);
@@ -90,20 +90,20 @@ function addResult(result) {
 				} else {
 					nestedLi.appendChild(document.createTextNode(" " + browser.i18n.getMessage("popupChanged")));
 				}
-				
+
 				ul.appendChild(nestedLi);
 			}
 			li.appendChild(ul);
-			
+
 			let button = document.createElement("input");
 			button.setAttribute("type", "button");
 			button.setAttribute("value", browser.i18n.getMessage("popupAddChanged"));
 			button.addEventListener("click", function() {
 				button.disabled = true;
 				CW.logInfo("Storing new certificate for", result.host);
-				
+
 				result.got.store(result.host);
-				
+
 				button.setAttribute("value", browser.i18n.getMessage("popupAddedChanged"));
 			});
 			li.appendChild(button);
@@ -134,7 +134,7 @@ async function init() {
 		event.preventDefault();
 		browser.runtime.openOptionsPage();
 	});
-	
+
 	let state = document.getElementById("state");
 	function updateStateText() {
 		if (CW.enabled) {
@@ -153,7 +153,7 @@ async function init() {
 		CW.toggleEnabled();
 		updateStateText();
 	});
-	
+
 	let currentTab = await CW.Tab.getActiveTab();
 	if (!currentTab) {
 		return;
@@ -163,7 +163,7 @@ async function init() {
 		addResult(result);
 	}
 	updateCounts();
-	
+
 	browser.runtime.onMessage.addListener((message) => {
 		if (message.type === "tab.newResult" && message.tabId === currentTab.tabId) {
 			addResult(currentTab.results[message.resultIndex]);
@@ -172,7 +172,7 @@ async function init() {
 			changed.clear();
 			tofu.clear();
 			stored.clear();
-			
+
 			clearResults();
 			updateCounts();
 		}

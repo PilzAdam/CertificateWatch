@@ -29,7 +29,7 @@ CW.enabled = true;
 
 CW.toggleEnabled = function() {
 	CW.enabled = !CW.enabled;
-	
+
 	if (CW.enabled === false) {
 		CW.logInfo("Disabled functionality (temporary)");
 	} else {
@@ -52,7 +52,7 @@ CW.CertStatus = class {
 	//text;
 	//precedence;
 	//icon;
-	
+
 	constructor(text, precedence, icon) {
 		this.text = text;
 		this.precedence = precedence;
@@ -76,7 +76,7 @@ CW.CheckResult = class {
 	//    };
 	//    stored = <CW.Certificate>;
 	//    got = <CW.Certificate>;
-	
+
 	constructor(host) {
 		this.host = host;
 		this.status = CW.CERT_ERROR;
@@ -92,13 +92,13 @@ CW.Tab = class {
 	//results = [];
 	//highestStatus = CW.CERT_NONE;
 	//lastState = undefined;
-	
+
 	constructor(tabId) {
 		this.tabId = tabId;
 		this.results = [];
 		this.highestStatus = CW.CERT_NONE;
 	}
-	
+
 	static async getActiveTab() {
 		let activeTabs = await browser.tabs.query({active: true, currentWindow: true});
 		if (activeTabs.length === 0) {
@@ -107,7 +107,7 @@ CW.Tab = class {
 		let tabId = activeTabs[0].id;
 		return CW.getTab(tabId);
 	}
-	
+
 	addResult(/*CheckResult*/ result) {
 		this.results.push(result);
 		if (result.status.precedence > this.highestStatus.precedence) {
@@ -119,7 +119,7 @@ CW.Tab = class {
 			resultIndex: this.results.length - 1
 		}).then(() => {}, () => {}); // ignore errors
 	}
-	
+
 	clear() {
 		this.results = [];
 		this.highestStatus = CW.CERT_NONE;
@@ -128,7 +128,7 @@ CW.Tab = class {
 			tabId: this.tabId
 		}).then(() => {}, () => {}); // ignore errors
 	}
-	
+
 };
 
 CW.tabs = {
@@ -159,7 +159,7 @@ browser.storage.local.get().then((result) => {
 		if (host === SETTING_KEY) {
 			continue;
 		}
-		
+
 		let stored = result[host];
 		certStore[host] = new CW.Certificate(
 			stored.subject,
@@ -201,7 +201,7 @@ CW.Certificate = class {
 		this.serialNumber = serialNumber;
 		this.fingerprint = fingerprint;
 	}
-	
+
 	static fromBrowserCert(browserCert) {
 		return new CW.Certificate(
 			browserCert.subject,
@@ -212,14 +212,14 @@ CW.Certificate = class {
 			browserCert.fingerprint.sha256
 		);
 	}
-	
+
 	static fromStorage(host) {
 		if (host === SETTING_KEY) {
 			return;
 		}
 		return certStore[host];
 	}
-	
+
 	// returns {[host]: CW.Certificate}
 	// do not write to this
 	static getAllFromStorage() {
@@ -227,7 +227,7 @@ CW.Certificate = class {
 		delete certs[SETTING_KEY];
 		return certs;
 	}
-	
+
 	static removeFromStorage(host) {
 		if (certStore[host]) {
 			browser.runtime.sendMessage({
@@ -235,17 +235,17 @@ CW.Certificate = class {
 				host: host,
 				oldCert: certStore[host]
 			}).then(() => {}, () => {}); // ignore errors
-			
+
 			delete certStore[host];
 			browser.storage.local.remove(host);
 		}
 	}
-	
+
 	store(host) {
 		if (host === SETTING_KEY) {
 			return;
 		}
-		
+
 		if (!certStore[host]) {
 			browser.runtime.sendMessage({
 				type: "storage.newHost",
@@ -260,11 +260,11 @@ CW.Certificate = class {
 				newCert: this
 			}).then(() => {}, () => {}); // ignore errors
 		}
-		
+
 		certStore[host] = this;
 		storeCertificate(host);
 	}
-	
+
 	// returns [lowerEstimate, upperEstimate]
 	estimateSize() {
 		// function for getting the string memory size, assuming UTF-8
@@ -274,7 +274,7 @@ CW.Certificate = class {
 		function getStringSizeUTF16(str) {
 			return str.length * 2;
 		}
-		
+
 		let lower = 0;
 		lower += getStringSizeUTF8(this.subject);
 		lower += getStringSizeUTF8(this.issuer);
@@ -282,7 +282,7 @@ CW.Certificate = class {
 		lower += getStringSizeUTF8(this.serialNumber);
 		lower += getStringSizeUTF8(this.fingerprint);
 		lower += 8 + 8; // validty start and end
-		
+
 		let upper = 0;
 		upper += getStringSizeUTF16(this.subject);
 		upper += getStringSizeUTF16(this.issuer);
@@ -290,10 +290,10 @@ CW.Certificate = class {
 		upper += getStringSizeUTF16(this.serialNumber);
 		upper += getStringSizeUTF16(this.fingerprint);
 		upper += 8 + 8; // validty start and end
-		
+
 		return [lower, upper];
 	}
-	
+
 }
 
 /*
@@ -335,7 +335,7 @@ CW.setSetting = function(key, value) {
 			value = Object.assign({}, value);
 		}
 	}
-	
+
 	settings[key] = value;
 	storeSettings();
 }
