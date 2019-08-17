@@ -67,6 +67,10 @@
 		"message": "Ignorierte Domains:",
 		"description": "Label for the textbox to insert domains to ignore."
 	},
+	"settingsIgnoredDomainsTooltip": {
+		"message": "Eine ignorierte Domain pro Zeile\nFür beliebigen Domain-Teil * benutzen\nZ.B.: *.example.com",
+		"description": "Tooltip explaining the ignore domain textarea"
+	},
 	"settingsSave": {
 		"message": "Speichern",
 		"description": "Button to save the modified settings."
