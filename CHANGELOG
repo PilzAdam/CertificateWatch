@@ -1,3 +1,9 @@
+1.6.0
+-----
+- Made tab access an optional dependency. On upgrade, it may be required
+  to reset that setting in the settings page to get rid of errors.
+- Fixed a bug when displaying certificates with no subject in storage
+
 1.5.0
 -----
 - Added ability to translate the add-on
