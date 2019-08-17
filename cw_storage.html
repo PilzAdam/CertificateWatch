@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<title data-i18n="storageTitle"></title>
 		<link rel="icon" href="icons/cw_128.png" />
+		<link rel="stylesheet" type="text/css" href="cw_common.css" />
 		<style>
 			#logo {
 				float: left;
@@ -14,18 +15,8 @@
 				font-weight: bold;
 			}
 			table {
-				border-collapse: collapse;
 				clear: both;
 				width: 100%;
-			}
-			table, th, td {
-				border: 1px solid black;
-			}
-			th, td {
-				padding: 5px;
-			}
-			.noBold {
-				font-weight: normal;
 			}
 		</style>
 	</head>
@@ -38,12 +29,12 @@
 		<br />
 		<input id="removeAll" type="button" data-i18n="value=storageRemoveAll" />
 
-		<table border="1" id="storageTable">
+		<table class="cwtable" id="storageTable">
 			<tr class="header">
 				<th rowspan="2">
 					<span data-i18n="storageFieldDomain"></span>
 					<br />
-					<span class="noBold" data-i18n="storageFieldDomainFilter"></span> <input id="domainFilter" type="text" />
+					<input id="domainFilter" type="text" data-i18n="placeholder=storageFieldDomainFilter" />
 				</th>
 				<th colspan="4" data-i18n="storageFieldCert"></th>
 				<th rowspan="2" data-i18n="storageRemoveHost"></th>

@@ -80,7 +80,7 @@ const CW = bg.getCW();
 
 	certChecks.addEventListener("change", modified);
 	logLevel.addEventListener("change", modified);
-	ignoredDomains.addEventListener("change", modified);
+	ignoredDomains.addEventListener("input", modified);
 })();
 
 

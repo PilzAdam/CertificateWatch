@@ -5,51 +5,77 @@
 		<meta charset="utf-8" />
 		<title data-i18n="settingsTitle"></title>
 		<link rel="icon" href="icons/cw_128.png" />
+		<link rel="stylesheet" type="text/css" href="cw_common.css" />
 		<style>
 			body {
 				overflow: hidden;
 			}
+			#logo {
+				position: absolute;
+				top: 0px;
+				right: 0px;
+			}
 			#ignoredDomains {
+				box-sizing: border-box;
 				min-width: 100%;
 				max-width: 100%;
 			}
-			.textarea {
+			.sizeLimit {
+				max-width: 40em;
+			}
+			select {
 				width: 100%;
-				max-width: 600px;
+			}
+			.key {
+				text-align: right;
 			}
 		</style>
 	</head>
 	<body>
-		<form>
-			<p>
-				<label for="certChecks" data-i18n="settingsLblCheckCerts"></label>
-				<select id="certChecks">
-					<option value="all" data-i18n="settingsCheckAllCert"></option>
-					<option value="domain" data-i18n="settingsCheckDomainCert"></option>
-				</select>
-			</p>
+		<img id="logo" src="icons/cw_128.png" alt="" width="128" height="128" />
+		<h1 data-i18n="settingsTitle"></h1>
 
-			<p>
-			<label for="logLevel" data-i18n="settingsLblLogLevel"></label>
-			<select id="logLevel">
-				<option value="none" data-i18n="settingsLogLevelNone"></option>
-				<option value="info" data-i18n="settingsLogLevelInfo"></option>
-				<option value="debug" data-i18n="settingsLogLevelDebug"></option>
-			</select>
-			</p>
+		<table>
+			<tr>
+				<td class="key">
+					<label for="certChecks" data-i18n="settingsLblCheckCerts"></label>
+				</td>
+				<td>
+					<select id="certChecks">
+						<option value="all" data-i18n="settingsCheckAllCert"></option>
+						<option value="domain" data-i18n="settingsCheckDomainCert"></option>
+					</select>
+				</td>
+			</tr>
 
-			<p>
-				<label for="ignoredDomains" data-i18n="settingsLblIgnoredDomains"></label>
-				<br />
-				<div class="textarea">
-					<textarea id="ignoredDomains" rows="15"></textarea>
-				</div>
-			</p>
-			<p>
-				<input type="button" id="save" disabled data-i18n="value=settingsSave" />
-				<input type="button" id="reset" disabled data-i18n="value=settingsReset" />
-			</p>
-		</form>
+			<tr>
+				<td class="key">
+					<label for="logLevel" data-i18n="settingsLblLogLevel"></label>
+				</td>
+				<td>
+					<select id="logLevel">
+						<option value="none" data-i18n="settingsLogLevelNone"></option>
+						<option value="info" data-i18n="settingsLogLevelInfo"></option>
+						<option value="debug" data-i18n="settingsLogLevelDebug"></option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td class="key">
+					<label for="ignoredDomains" data-i18n="settingsLblIgnoredDomains"></label>
+				</td>
+			</tr>
+		</table>
+		<div class="sizeLimit">
+			<textarea id="ignoredDomains" rows="15"></textarea>
+		</div>
+
+		<input type="button" id="save" disabled data-i18n="value=settingsSave" />
+		<input type="button" id="reset" disabled data-i18n="value=settingsReset" />
+
+		<!-- Force a bit of extra space in about:addons -->
+		<div> <br /> </div>
 
 		<script src="cw_common.js"></script>
 		<script src="cw_settings.js"></script>

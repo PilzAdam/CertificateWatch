@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<title data-i18n="popupTitle"></title>
 		<link rel="icon" href="icons/cw_128.png" />
+		<link rel="stylesheet" type="text/css" href="cw_common.css" />
 		<style>
 			#logo {
 				position: absolute;
@@ -40,11 +41,9 @@
 		</p>
 
 		<p>
-			<a id="state" href="#"></a>
-			|
-			<a id="settingsLink" href="#" data-i18n="popupSettings;title=popupSettingsTooltip"></a>
-			|
-			<a href="cw_storage.html" target="_blank" data-i18n="popupStorage;title=popupStorageTooltip" ></a>
+			<input id="state" type="button" />
+			<input id="settingsLink" type="button" data-i18n="value=popupSettings;title=popupSettingsTooltip" />
+			<input id="storageLink" type="button" data-i18n="value=popupStorage;title=popupStorageTooltip" />
 		</p>
 		<script src="cw_common.js"></script>
 		<script src="cw_popup.js"></script>

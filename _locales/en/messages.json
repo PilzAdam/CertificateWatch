@@ -206,7 +206,7 @@
 		"description": "The table header for the domains."
 	},
 	"storageFieldDomainFilter": {
-		"message": "Filter:",
+		"message": "Filter",
 		"description": "Description for the filter by domain name."
 	},
 	"storageFieldCert": {

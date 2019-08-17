@@ -131,18 +131,25 @@ function clearResults() {
 async function init() {
 	let settingsLink = document.getElementById("settingsLink");
 	settingsLink.addEventListener("click", function(event) {
-		event.preventDefault();
 		browser.runtime.openOptionsPage();
+	});
+
+	let storageLink = document.getElementById("storageLink");
+	storageLink.addEventListener("click", function(event) {
+		browser.tabs.create({
+			active: true,
+			url: "cw_storage.html"
+		});
 	});
 
 	let state = document.getElementById("state");
 	function updateStateText() {
 		if (CW.enabled) {
-			state.textContent = browser.i18n.getMessage("popupStateEnabled");
+			state.setAttribute("value", browser.i18n.getMessage("popupStateEnabled"));
 			state.style.color = "";
 			state.setAttribute("title", browser.i18n.getMessage("popupStateEnabledTooltip"));
 		} else {
-			state.textContent = browser.i18n.getMessage("popupStateDisabled");
+			state.setAttribute("value", browser.i18n.getMessage("popupStateDisabled"));
 			state.style.color = "red";
 			state.setAttribute("title", browser.i18n.getMessage("popupStateDisabledTooltip"));
 		}
