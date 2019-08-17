@@ -14,6 +14,9 @@
 			#numDomains {
 				font-weight: bold;
 			}
+			#domainFilter::placeholder {
+				text-align: center;
+			}
 			table {
 				clear: both;
 				width: 100%;
@@ -26,9 +29,6 @@
 		<h1 data-i18n="storageTitle"></h1>
 		<span id="numDomains">?</span> <span data-i18n="storageNumStoredDomains"></span>
 		<span id="storageSize"></span>
-		<br />
-		<br />
-		<input id="removeAll" type="button" data-i18n="value=storageRemoveAll" />
 
 		<table class="cwtable" id="storageTable">
 			<tr class="header">
@@ -38,7 +38,11 @@
 					<input id="domainFilter" type="text" data-i18n="placeholder=storageFieldDomainFilter" />
 				</th>
 				<th colspan="4" data-i18n="storageFieldCert"></th>
-				<th rowspan="2" data-i18n="storageRemoveHost"></th>
+				<th rowspan="2">
+					<span data-i18n="storageRemoveHost"></span>
+					<br />
+					<input id="removeAll" type="button" data-i18n="value=storageRemoveAll" />
+				</th>
 			</tr>
 			<tr class="header">
 				<th data-i18n="storageFieldCertSubject"></th>
