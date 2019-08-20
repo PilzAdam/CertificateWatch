@@ -11,20 +11,59 @@ const changed = new Set();
 const tofu = new Set();
 const stored = new Set();
 
-function showChangedValidity(validity, parent) {
-	parent.appendChild(document.createTextNode(
-		browser.i18n.getMessage(
+function showChangedValidity(validity, otherValidity, color, parent) {
+	let span = document.createElement("span");
+	span.textContent = browser.i18n.getMessage(
 			"popupChangedFieldValidityStart",
 			[convertDate(validity.start), timeDiffToToday(validity.start)]
-		)
-	));
+	);
+	parent.appendChild(span);
+	if (validity.start != otherValidity.start) {
+		span.style.color = color;
+	}
+
 	parent.appendChild(document.createElement("br"));
-	parent.appendChild(document.createTextNode(
-		browser.i18n.getMessage(
+
+	span = document.createElement("span");
+	span.textContent = browser.i18n.getMessage(
 			"popupChangedFieldValidityEnd",
 			[convertDate(validity.end), timeDiffToToday(validity.end)]
-		)
-	));
+	);
+	parent.appendChild(span);
+	if (validity.end != otherValidity.end) {
+		span.style.color = color;
+	}
+}
+
+function showChangedSubject(subject, otherSubject, color, parent) {
+	const sSplit = subject.match(new RegExp("[A-Z]+=([^,\"]+|\"[^\"]+\")", "g"));
+	const oSplit = otherSubject.match(new RegExp("[A-Z]+=([^,\"]+|\"[^\"]+\")", "g"));
+
+	let comma;
+	for (const part of sSplit) {
+		const span = document.createElement("span");
+		span.textContent = part;
+		parent.appendChild(span);
+
+		// check if this part exist in the other subject
+		let foundInOther = false;
+		for (const oPart of oSplit) {
+			if (part === oPart) {
+				foundInOther = true;
+				break;
+			}
+		}
+		if (!foundInOther) {
+			span.style.color = color;
+		}
+
+		comma = document.createTextNode(", ");
+		parent.appendChild(comma);
+	}
+	// remove trailing comma
+	if (comma) {
+		parent.removeChild(comma);
+	}
 }
 
 function addResult(result) {
@@ -90,19 +129,17 @@ function addResult(result) {
 
 					e11.textContent = browser.i18n.getMessage("popupChangedStored");
 					if (field === "validity") {
-						showChangedValidity(result.changes[field].stored, e12);
+						showChangedValidity(result.changes[field].stored, result.changes[field].got, "blue", e12);
 					} else {
-						e12.textContent = result.changes[field].stored;
+						showChangedSubject(result.changes[field].stored, result.changes[field].got, "blue", e12);
 					}
-					e12.style.color = "blue";
 
 					e21.textContent = browser.i18n.getMessage("popupChangedNew");
 					if (field === "validity") {
-						showChangedValidity(result.changes[field].got, e22);
+						showChangedValidity(result.changes[field].got, result.changes[field].stored, "orange", e22);
 					} else {
-						e22.textContent = result.changes[field].got;
+						showChangedSubject(result.changes[field].got, result.changes[field].stored, "orange", e22);
 					}
-					e22.style.color = "orange";
 
 					r1.appendChild(e11);
 					r1.appendChild(e12);
