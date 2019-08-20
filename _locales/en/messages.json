@@ -147,6 +147,34 @@
 		"message": "Serial Number",
 		"description": "The serial number of the certificate."
 	},
+	"popupChangedFieldValidityStart": {
+		"message": "From: $DATE$ ($DIFF$)",
+		"description": "The starting time (Not Before field) of a certifcate shown in the comparison pop-up.",
+		"placeholders": {
+			"date": {
+				"content": "$1",
+				"example": "2019-08-20 12:34:12"
+			},
+			"diff": {
+				"content": "$2",
+				"example": "5 days ago"
+			}
+		}
+	},
+	"popupChangedFieldValidityEnd": {
+		"message": "Until: $DATE$ ($DIFF$)",
+		"description": "The ending time (Not After field) of a certifcate shown in the comparison pop-up.",
+		"placeholders": {
+			"date": {
+				"content": "$1",
+				"example": "2019-08-20 12:34:12"
+			},
+			"diff": {
+				"content": "$2",
+				"example": "in 5 days"
+			}
+		}
+	},
 	"popupChangedStored": {
 		"message": "Stored:",
 		"description": "Label in front of the stored version of a changed field."

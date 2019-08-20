@@ -11,6 +11,22 @@ const changed = new Set();
 const tofu = new Set();
 const stored = new Set();
 
+function showChangedValidity(validity, parent) {
+	parent.appendChild(document.createTextNode(
+		browser.i18n.getMessage(
+			"popupChangedFieldValidityStart",
+			[convertDate(validity.start), timeDiffToToday(validity.start)]
+		)
+	));
+	parent.appendChild(document.createElement("br"));
+	parent.appendChild(document.createTextNode(
+		browser.i18n.getMessage(
+			"popupChangedFieldValidityEnd",
+			[convertDate(validity.end), timeDiffToToday(validity.end)]
+		)
+	));
+}
+
 function addResult(result) {
 	function insertToList(listId, host) {
 		let list = document.getElementById(listId);
@@ -73,11 +89,19 @@ function addResult(result) {
 					let e22 = document.createElement("td");
 
 					e11.textContent = browser.i18n.getMessage("popupChangedStored");
-					e12.textContent = result.changes[field].stored;
+					if (field === "validity") {
+						showChangedValidity(result.changes[field].stored, e12);
+					} else {
+						e12.textContent = result.changes[field].stored;
+					}
 					e12.style.color = "blue";
 
 					e21.textContent = browser.i18n.getMessage("popupChangedNew");
-					e22.textContent = result.changes[field].got;
+					if (field === "validity") {
+						showChangedValidity(result.changes[field].got, e22);
+					} else {
+						e22.textContent = result.changes[field].got;
+					}
 					e22.style.color = "orange";
 
 					r1.appendChild(e11);
