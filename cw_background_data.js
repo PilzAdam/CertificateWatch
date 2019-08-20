@@ -113,6 +113,7 @@ CW.Tab = class {
 		if (result.status.precedence > this.highestStatus.precedence) {
 			this.highestStatus = result.status;
 		}
+
 		browser.runtime.sendMessage({
 			type: "tab.newResult",
 			tabId: this.tabId,
@@ -123,6 +124,7 @@ CW.Tab = class {
 	clear() {
 		this.results = [];
 		this.highestStatus = CW.CERT_NONE;
+
 		browser.runtime.sendMessage({
 			type: "tab.resultsCleared",
 			tabId: this.tabId
@@ -169,6 +171,7 @@ browser.storage.local.get().then((result) => {
 			stored.serialNumber,
 			stored.fingerprint
 		);
+
 		browser.runtime.sendMessage({
 			type: "storage.newHost",
 			host: host,
@@ -230,14 +233,14 @@ CW.Certificate = class {
 
 	static removeFromStorage(host) {
 		if (certStore[host]) {
+			delete certStore[host];
+			browser.storage.local.remove(host);
+
 			browser.runtime.sendMessage({
 				type: "storage.removedHost",
 				host: host,
 				oldCert: certStore[host]
 			}).then(() => {}, () => {}); // ignore errors
-
-			delete certStore[host];
-			browser.storage.local.remove(host);
 		}
 	}
 
@@ -245,6 +248,9 @@ CW.Certificate = class {
 		if (host === SETTING_KEY) {
 			return;
 		}
+
+		certStore[host] = this;
+		storeCertificate(host);
 
 		if (!certStore[host]) {
 			browser.runtime.sendMessage({
@@ -260,9 +266,6 @@ CW.Certificate = class {
 				newCert: this
 			}).then(() => {}, () => {}); // ignore errors
 		}
-
-		certStore[host] = this;
-		storeCertificate(host);
 	}
 
 	// returns [lowerEstimate, upperEstimate]
