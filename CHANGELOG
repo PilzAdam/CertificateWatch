@@ -1,3 +1,9 @@
+1.8.0
+-----
+- Improved display of certificate changes in pop-up
+- Added "Last Seen" attribute for certificates in storage
+- Added time difference to all dates ("x days ago" or "in x days")
+
 1.7.1
 -----
 - Bugfix: Added missing stylesheet
