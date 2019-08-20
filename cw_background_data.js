@@ -169,7 +169,8 @@ browser.storage.local.get().then((result) => {
 			stored.validity,
 			stored.subjectPublicKeyInfoDigest,
 			stored.serialNumber,
-			stored.fingerprint
+			stored.fingerprint,
+			stored.lastSeen
 		);
 
 		browser.runtime.sendMessage({
@@ -195,14 +196,16 @@ CW.Certificate = class {
 	//subjectPublicKeyInfoDigest;
 	//serialNumber;
 	//fingerprint;
+	//lastSeen; // milliseconds since unix epoch, may be undefined
 
-	constructor(subject, issuer, validity, subjectPublicKeyInfoDigest, serialNumber, fingerprint) {
+	constructor(subject, issuer, validity, subjectPublicKeyInfoDigest, serialNumber, fingerprint, lastSeen) {
 		this.subject = subject;
 		this.issuer = issuer;
 		this.validity = validity;
 		this.subjectPublicKeyInfoDigest = subjectPublicKeyInfoDigest;
 		this.serialNumber = serialNumber;
 		this.fingerprint = fingerprint;
+		this.lastSeen = lastSeen;
 	}
 
 	static fromBrowserCert(browserCert) {
@@ -212,7 +215,8 @@ CW.Certificate = class {
 			browserCert.validity,
 			browserCert.subjectPublicKeyInfoDigest.sha256,
 			browserCert.serialNumber,
-			browserCert.fingerprint.sha256
+			browserCert.fingerprint.sha256,
+			Date.now()
 		);
 	}
 
@@ -242,6 +246,10 @@ CW.Certificate = class {
 				oldCert: certStore[host]
 			}).then(() => {}, () => {}); // ignore errors
 		}
+	}
+
+	seen() {
+		this.lastSeen = Date.now();
 	}
 
 	store(host) {
@@ -285,6 +293,9 @@ CW.Certificate = class {
 		lower += getStringSizeUTF8(this.serialNumber);
 		lower += getStringSizeUTF8(this.fingerprint);
 		lower += 8 + 8; // validty start and end
+		if (this.lastSeen) {
+			lower += 8;
+		}
 
 		let upper = 0;
 		upper += getStringSizeUTF16(this.subject);
@@ -293,6 +304,9 @@ CW.Certificate = class {
 		upper += getStringSizeUTF16(this.serialNumber);
 		upper += getStringSizeUTF16(this.fingerprint);
 		upper += 8 + 8; // validty start and end
+		if (this.lastSeen) {
+			upper += 8;
+		}
 
 		return [lower, upper];
 	}

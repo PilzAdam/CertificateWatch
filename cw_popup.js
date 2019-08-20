@@ -150,7 +150,7 @@ async function init() {
 			state.setAttribute("title", browser.i18n.getMessage("popupStateEnabledTooltip"));
 		} else {
 			state.setAttribute("value", browser.i18n.getMessage("popupStateDisabled"));
-			state.style.color = "red";
+			state.style.color = "var(--color-red)";
 			state.setAttribute("title", browser.i18n.getMessage("popupStateDisabledTooltip"));
 		}
 	}

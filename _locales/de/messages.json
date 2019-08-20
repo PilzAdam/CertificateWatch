@@ -240,5 +240,37 @@
 	"storageFieldCertValidityEnd": {
 		"message": "Gültig Bis",
 		"description": "The table header for the certificate validity (end)."
+	},
+	"storageFieldCertLastSeen": {
+		"message": "Zuletzt Gesehen",
+		"description": "The table header for the time when the certifcate was last encountered by this add-on."
+	},
+	"storageCertUnknown": {
+		"message": "unbekannt",
+		"description": "Used when displaying a certifcate and a value is not known (e.g. not stored)."
+	},
+	"timeDiffToday": {
+		"message": "Heute",
+		"description": "Describes that something happens or happened today."
+	},
+	"timeDiffBeforeToday": {
+		"message": "vor $DAYS$ Tagen",
+		"description": "Describes that something happened a given number of days before today.",
+		"placeholders": {
+			"days": {
+				"content": "$1",
+				"example": "5"
+			}
+		}
+	},
+	"timeDiffAfterToday": {
+		"message": "in $DAYS$ Tagen",
+		"description": "Describes that something will happen a given number of days after today.",
+		"placeholders": {
+			"days": {
+				"content": "$1",
+				"example": "5"
+			}
+		}
 	}
 }

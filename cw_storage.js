@@ -106,11 +106,31 @@ function populateTable() {
 		tr.appendChild(td);
 
 		td = document.createElement("td");
-		td.textContent = convertDate(cert.validity.start);
+		td.appendChild(document.createTextNode(convertDate(cert.validity.start)));
+		td.appendChild(document.createElement("br"));
+		td.appendChild(document.createTextNode("(" + timeDiffToToday(cert.validity.start) + ")"));
+		if (new Date().getTime() < cert.validity.start) {
+			td.style.color = "var(--color-red)";
+		}
 		tr.appendChild(td);
 
 		td = document.createElement("td");
-		td.textContent = convertDate(cert.validity.end);
+		td.appendChild(document.createTextNode(convertDate(cert.validity.end)));
+		td.appendChild(document.createElement("br"));
+		td.appendChild(document.createTextNode("(" + timeDiffToToday(cert.validity.end) + ")"));
+		if (new Date().getTime() > cert.validity.end) {
+			td.style.color = "var(--color-red)";
+		}
+		tr.appendChild(td);
+
+		td = document.createElement("td");
+		if (cert.lastSeen) {
+			td.appendChild(document.createTextNode(convertDate(cert.lastSeen)));
+			td.appendChild(document.createElement("br"));
+			td.appendChild(document.createTextNode("(" + timeDiffToToday(cert.lastSeen) + ")"));
+		} else {
+			td.textContent = browser.i18n.getMessage("storageCertUnknown");
+		}
 		tr.appendChild(td);
 
 		/*

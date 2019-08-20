@@ -74,6 +74,8 @@ function analyzeCert(host, securityInfo, result) {
 
 		} else {
 			result.status = CW.CERT_STORED;
+			storedCert.seen();
+			storedCert.store(host);
 		}
 	}
 }
@@ -122,6 +124,8 @@ async function checkConnection(url, securityInfo, tabId) {
 			updateTabIcon(tabId);
 		}
 	} catch (e) {
+		CW.logDebug("Error during connection checking", e);
+
 		// add an internal error result
 		let tab = CW.getTab(tabId);
 		tab.addResult(new CW.CheckResult(host ? host : ""));

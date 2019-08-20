@@ -32,6 +32,23 @@ function formatBytes(bytes) {
 	return bytes + " " + prefixes[prefixIndex];
 }
 
+// creates a string like "16 days ago", "today" or "in 15 days"
+// date is a unix timestamp in milliseconds
+function timeDiffToToday(date) {
+	const MS_PER_DAY = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+	const now = new Date();
+	// start of day, thus use floor
+	const diff = Math.floor(date / MS_PER_DAY) - Math.floor(now.getTime() / MS_PER_DAY);
+
+	if (diff === 0) {
+		return browser.i18n.getMessage("timeDiffToday");
+	} else if (diff < 0) {
+		return browser.i18n.getMessage("timeDiffBeforeToday", -diff);
+	} else {
+		return browser.i18n.getMessage("timeDiffAfterToday", diff);
+	}
+}
+
 /*
  * I18N automatically applied to all HTML
  * adapted from: https://github.com/erosman/HTML-Internationalization
