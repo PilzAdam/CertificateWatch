@@ -68,16 +68,20 @@ function showChangedSubject(subject, otherSubject, color, parent) {
 }
 
 function addResult(result) {
-	function insertToList(listId, host) {
-		const list = document.getElementById(listId);
-		const li = document.createElement("li");
+	function createHostLink(host) {
 		const a = document.createElement("a");
 		a.textContent = host;
 		a.href = "cw_storage.html?search=" + encodeURIComponent(host);
 		a.target = "_blank";
 		a.setAttribute("class", "plainLink");
 		a.setAttribute("title", browser.i18n.getMessage("popupShowCertTooltip", host));
-		li.appendChild(a);
+		return a;
+	}
+
+	function insertToList(listId, host) {
+		const list = document.getElementById(listId);
+		const li = document.createElement("li");
+		li.appendChild(createHostLink(host));
 		list.appendChild(li);
 	}
 
@@ -99,7 +103,7 @@ function addResult(result) {
 
 			const list = document.getElementById("changedList");
 			const li = document.createElement("li");
-			li.textContent = result.host;
+			li.appendChild(createHostLink(result.host));
 			list.appendChild(li);
 
 			const ul = document.createElement("ul");
