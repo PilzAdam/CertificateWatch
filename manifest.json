@@ -47,6 +47,8 @@
 		"tabs"
 	],
 
+	"incognito": "not_allowed",
+
 	"applications": {
 		"gecko": {
 			"id": "{ab8c066f-9e3e-4aa3-997e-dca3520fecd0}"
