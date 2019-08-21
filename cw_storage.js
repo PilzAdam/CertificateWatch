@@ -188,16 +188,10 @@ function updateTableFilter() {
 populateTable();
 
 browser.runtime.onMessage.addListener((message) => {
-	if (message.type === "storage.newHost") {
-		// this event is sent when a new host appears
-		populateTable();
-		updateTableFilter();
-	} else if (message.type === "storage.certChanged") {
-		// this event is sent when an existing host certificate is updated
-		populateTable();
-		updateTableFilter();
-	} else if (message.type === "storage.removedHost") {
-		// this event is sent when an existing host is removed
+	if (message.type === "storage.newHost" ||
+			message.type === "storage.certChanged" ||
+			message.type === "storage.removedHost" ||
+			message.type === "storage.initialized") {
 		populateTable();
 		updateTableFilter();
 	}

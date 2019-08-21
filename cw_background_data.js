@@ -224,37 +224,49 @@ const certStore = {
 	// [host]: CW.Certificate
 };
 
+let storageInitialized = false;
+
 // initialize storage
-browser.storage.local.get().then((result) => {
-	for (const host of Object.keys(result)) {
-		if (host === SETTING_KEY) {
-			continue;
+browser.storage.local.get().then(
+	(result) => {
+		for (const host of Object.keys(result)) {
+			if (host === SETTING_KEY) {
+				continue;
+			}
+
+			const stored = result[host];
+			certStore[host] = new CW.Certificate(
+				stored.subject,
+				stored.issuer,
+				stored.validity,
+				stored.subjectPublicKeyInfoDigest,
+				stored.serialNumber,
+				stored.fingerprint,
+				stored.lastSeen
+			);
 		}
 
-		const stored = result[host];
-		certStore[host] = new CW.Certificate(
-			stored.subject,
-			stored.issuer,
-			stored.validity,
-			stored.subjectPublicKeyInfoDigest,
-			stored.serialNumber,
-			stored.fingerprint,
-			stored.lastSeen
-		);
-
+		CW.logInfo("Initialized storage");
+		storageInitialized = true;
 		browser.runtime.sendMessage({
-			type: "storage.newHost",
-			host: host,
-			newCert: certStore[host]
+			type: "storage.initialized"
 		}).then(() => {}, () => {}); // ignore errors
+	},
+	(error) => {
+		// error case
+		CW.logInfo("Could not read storage:", e);
+		storageInitialized = true;
 	}
-});
+);
 
 // helper function
-function storeCertificate(host) {
-	browser.storage.local.set({
-		[host]: certStore[host]
-	});
+function storeCertificate(host){
+	// only actually store certificates when we got the real storage
+	if (storageInitialized) {
+		browser.storage.local.set({
+			[host]: certStore[host]
+		});
+	}
 }
 
 
@@ -307,7 +319,9 @@ CW.Certificate = class {
 	static removeFromStorage(host) {
 		if (certStore[host]) {
 			delete certStore[host];
-			browser.storage.local.remove(host);
+			if (storageInitialized) {
+				browser.storage.local.remove(host);
+			}
 
 			browser.runtime.sendMessage({
 				type: "storage.removedHost",
