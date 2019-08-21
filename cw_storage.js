@@ -87,15 +87,15 @@ function updateTable() {
 	const size = [0, 0];
 
 	for (const host of hosts) {
-		if (host.indexOf(domainFilter.value) === -1) {
-			continue;
-		}
-
 		const cert = certs[host];
 
 		const certSize = cert.estimateSize();
 		size[0] += certSize[0];
 		size[1] += certSize[1];
+
+		if (host.indexOf(domainFilter.value) === -1) {
+			continue;
+		}
 
 		const tr = document.createElement("tr");
 
