@@ -42,8 +42,9 @@ function addSubjectHtml(subject, parent) {
 
 let rows = [];
 
-function populateTable() {
+function updateTable() {
 	const storageTable = document.getElementById("storageTable");
+	const domainFilter = document.getElementById("domainFilter");
 
 	// clear any old entries
 	while (storageTable.firstChild) {
@@ -86,6 +87,10 @@ function populateTable() {
 	const size = [0, 0];
 
 	for (const host of hosts) {
+		if (host.indexOf(domainFilter.value) === -1) {
+			continue;
+		}
+
 		const cert = certs[host];
 
 		const certSize = cert.estimateSize();
@@ -166,34 +171,12 @@ function populateTable() {
 	storageSize.textContent = browser.i18n.getMessage("storageSize", [formatBytes(size[0]), formatBytes(size[1])]);
 }
 
-function updateTableFilter() {
-	const domainFilter = document.getElementById("domainFilter");
-	const storageTable = document.getElementById("storageTable");
-
-	// remove all rows and then re-add the ones that match the filter
-	// this way, :nth-child() selectors still work properly on the table rows
-
-	while (storageTable.firstChild) {
-		storageTable.removeChild(storageTable.firstChild);
-	}
-
-	for (const row of rows) {
-		const domain = row.firstChild.textContent;
-		if (domain.indexOf(domainFilter.value) !== -1) {
-			storageTable.appendChild(row);
-		}
-	}
-}
-
-populateTable();
-
 browser.runtime.onMessage.addListener((message) => {
 	if (message.type === "storage.newHost" ||
 			message.type === "storage.certChanged" ||
 			message.type === "storage.removedHost" ||
 			message.type === "storage.initialized") {
-		populateTable();
-		updateTableFilter();
+		updateTable();
 	}
 });
 
@@ -210,13 +193,14 @@ function clearStorage() {
 	removeAll.addEventListener("click", function() {
 		if (confirm(browser.i18n.getMessage("storageRemoveAllConfirm"))) {
 			clearStorage();
-			populateTable();
+			updateTable();
 		}
 	});
 
 	const domainFilter = document.getElementById("domainFilter");
-	domainFilter.value = ""; // clear after reload
-	domainFilter.addEventListener("input", updateTableFilter);
+	domainFilter.addEventListener("input", updateTable);
+
+	updateTable();
 })();
 
 
