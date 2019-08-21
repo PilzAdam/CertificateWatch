@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /*
  * The script for the settings page.
@@ -9,11 +9,11 @@ const CW = bg.getCW();
 
 (function() {
 	// initialize values
-	let certChecks = document.getElementById("certChecks");
-	let logLevel = document.getElementById("logLevel");
-	let ignoredDomains = document.getElementById("ignoredDomains");
-	let resetBtn = document.getElementById("reset");
-	let saveBtn = document.getElementById("save");
+	const certChecks = document.getElementById("certChecks");
+	const logLevel = document.getElementById("logLevel");
+	const ignoredDomains = document.getElementById("ignoredDomains");
+	const resetBtn = document.getElementById("reset");
+	const saveBtn = document.getElementById("save");
 
 	/*
 	 * A separate save button with a "click" event handler is required for

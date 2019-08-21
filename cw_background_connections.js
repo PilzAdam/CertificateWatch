@@ -1,15 +1,16 @@
-'use strict';
+"use strict";
+/* global CW */
 
 /*
  * Background script that intercepts and checks all TLS connections.
  */
 
 function isIgnoredDomain(host, ignoredDomains) {
-	let hostParts = host.split(".");
+	const hostParts = host.split(".");
 	for (let filter of ignoredDomains) {
 		filter = filter.trim();
 		if (filter.length > 0) {
-			let filterParts = filter.split(".");
+			const filterParts = filter.split(".");
 			if (filterParts.length === hostParts.length) {
 				let match = true;
 				for (let i = 0; i < filterParts.length; i++) {
@@ -44,24 +45,24 @@ function analyzeCert(host, securityInfo, result) {
 		cert.store(host);
 
 	} else {
-		let changes = {};
+		const changes = {};
 		// fields are roughly sorted by importance
-		for (let field of ["subject", "issuer", "validity", "subjectPublicKeyInfoDigest", "serialNumber", "fingerprint"]) {
+		for (const field of ["subject", "issuer", "validity", "subjectPublicKeyInfoDigest", "serialNumber", "fingerprint"]) {
 			if (field === "validity") {
 				// validity needs extra comparison logic
-				if (cert.validity.start !== storedCert.validity.start
-						|| cert.validity.end !== storedCert.validity.end) {
-					changes["validity"] = {
+				if (cert.validity.start !== storedCert.validity.start ||
+						cert.validity.end !== storedCert.validity.end) {
+					changes.validity = {
 						stored: {start: storedCert.validity.start, end: storedCert.validity.end},
-						got: {start: cert.validity.start, end: cert.validity.end},
-					}
+						got: {start: cert.validity.start, end: cert.validity.end}
+					};
 				}
 			} else {
 				if (cert[field] !== storedCert[field]) {
 					changes[field] = {
 						stored: storedCert[field],
-						got: cert[field],
-					}
+						got: cert[field]
+					};
 				}
 			}
 		}
@@ -119,17 +120,17 @@ async function checkConnection(url, securityInfo, tabId) {
 
 			CW.logDebug(host, result.status.text);
 
-			let tab = CW.getTab(tabId);
+			const tab = CW.getTab(tabId);
 			tab.addResult(result);
-			updateTabIcon(tabId);
+			CW.updateTabIcon(tabId);
 		}
 	} catch (e) {
 		CW.logDebug("Error during connection checking", e);
 
 		// add an internal error result
-		let tab = CW.getTab(tabId);
+		const tab = CW.getTab(tabId);
 		tab.addResult(new CW.CheckResult(host ? host : ""));
-		updateTabIcon(tabId);
+		CW.updateTabIcon(tabId);
 	}
 }
 
@@ -139,7 +140,6 @@ async function onHeadersReceived(details) {
 	// this makes blocking the request as short as possible
 	const securityInfo = await browser.webRequest.getSecurityInfo(details.requestId, {});
 	checkConnection(details.url, securityInfo, details.tabId);
-	return;
 }
 
 browser.webRequest.onHeadersReceived.addListener(

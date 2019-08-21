@@ -1,38 +1,39 @@
-'use strict';
+"use strict";
+/* global CW */
 
 /*
  * Background script that handles tab states and updates the browser actions.
  */
 
-function updateTabIcon(tabId) {
+CW.updateTabIcon = function(tabId) {
 	if (CW.enabled === false) {
 		browser.browserAction.setIcon({
 			tabId: tabId,
 			path: {
-				16: "icons/cw_16_disabled.png",
+				16: "icons/cw_16_disabled.png"
 			}
 		});
 		browser.browserAction.setTitle({
 			tabId: tabId,
-			title: browser.i18n.getMessage("extensionName") + "\n" + browser.i18n.getMessage("tooltipDisabled"),
+			title: browser.i18n.getMessage("extensionName") + "\n" + browser.i18n.getMessage("tooltipDisabled")
 		});
 
 	} else {
-		let tab = CW.getTab(tabId);
-		let status = tab.highestStatus;
+		const tab = CW.getTab(tabId);
+		const status = tab.highestStatus;
 		browser.browserAction.setIcon({
 			tabId: tabId,
 			path: {
-				16: status.icon,
+				16: status.icon
 			}
 		});
 		browser.browserAction.setTitle({
 			tabId: tabId,
-			title: browser.i18n.getMessage("extensionName") + "\n" + status.text,
+			title: browser.i18n.getMessage("extensionName") + "\n" + status.text
 		});
 	}
 
-}
+};
 
 function tabAdded(tab) {
 	CW.logDebug("New tab", tab.id);
@@ -47,7 +48,7 @@ function tabRemoved(tabId) {
 browser.tabs.onRemoved.addListener(tabRemoved);
 
 function tabUpdated(tabId, changeInfo) {
-	let tab = CW.getTab(tabId);
+	const tab = CW.getTab(tabId);
 
 	if (changeInfo.status === "loading") {
 		// only use the first "loading" state until the next complete comes through
@@ -64,6 +65,6 @@ function tabUpdated(tabId, changeInfo) {
 
 	// always update on any change event, as sometimes the default icon is
 	// applied automatically...
-	updateTabIcon(tabId);
+	CW.updateTabIcon(tabId);
 }
 browser.tabs.onUpdated.addListener(tabUpdated);

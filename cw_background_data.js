@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /*
  * Backgound script that holds the common data structures and state used
@@ -22,6 +22,75 @@ function getCW() {
 }
 
 /*
+ * Settings
+ */
+
+const SETTING_KEY = "certificate_watch:settings";
+let settings = {};
+
+// initialize settings
+browser.storage.local.get(SETTING_KEY).then((result) => {
+	const stored = result[SETTING_KEY];
+	if (stored) {
+		settings = stored;
+	}
+});
+
+// helper function
+function storeSettings() {
+	browser.storage.local.set({[SETTING_KEY]: settings});
+}
+
+
+CW.getSetting = function(key, dflt) {
+	if (key in settings) {
+		return settings[key];
+	} else {
+		return dflt;
+	}
+};
+
+CW.setSetting = function(key, value) {
+	// copy any arrays or objects to not have references to dead objects
+	// shallow copy should be enough...
+	if (typeof value === "object") {
+		if (Array.isArray(value)) {
+			value = [...value];
+		} else {
+			value = Object.assign({}, value);
+		}
+	}
+
+	settings[key] = value;
+	storeSettings();
+};
+
+CW.deleteSetting = function(key) {
+	delete settings[key];
+	storeSettings();
+};
+
+/*
+ * Migrate old settings key
+ */
+function migrateOldSettings() {
+	const oldSettingsKey = "certificate_checker:settings";
+	browser.storage.local.get(oldSettingsKey).then(
+		(result) => {
+			const oldSettings = result[oldSettingsKey];
+			if (oldSettings) {
+				// we found old settings, delete and store as new one
+				browser.storage.local.set({[SETTING_KEY]: oldSettings});
+				browser.storage.local.remove(oldSettingsKey);
+				settings = oldSettings;
+				CW.logInfo("Migrated old storage");
+			}
+		}
+	);
+}
+migrateOldSettings();
+
+/*
  * En-/disabled
  */
 
@@ -37,12 +106,12 @@ CW.toggleEnabled = function() {
 	}
 
 	// clear all tabs and update all icons
-	for (let tabId in CW.tabs) {
-		let tab = CW.tabs[tabId];
+	for (const tabId of Object.keys(CW.tabs)) {
+		const tab = CW.tabs[tabId];
 		tab.clear();
-		updateTabIcon(tab.tabId);
+		CW.updateTabIcon(tab.tabId);
 	}
-}
+};
 
 /*
  * Certficate status
@@ -81,7 +150,7 @@ CW.CheckResult = class {
 		this.host = host;
 		this.status = CW.CERT_ERROR;
 	}
-}
+};
 
 /*
  * Tabs
@@ -100,11 +169,11 @@ CW.Tab = class {
 	}
 
 	static async getActiveTab() {
-		let activeTabs = await browser.tabs.query({active: true, currentWindow: true});
+		const activeTabs = await browser.tabs.query({active: true, currentWindow: true});
 		if (activeTabs.length === 0) {
 			return;
 		}
-		let tabId = activeTabs[0].id;
+		const tabId = activeTabs[0].id;
 		return CW.getTab(tabId);
 	}
 
@@ -141,11 +210,11 @@ CW.getTab = function(tabId) {
 	if (CW.tabs[tabId]) {
 		return CW.tabs[tabId];
 	} else {
-		let tab = new CW.Tab(tabId);
+		const tab = new CW.Tab(tabId);
 		CW.tabs[tabId] = tab;
 		return tab;
 	}
-}
+};
 
 /*
  * Certificate
@@ -157,12 +226,12 @@ const certStore = {
 
 // initialize storage
 browser.storage.local.get().then((result) => {
-	for (var host of Object.keys(result)) {
+	for (const host of Object.keys(result)) {
 		if (host === SETTING_KEY) {
 			continue;
 		}
 
-		let stored = result[host];
+		const stored = result[host];
 		certStore[host] = new CW.Certificate(
 			stored.subject,
 			stored.issuer,
@@ -230,7 +299,7 @@ CW.Certificate = class {
 	// returns {[host]: CW.Certificate}
 	// do not write to this
 	static getAllFromStorage() {
-		let certs = Object.assign({}, certStore);
+		const certs = Object.assign({}, certStore);
 		delete certs[SETTING_KEY];
 		return certs;
 	}
@@ -311,95 +380,26 @@ CW.Certificate = class {
 		return [lower, upper];
 	}
 
-}
-
-/*
- * Settings
- */
-
-const SETTING_KEY = "certificate_watch:settings";
-let settings = {};
-
-// initialize settings
-browser.storage.local.get(SETTING_KEY).then((result) => {
-	let stored = result[SETTING_KEY];
-	if (stored) {
-		settings = stored;
-	}
-});
-
-// helper function
-function storeSettings() {
-	browser.storage.local.set({[SETTING_KEY]: settings});
-}
-
-
-CW.getSetting = function(key, dflt) {
-	if (key in settings) {
-		return settings[key];
-	} else {
-		return dflt;
-	}
-}
-
-CW.setSetting = function(key, value) {
-	// copy any arrays or objects to not have references to dead objects
-	// shallow copy should be enough...
-	if (typeof(value) === "object") {
-		if (Array.isArray(value)) {
-			value = [...value];
-		} else {
-			value = Object.assign({}, value);
-		}
-	}
-
-	settings[key] = value;
-	storeSettings();
-}
-
-CW.deleteSetting = function(key) {
-	delete settings[key];
-	storeSettings();
-}
-
-/*
- * Migrate old settings key
- */
-function migrateOldSettings() {
-	const oldSettingsKey = "certificate_checker:settings";
-	browser.storage.local.get(oldSettingsKey).then(
-		(result) => {
-			let oldSettings = result[oldSettingsKey];
-			if (oldSettings) {
-				// we found old settings, delete and store as new one
-				browser.storage.local.set({[SETTING_KEY]: oldSettings});
-				browser.storage.local.remove(oldSettingsKey);
-				settings = oldSettings;
-				CW.logInfo("Migrated old storage");
-			}
-		}
-	);
-}
-migrateOldSettings();
+};
 
 /*
  * Logging
  */
 
 CW.logDebug = function() {
-	let level = CW.getSetting("logLevel");
+	const level = CW.getSetting("logLevel");
 	if (level === "debug") {
-		var args = Array.prototype.slice.call(arguments);
+		const args = Array.prototype.slice.call(arguments);
 		args.unshift("[Certificate Watch]", "[Debug]");
 		console.log.apply(console, args);
 	}
-}
+};
 
 CW.logInfo = function() {
-	let level = CW.getSetting("logLevel");
+	const level = CW.getSetting("logLevel");
 	if (level === "debug" || level === "info") {
-		var args = Array.prototype.slice.call(arguments);
+		const args = Array.prototype.slice.call(arguments);
 		args.unshift("[Certificate Watch]", "[Info]");
 		console.log.apply(console, args);
 	}
-}
+};

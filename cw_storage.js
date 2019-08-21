@@ -1,4 +1,5 @@
-'use strict';
+"use strict";
+/* global convertDate, timeDiffToToday, formatBytes */
 
 /*
  * The script for the storage display page.
@@ -22,7 +23,7 @@ function addSubjectHtml(subject, parent) {
 		// common format: CN=something.com, OU="Some Org Inc."
 		// move each element of that to its own line, by adding <br /> tags
 		let lastBr;
-		for (var part of split) {
+		for (const part of split) {
 			parent.appendChild(document.createTextNode(part));
 			lastBr = document.createElement("br");
 			parent.appendChild(lastBr);
@@ -42,7 +43,7 @@ function addSubjectHtml(subject, parent) {
 let rows = [];
 
 function populateTable() {
-	let table = document.getElementById("storageTable");
+	const storageTable = document.getElementById("storageTable");
 
 	// clear any old entries
 	while (storageTable.firstChild) {
@@ -50,16 +51,16 @@ function populateTable() {
 	}
 	rows = [];
 
-	let certs = CW.Certificate.getAllFromStorage();
-	let hosts = Object.keys(certs);
+	const certs = CW.Certificate.getAllFromStorage();
+	const hosts = Object.keys(certs);
 
-	let numSpan = document.getElementById("numDomains");
+	const numSpan = document.getElementById("numDomains");
 	numSpan.textContent = hosts.length;
 
 	// sort by rightmost domain first
 	hosts.sort((h1, h2) => {
-		let h1p = h1.split(".");
-		let h2p = h2.split(".");
+		const h1p = h1.split(".");
+		const h2p = h2.split(".");
 		let i1, i2;
 		for (i1 = h1p.length, i2 = h2p.length; i1 >= 0 && i2 >= 0; i1--, i2--) {
 			if (h1p[i1] !== h2p[i2]) {
@@ -82,16 +83,16 @@ function populateTable() {
 		}
 	});
 
-	let size = [0, 0];
+	const size = [0, 0];
 
-	for (var host of hosts) {
-		let cert = certs[host];
+	for (const host of hosts) {
+		const cert = certs[host];
 
-		let certSize = cert.estimateSize();
+		const certSize = cert.estimateSize();
 		size[0] += certSize[0];
 		size[1] += certSize[1];
 
-		let tr = document.createElement("tr");
+		const tr = document.createElement("tr");
 
 		let td = document.createElement("td");
 		td.textContent = host;
@@ -149,7 +150,7 @@ function populateTable() {
 
 		td = document.createElement("td");
 		td.setAttribute("class", "remove");
-		let removeButton = document.createElement("input");
+		const removeButton = document.createElement("input");
 		removeButton.setAttribute("type", "button");
 		removeButton.setAttribute("value", browser.i18n.getMessage("storageRemoveHost"));
 		removeButton.setAttribute("host", host);
@@ -158,16 +159,16 @@ function populateTable() {
 		tr.appendChild(td);
 
 		rows.push(tr);
-		table.appendChild(tr);
+		storageTable.appendChild(tr);
 	}
 
-	let storageSize = document.getElementById("storageSize");
+	const storageSize = document.getElementById("storageSize");
 	storageSize.textContent = browser.i18n.getMessage("storageSize", [formatBytes(size[0]), formatBytes(size[1])]);
 }
 
 function updateTableFilter() {
-	let domainFilter = document.getElementById("domainFilter");
-	let storageTable = document.getElementById("storageTable");
+	const domainFilter = document.getElementById("domainFilter");
+	const storageTable = document.getElementById("storageTable");
 
 	// remove all rows and then re-add the ones that match the filter
 	// this way, :nth-child() selectors still work properly on the table rows
@@ -204,14 +205,14 @@ browser.runtime.onMessage.addListener((message) => {
 
 function clearStorage() {
 	CW.logInfo("Clearing all hosts");
-	let certs = CW.Certificate.getAllFromStorage();
-	for (var host in certs) {
+	const certs = CW.Certificate.getAllFromStorage();
+	for (const host of Object.keys(certs)) {
 		CW.Certificate.removeFromStorage(host);
 	}
 }
 
 (function() {
-	let removeAll = document.getElementById("removeAll");
+	const removeAll = document.getElementById("removeAll");
 	removeAll.addEventListener("click", function() {
 		if (confirm(browser.i18n.getMessage("storageRemoveAllConfirm"))) {
 			clearStorage();
@@ -219,7 +220,7 @@ function clearStorage() {
 		}
 	});
 
-	let domainFilter = document.getElementById("domainFilter");
+	const domainFilter = document.getElementById("domainFilter");
 	domainFilter.value = ""; // clear after reload
 	domainFilter.addEventListener("input", updateTableFilter);
 })();

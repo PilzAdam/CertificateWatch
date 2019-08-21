@@ -1,4 +1,5 @@
-'use strict';
+"use strict";
+/* global Set, convertDate, timeDiffToToday */
 
 /*
  * The script for the browser action popup.
@@ -18,7 +19,7 @@ function showChangedValidity(validity, otherValidity, color, parent) {
 			[convertDate(validity.start), timeDiffToToday(validity.start)]
 	);
 	parent.appendChild(span);
-	if (validity.start != otherValidity.start) {
+	if (validity.start !== otherValidity.start) {
 		span.style.color = color;
 	}
 
@@ -30,7 +31,7 @@ function showChangedValidity(validity, otherValidity, color, parent) {
 			[convertDate(validity.end), timeDiffToToday(validity.end)]
 	);
 	parent.appendChild(span);
-	if (validity.end != otherValidity.end) {
+	if (validity.end !== otherValidity.end) {
 		span.style.color = color;
 	}
 }
@@ -68,8 +69,8 @@ function showChangedSubject(subject, otherSubject, color, parent) {
 
 function addResult(result) {
 	function insertToList(listId, host) {
-		let list = document.getElementById(listId);
-		let li = document.createElement("li");
+		const list = document.getElementById(listId);
+		const li = document.createElement("li");
 		li.textContent = host;
 		list.appendChild(li);
 	}
@@ -90,25 +91,25 @@ function addResult(result) {
 		if (!changed.has(result.host)) {
 			changed.add(result.host);
 
-			let list = document.getElementById("changedList");
-			let li = document.createElement("li");
+			const list = document.getElementById("changedList");
+			const li = document.createElement("li");
 			li.textContent = result.host;
 			list.appendChild(li);
 
-			let ul = document.createElement("ul");
-			for (var field in result.changes) {
-				let nestedLi = document.createElement("li");
-				let b = document.createElement("b");
+			const ul = document.createElement("ul");
+			for (const field of Object.keys(result.changes)) {
+				const nestedLi = document.createElement("li");
+				const b = document.createElement("b");
 				if (field === "subject") {
 					b.textContent = browser.i18n.getMessage("popupChangedFieldSubject");
 				} else if (field === "issuer") {
 					b.textContent = browser.i18n.getMessage("popupChangedFieldIssuer");
 				} else if (field === "validity") {
-					b.textContent = browser.i18n.getMessage("popupChangedFieldValidity")
+					b.textContent = browser.i18n.getMessage("popupChangedFieldValidity");
 				} else if (field === "subjectPublicKeyInfoDigest") {
 					b.textContent = browser.i18n.getMessage("popupChangedFieldPublicKey");
 				} else if (field === "fingerprint") {
-					b.textContent = browser.i18n.getMessage("popupChangedFieldFingerprint")
+					b.textContent = browser.i18n.getMessage("popupChangedFieldFingerprint");
 				} else if (field === "serialNumber") {
 					b.textContent = browser.i18n.getMessage("popupChangedFieldSerialNumber");
 				} else {
@@ -119,13 +120,13 @@ function addResult(result) {
 				if (field === "subject" || field === "issuer" || field === "validity") {
 					nestedLi.appendChild(document.createTextNode(" " + browser.i18n.getMessage("popupChanged")));
 
-					let table = document.createElement("table");
-					let r1 = document.createElement("tr");
-					let r2 = document.createElement("tr");
-					let e11 = document.createElement("td");
-					let e12 = document.createElement("td");
-					let e21 = document.createElement("td");
-					let e22 = document.createElement("td");
+					const table = document.createElement("table");
+					const r1 = document.createElement("tr");
+					const r2 = document.createElement("tr");
+					const e11 = document.createElement("td");
+					const e12 = document.createElement("td");
+					const e21 = document.createElement("td");
+					const e22 = document.createElement("td");
 
 					e11.textContent = browser.i18n.getMessage("popupChangedStored");
 					if (field === "validity") {
@@ -156,7 +157,7 @@ function addResult(result) {
 			}
 			li.appendChild(ul);
 
-			let button = document.createElement("input");
+			const button = document.createElement("input");
 			button.setAttribute("type", "button");
 			button.setAttribute("value", browser.i18n.getMessage("popupAddChanged"));
 			button.addEventListener("click", function() {
@@ -181,8 +182,8 @@ function updateCounts() {
 }
 
 function clearResults() {
-	for (let name of ["tofuList", "storedList", "changedList"]) {
-		let list = document.getElementById(name);
+	for (const name of ["tofuList", "storedList", "changedList"]) {
+		const list = document.getElementById(name);
 		while (list.firstChild) {
 			list.removeChild(list.firstChild);
 		}
@@ -190,20 +191,20 @@ function clearResults() {
 }
 
 async function init() {
-	let settingsLink = document.getElementById("settingsLink");
-	settingsLink.addEventListener("click", function(event) {
+	const settingsLink = document.getElementById("settingsLink");
+	settingsLink.addEventListener("click", function() {
 		browser.runtime.openOptionsPage();
 	});
 
-	let storageLink = document.getElementById("storageLink");
-	storageLink.addEventListener("click", function(event) {
+	const storageLink = document.getElementById("storageLink");
+	storageLink.addEventListener("click", function() {
 		browser.tabs.create({
 			active: true,
 			url: "cw_storage.html"
 		});
 	});
 
-	let state = document.getElementById("state");
+	const state = document.getElementById("state");
 	function updateStateText() {
 		if (CW.enabled) {
 			state.setAttribute("value", browser.i18n.getMessage("popupStateEnabled"));
@@ -222,12 +223,12 @@ async function init() {
 		updateStateText();
 	});
 
-	let currentTab = await CW.Tab.getActiveTab();
+	const currentTab = await CW.Tab.getActiveTab();
 	if (!currentTab) {
 		return;
 	}
 
-	for (let result of currentTab.results) {
+	for (const result of currentTab.results) {
 		addResult(result);
 	}
 	updateCounts();
