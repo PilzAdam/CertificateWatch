@@ -71,7 +71,13 @@ function addResult(result) {
 	function insertToList(listId, host) {
 		const list = document.getElementById(listId);
 		const li = document.createElement("li");
-		li.textContent = host;
+		const a = document.createElement("a");
+		a.textContent = host;
+		a.href = "cw_storage.html?search=" + encodeURIComponent(host);
+		a.target = "_blank";
+		a.setAttribute("class", "plainLink");
+		a.setAttribute("title", browser.i18n.getMessage("popupShowCertTooltip", host));
+		li.appendChild(a);
 		list.appendChild(li);
 	}
 

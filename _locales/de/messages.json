@@ -207,6 +207,16 @@
 		"message": "Klicken um Verbindungsüberprüfung wieder zu aktivieren",
 		"description": "Tooltip for button to re-activate the connection checking."
 	},
+	"popupShowCertTooltip": {
+		"message": "Zeige $HOST$ im Speicher",
+		"description": "Tooltip for link to show a host in storage",
+		"placeholders": {
+			"host": {
+				"content": "$1",
+				"example": "www.startpage.com"
+			}
+		}
+	},
 	"storageTitle": {
 		"message": "Certificate Watch Speicher",
 		"description": "The title of the storage display page"

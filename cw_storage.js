@@ -198,6 +198,10 @@ function clearStorage() {
 	});
 
 	const domainFilter = document.getElementById("domainFilter");
+	const param = new URL(document.location.href).searchParams.get("search");
+	if (param) {
+		domainFilter.value = param;
+	}
 	domainFilter.addEventListener("input", updateTable);
 
 	updateTable();
