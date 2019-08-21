@@ -90,7 +90,7 @@ async function checkConnection(url, securityInfo, tabId) {
 	try {
 		const match = new RegExp("([a-z]+)://([^/:]+)").exec(url);
 		//const baseUrl = match[0];
-		host = match[2];
+		host = match[2].replace(new RegExp("\\.$"), ""); // remove trailing .
 
 		if (tabId === -1) {
 			CW.logDebug("Request to", url, "not made in a tab");
@@ -101,7 +101,8 @@ async function checkConnection(url, securityInfo, tabId) {
 		const certChecksSetting = CW.getSetting("certChecks");
 		if (certChecksSetting === "domain") {
 			const tab = await browser.tabs.get(tabId);
-			const tabHost = new RegExp("://([^/]+)").exec(tab.url)[1];
+			const tabHost = new RegExp("://([^/]+)").exec(tab.url)[1]
+					.replace(new RegExp("\\.$"), ""); // remove trailing .
 			if (host !== tabHost) {
 				CW.logDebug("Ignoring request to", host, "from tab with host", tabHost,
 						"(setting is", certChecksSetting, ")");
