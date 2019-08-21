@@ -1,3 +1,11 @@
+1.9.0
+-----
+- A click on hosts in the pop-up shows them in storage
+- Don't allow running in private browsing mode (this doesn't work because of
+  https://bugzilla.mozilla.org/show_bug.cgi?id=1329304)
+- Bugfix: Fix rare memory leak in storage page
+- Bugfix: Ignore trailing . in domain
+
 1.8.0
 -----
 - Improved display of certificate changes in pop-up
