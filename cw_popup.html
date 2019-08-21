@@ -12,7 +12,7 @@
 				top: 0px;
 				right: 0px;
 			}
-			#header {
+			header {
 				position: relative;
 				display:inline-block;
 				padding-right: 128px;
@@ -20,31 +20,34 @@
 		</style>
 	</head>
 	<body>
-		<div id="header">
+		<header>
 			<h1 data-i18n="extensionName"></h1>
 			<img id="logo" src="icons/cw_128.png" alt="" width="128" height="128" />
-		</div>
-		<p>
-			<img src="icons/cw_16_changed.png" alt="" width="16" height="16" />
-			<b><span id="numChanged">?</span></b> <span data-i18n="popupChangedCerts"></span>
-			<ul id="changedList"></ul>
-		</p>
-		<p>
-			<img src="icons/cw_16_tofu.png" alt="" width="16" height="16" />
-			<b><span id="numTofu">?</span></b> <span data-i18n="popupTofuCerts"></span>
-			<ul id="tofuList"></ul>
-		</p>
-		<p>
-			<img src="icons/cw_16_stored.png" alt="" width="16" height="16" />
-			<b><span id="numStored">?</span></b> <span data-i18n="popupStoredCerts"></span>
-			<ul id="storedList"></ul>
-		</p>
+		</header>
 
-		<p>
+		<main>
+			<p>
+				<img src="icons/cw_16_changed.png" alt="" width="16" height="16" />
+				<b><span id="numChanged">?</span></b> <span data-i18n="popupChangedCerts"></span>
+				<ul id="changedList"></ul>
+			</p>
+			<p>
+				<img src="icons/cw_16_tofu.png" alt="" width="16" height="16" />
+				<b><span id="numTofu">?</span></b> <span data-i18n="popupTofuCerts"></span>
+				<ul id="tofuList"></ul>
+			</p>
+			<p>
+				<img src="icons/cw_16_stored.png" alt="" width="16" height="16" />
+				<b><span id="numStored">?</span></b> <span data-i18n="popupStoredCerts"></span>
+				<ul id="storedList"></ul>
+			</p>
+		</main>
+
+		<nav>
 			<input id="state" type="button" />
 			<input id="settingsLink" type="button" data-i18n="value=popupSettings;title=popupSettingsTooltip" />
 			<input id="storageLink" type="button" data-i18n="value=popupStorage;title=popupStorageTooltip" />
-		</p>
+		</nav>
 		<script src="cw_common.js"></script>
 		<script src="cw_popup.js"></script>
 	</body>

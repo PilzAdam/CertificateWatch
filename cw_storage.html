@@ -36,42 +36,48 @@
 		</style>
 	</head>
 	<body>
-		<img id="logo" src="icons/cw_128.png" alt="" width="128" height="128" />
-		<h1 data-i18n="storageTitle"></h1>
-		<span id="numDomains">?</span> <span data-i18n="storageNumStoredDomains"></span>
-		<span id="storageSize"></span>
+		<header>
+			<img id="logo" src="icons/cw_128.png" alt="" width="128" height="128" />
+			<h1 data-i18n="storageTitle"></h1>
+		</header>
 
-		<table class="cwtable">
-			<thead>
-				<tr class="header">
-					<th rowspan="2" class="top">
-						<span data-i18n="storageFieldDomain"></span>
-						<br />
-						<input id="domainFilter" type="text" data-i18n="placeholder=storageFieldDomainFilter" />
-					</th>
-					<th colspan="4" class="top" data-i18n="storageFieldCert"></th>
-					<th rowspan="2" class="top" data-i18n="storageFieldCertLastSeen"></th>
-					<th rowspan="2" class="top">
-						<span data-i18n="storageRemoveHost"></span>
-						<br />
-						<input id="removeAll" type="button" data-i18n="value=storageRemoveAll" />
-					</th>
-				</tr>
-				<tr class="header">
-					<th class="noLeft" data-i18n="storageFieldCertSubject"></th>
-					<th data-i18n="storageFieldCertIssuer"></th>
-					<th data-i18n="storageFieldCertValidityStart"></th>
-					<th data-i18n="storageFieldCertValidityEnd"></th>
-					<!--
-					<th>Serial Number</th>
-					<th>Public Key Hash</th>
-					<th>Fingerprint</th>
-					-->
-				</tr>
-			</thead>
-			<tbody id="storageTable">
-			</tbody>
-		</table>
+		<main>
+			<span id="numDomains">?</span> <span data-i18n="storageNumStoredDomains"></span>
+			<span id="storageSize"></span>
+
+			<table class="cwtable">
+				<thead>
+					<tr class="header">
+						<th scope="col" rowspan="2" class="top">
+							<span data-i18n="storageFieldDomain"></span>
+							<br />
+							<input id="domainFilter" type="text" data-i18n="placeholder=storageFieldDomainFilter" />
+						</th>
+						<th scope="col" colspan="4" class="top" data-i18n="storageFieldCert"></th>
+						<th scope="col" rowspan="2" class="top" data-i18n="storageFieldCertLastSeen"></th>
+						<th scope="col" rowspan="2" class="top">
+							<span data-i18n="storageRemoveHost"></span>
+							<br />
+							<input id="removeAll" type="button" data-i18n="value=storageRemoveAll" />
+						</th>
+					</tr>
+					<tr class="header">
+						<th scope="col" class="noLeft" data-i18n="storageFieldCertSubject"></th>
+						<th scope="col" data-i18n="storageFieldCertIssuer"></th>
+						<th scope="col" data-i18n="storageFieldCertValidityStart"></th>
+						<th scope="col" data-i18n="storageFieldCertValidityEnd"></th>
+						<!--
+						<th>Serial Number</th>
+						<th>Public Key Hash</th>
+						<th>Fingerprint</th>
+						-->
+					</tr>
+				</thead>
+				<tbody id="storageTable">
+				</tbody>
+			</table>
+		</main>
+
 		<script src="cw_common.js"></script>
 		<script src="cw_storage.js"></script>
 	</body>

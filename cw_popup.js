@@ -12,7 +12,7 @@ const changed = new Set();
 const tofu = new Set();
 const stored = new Set();
 
-function showChangedValidity(validity, otherValidity, color, parent) {
+function showChangedValidity(validity, otherValidity, visualClass, parent) {
 	let span = document.createElement("span");
 	span.textContent = browser.i18n.getMessage(
 			"popupChangedFieldValidityStart",
@@ -20,7 +20,7 @@ function showChangedValidity(validity, otherValidity, color, parent) {
 	);
 	parent.appendChild(span);
 	if (validity.start !== otherValidity.start) {
-		span.style.color = color;
+		span.setAttribute("class", visualClass);
 	}
 
 	parent.appendChild(document.createElement("br"));
@@ -32,11 +32,11 @@ function showChangedValidity(validity, otherValidity, color, parent) {
 	);
 	parent.appendChild(span);
 	if (validity.end !== otherValidity.end) {
-		span.style.color = color;
+		span.setAttribute("class", visualClass);
 	}
 }
 
-function showChangedSubject(subject, otherSubject, color, parent) {
+function showChangedSubject(subject, otherSubject, visualClass, parent) {
 	const sSplit = subject.match(new RegExp("[A-Z]+=([^,\"]+|\"[^\"]+\")", "g"));
 	const oSplit = otherSubject.match(new RegExp("[A-Z]+=([^,\"]+|\"[^\"]+\")", "g"));
 
@@ -55,7 +55,7 @@ function showChangedSubject(subject, otherSubject, color, parent) {
 			}
 		}
 		if (!foundInOther) {
-			span.style.color = color;
+			span.setAttribute("class", visualClass);
 		}
 
 		comma = document.createTextNode(", ");
@@ -133,23 +133,28 @@ function addResult(result) {
 					const table = document.createElement("table");
 					const r1 = document.createElement("tr");
 					const r2 = document.createElement("tr");
-					const e11 = document.createElement("td");
+					const e11 = document.createElement("th");
 					const e12 = document.createElement("td");
-					const e21 = document.createElement("td");
+					const e21 = document.createElement("th");
 					const e22 = document.createElement("td");
+
+					e11.setAttribute("scope", "row");
+					e21.setAttribute("scope", "row");
+					e11.style["font-weight"] = "inherit";
+					e21.style["font-weight"] = "inherit";
 
 					e11.textContent = browser.i18n.getMessage("popupChangedStored");
 					if (field === "validity") {
-						showChangedValidity(result.changes[field].stored, result.changes[field].got, "blue", e12);
+						showChangedValidity(result.changes[field].stored, result.changes[field].got, "diffOld", e12);
 					} else {
-						showChangedSubject(result.changes[field].stored, result.changes[field].got, "blue", e12);
+						showChangedSubject(result.changes[field].stored, result.changes[field].got, "diffOld", e12);
 					}
 
 					e21.textContent = browser.i18n.getMessage("popupChangedNew");
 					if (field === "validity") {
-						showChangedValidity(result.changes[field].got, result.changes[field].stored, "orange", e22);
+						showChangedValidity(result.changes[field].got, result.changes[field].stored, "diffNew", e22);
 					} else {
-						showChangedSubject(result.changes[field].got, result.changes[field].stored, "orange", e22);
+						showChangedSubject(result.changes[field].got, result.changes[field].stored, "diffNew", e22);
 					}
 
 					r1.appendChild(e11);
@@ -233,7 +238,13 @@ async function init() {
 		updateStateText();
 	});
 
-	const currentTab = await CW.Tab.getActiveTab();
+	let currentTab;
+	const param = new URL(document.location.href).searchParams.get("tab");
+	if (param) {
+		currentTab = CW.getTab(param);
+	} else {
+		currentTab = await CW.Tab.getActiveTab();
+	}
 	if (!currentTab) {
 		return;
 	}
