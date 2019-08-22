@@ -56,7 +56,17 @@ function updateTable() {
 	const hosts = Object.keys(certs);
 
 	const numSpan = document.getElementById("numDomains");
-	numSpan.textContent = hosts.length;
+	while (numSpan.firstChild) {
+		numSpan.removeChild(numSpan.firstChild);
+	}
+
+	const numElement = document.createElement("b");
+	numElement.textContent = hosts.length;
+	if (hosts.length === 1) {
+		addMessageNested(numSpan, "storageNumStoredDomains-single", numElement);
+	} else {
+		addMessageNested(numSpan, "storageNumStoredDomains-many", numElement);
+	}
 
 	// sort by rightmost domain first
 	hosts.sort((h1, h2) => {

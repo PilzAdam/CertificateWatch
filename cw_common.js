@@ -42,11 +42,37 @@ function timeDiffToToday(date) {
 
 	if (diff === 0) {
 		return browser.i18n.getMessage("timeDiffToday");
+	} else if (diff === -1) {
+		return browser.i18n.getMessage("timeDiffBeforeToday-single", -diff);
 	} else if (diff < 0) {
-		return browser.i18n.getMessage("timeDiffBeforeToday", -diff);
+		return browser.i18n.getMessage("timeDiffBeforeToday-many", -diff);
+	} else if (diff === 1) {
+		return browser.i18n.getMessage("timeDiffAfterToday-single", diff);
 	} else {
-		return browser.i18n.getMessage("timeDiffAfterToday", diff);
+		return browser.i18n.getMessage("timeDiffAfterToday-many", diff);
 	}
+}
+
+// adds the given text message to the parentNode
+// the message contains a single substitution, which is the given nestedElement
+function addMessageNested(parentNode, messageName, nestedElement) {
+	const placeholder = "__CW_PLACEHOLDER__";
+	const translated = browser.i18n.getMessage(messageName, placeholder);
+	/*if (translated.startsWith(placeholder)) {
+		parentNode.appendChild(nestedElement);
+		parentNode.appendChild(document.createTextNode(translated));
+
+	} else if (translated.endsWith(placeholder)) {
+		parentNode.appendChild(nestedElement);
+		parentNode.appendChild(document.createTextNode(translated));
+
+	} else {*/
+		const [front, back] = translated.split(placeholder);
+		parentNode.appendChild(document.createTextNode(front));
+		parentNode.appendChild(nestedElement);
+		parentNode.appendChild(document.createTextNode(back));
+
+	//}
 }
 
 /*

@@ -91,17 +91,65 @@
 		"message": "Certificate Watch Popup",
 		"description": "Title for the pop-up page (usually not visible)."
 	},
-	"popupChangedCerts": {
-		"message": "veränderte Zertifikate",
-		"description": "The pop-up description for the displayed certificates that don't equal the stored version. This comes directly after the displayed number."
+	"popupChangedCerts-single": {
+		"message": "$NUM$ verändertes Zertifikat",
+		"description": "The pop-up description for the displayed certificates that don't equal the stored version.",
+		"placeholders": {
+			"num": {
+				"content": "$1",
+				"example": "1"
+			}
+		}
 	},
-	"popupTofuCerts": {
-		"message": "neue Zertifikate",
-		"description": "The pop-up description for the displayed newly stored certificates. This comes directly after the displayed number."
+	"popupChangedCerts-many": {
+		"message": "$NUM$ veränderte Zertifikate",
+		"description": "The pop-up description for the displayed certificates that don't equal the stored version.",
+		"placeholders": {
+			"num": {
+				"content": "$1",
+				"example": "5"
+			}
+		}
 	},
-	"popupStoredCerts": {
-		"message": "gespeicherte Zertifikate",
-		"description": "The pop-up description for the displayed certificates that equal the stored version. This comes directly after the displayed number."
+	"popupTofuCerts-single": {
+		"message": "$NUM$ neues Zertifikat",
+		"description": "The pop-up description for the displayed newly stored certificates.",
+		"placeholders": {
+			"num": {
+				"content": "$1",
+				"example": "1"
+			}
+		}
+	},
+	"popupTofuCerts-many": {
+		"message": "$NUM$ neue Zertifikate",
+		"description": "The pop-up description for the displayed newly stored certificates.",
+		"placeholders": {
+			"num": {
+				"content": "$1",
+				"example": "5"
+			}
+		}
+	},
+	"popupStoredCerts-single": {
+		"message": "$NUM$ gespeichertes Zertifikat",
+		"description": "The pop-up description for the displayed certificates that equal the stored version.",
+		"placeholders": {
+			"num": {
+				"content": "$1",
+				"example": "1"
+			}
+		}
+	},
+	"popupStoredCerts-many": {
+		"message": "$NUM$ gespeicherte Zertifikate",
+		"description": "The pop-up description for the displayed certificates that equal the stored version.",
+		"placeholders": {
+			"num": {
+				"content": "$1",
+				"example": "5"
+			}
+		}
 	},
 	"popupSettings": {
 		"message": "Einstellungen",
@@ -120,8 +168,14 @@
 		"description": "The tooltip for the link in the pop-up to the storage page."
 	},
 	"popupChanged": {
-		"message": "verändert",
-		"description": "Message signaling that the certificate field directly in front of this was changed."
+		"message": "$FIELD$ verändert",
+		"description": "Message signaling that the certificate field was changed.",
+		"placeholders": {
+			"field": {
+				"content": "$1",
+				"example": "Subject"
+			}
+		}
 	},
 	"popupChangedFieldSubject": {
 		"message": "Subject",
@@ -221,9 +275,25 @@
 		"message": "Certificate Watch Speicher",
 		"description": "The title of the storage display page"
 	},
-	"storageNumStoredDomains": {
-		"message": "gespeicherte Domains.",
-		"description": "Describing the number of stored domains that comes directly in front of it."
+	"storageNumStoredDomains-single": {
+		"message": "Speicher enthält $NUM$ domain.",
+		"description": "Describing the number of stored domains that comes directly in front of it.",
+		"placeholders": {
+			"num": {
+				"content": "$1",
+				"example": "1"
+			}
+		}
+	},
+	"storageNumStoredDomains-many": {
+		"message": "Speicher enthält $NUM$ domains.",
+		"description": "Describing the number of stored domains that comes directly in front of it.",
+		"placeholders": {
+			"num": {
+				"content": "$1",
+				"example": "5"
+			}
+		}
 	},
 	"storageSize": {
 		"message": "Geschätze Speichergröße ist zwischen $LOWER$ und $UPPER$.",
@@ -291,7 +361,17 @@
 		"message": "Heute",
 		"description": "Describes that something happens or happened today."
 	},
-	"timeDiffBeforeToday": {
+	"timeDiffBeforeToday-single": {
+		"message": "vor $DAYS$ Tag",
+		"description": "Describes that something happened a given number of days before today.",
+		"placeholders": {
+			"days": {
+				"content": "$1",
+				"example": "1"
+			}
+		}
+	},
+	"timeDiffBeforeToday-many": {
 		"message": "vor $DAYS$ Tagen",
 		"description": "Describes that something happened a given number of days before today.",
 		"placeholders": {
@@ -301,7 +381,17 @@
 			}
 		}
 	},
-	"timeDiffAfterToday": {
+	"timeDiffAfterToday-single": {
+		"message": "in $DAYS$ Tag",
+		"description": "Describes that something will happen a given number of days after today.",
+		"placeholders": {
+			"days": {
+				"content": "$1",
+				"example": "1"
+			}
+		}
+	},
+	"timeDiffAfterToday-many": {
 		"message": "in $DAYS$ Tagen",
 		"description": "Describes that something will happen a given number of days after today.",
 		"placeholders": {

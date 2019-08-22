@@ -126,9 +126,9 @@ function addResult(result) {
 					b.textContent = field;
 				}
 				nestedLi.appendChild(b);
+				addMessageNested(nestedLi, "popupChanged", b);
 
 				if (field === "subject" || field === "issuer" || field === "validity") {
-					nestedLi.appendChild(document.createTextNode(" " + browser.i18n.getMessage("popupChanged")));
 
 					const table = document.createElement("table");
 					const r1 = document.createElement("tr");
@@ -164,8 +164,6 @@ function addResult(result) {
 					table.appendChild(r1);
 					table.appendChild(r2);
 					nestedLi.appendChild(table);
-				} else {
-					nestedLi.appendChild(document.createTextNode(" " + browser.i18n.getMessage("popupChanged")));
 				}
 
 				ul.appendChild(nestedLi);
@@ -191,9 +189,24 @@ function addResult(result) {
 }
 
 function updateCounts() {
-	document.getElementById("numChanged").textContent = changed.size;
-	document.getElementById("numTofu").textContent = tofu.size;
-	document.getElementById("numStored").textContent = stored.size;
+	function update(id, count, i18n) {
+		const parent = document.getElementById(id);
+		while (parent.firstChild) {
+			parent.removeChild(parent.firstChild);
+		}
+
+		const numElement = document.createElement("b");
+		numElement.textContent = count;
+		if (count === 1) {
+			addMessageNested(parent, i18n + "-single", numElement);
+		} else {
+			addMessageNested(parent, i18n + "-many", numElement);
+		}
+	}
+
+	update("numChanged", changed.size, "popupChangedCerts");
+	update("numTofu", tofu.size, "popupTofuCerts");
+	update("numStored", stored.size, "popupStoredCerts");
 }
 
 function clearResults() {
