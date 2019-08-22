@@ -32,14 +32,20 @@ intervention is still required.
 Screenshots
 -----------
 The certificate of a new domain is automatically added to the storage:
+
 ![Screenshot](screenshots/cert_new.png)
 
 The certificate of a domain matches the one in storage:
+
 ![Screenshot](screenshots/cert_stored.png)
 
 The certificate of a domain differs from the one in storage:
+
 ![Screenshot](screenshots/cert_changed.png)
 
+The storage page shows information on the stored certificates:
+
+![Screenshot](screenshots/storage.png)
 
 Caveats
 -------
