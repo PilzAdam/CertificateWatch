@@ -34,6 +34,10 @@
 		"browser_style": false
 	},
 
+	"commands": {
+		"_execute_browser_action": {}
+	},
+
 	"permissions": [
 		"https://*/*",
 		"wss://*/*",
