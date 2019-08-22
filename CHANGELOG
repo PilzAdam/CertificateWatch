@@ -1,3 +1,10 @@
+1.10.0
+------
+- Improved accessibility a bit
+- Added possibility to set a keyboard shortcut for the pop-up,
+  see https://support.mozilla.org/kb/manage-extension-shortcuts-firefox
+- Improved translation capabilities (e.g. pluralization)
+
 1.9.0
 -----
 - A click on hosts in the pop-up shows them in storage
