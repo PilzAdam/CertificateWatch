@@ -173,7 +173,7 @@ function addResult(result) {
 			const button = document.createElement("input");
 			button.setAttribute("type", "button");
 			button.setAttribute("value", browser.i18n.getMessage("popupAddChanged"));
-			button.addEventListener("click", function() {
+			button.addEventListener("click", () => {
 				button.disabled = true;
 				CW.logInfo("Storing new certificate for", result.host);
 
@@ -220,12 +220,12 @@ function clearResults() {
 
 async function init() {
 	const settingsLink = document.getElementById("settingsLink");
-	settingsLink.addEventListener("click", function() {
+	settingsLink.addEventListener("click", () => {
 		browser.runtime.openOptionsPage();
 	});
 
 	const storageLink = document.getElementById("storageLink");
-	storageLink.addEventListener("click", function() {
+	storageLink.addEventListener("click", () => {
 		browser.tabs.create({
 			active: true,
 			url: "cw_storage.html"
@@ -245,7 +245,7 @@ async function init() {
 		}
 	}
 	updateStateText();
-	state.addEventListener("click", function(event) {
+	state.addEventListener("click", (event) => {
 		event.preventDefault();
 		CW.toggleEnabled();
 		updateStateText();

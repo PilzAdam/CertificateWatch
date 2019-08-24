@@ -5,7 +5,7 @@
  * Background script that handles tab states and updates the browser actions.
  */
 
-CW.updateTabIcon = function(tabId) {
+CW.updateTabIcon = (tabId) => {
 	if (CW.enabled === false) {
 		browser.browserAction.setIcon({
 			tabId: tabId,

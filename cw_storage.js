@@ -109,18 +109,22 @@ function updateTable() {
 
 		const tr = document.createElement("tr");
 
+		// host
 		let td = document.createElement("td");
 		td.textContent = host;
 		tr.appendChild(td);
 
+		// subject
 		td = document.createElement("td");
 		addSubjectHtml(cert.subject, td);
 		tr.appendChild(td);
 
+		// issuer
 		td = document.createElement("td");
 		addSubjectHtml(cert.issuer, td);
 		tr.appendChild(td);
 
+		// valid from
 		td = document.createElement("td");
 		td.appendChild(document.createTextNode(convertDate(cert.validity.start)));
 		td.appendChild(document.createElement("br"));
@@ -130,6 +134,7 @@ function updateTable() {
 		}
 		tr.appendChild(td);
 
+		// valid until
 		td = document.createElement("td");
 		td.appendChild(document.createTextNode(convertDate(cert.validity.end)));
 		td.appendChild(document.createElement("br"));
@@ -139,6 +144,7 @@ function updateTable() {
 		}
 		tr.appendChild(td);
 
+		// last seen
 		td = document.createElement("td");
 		if (cert.lastSeen) {
 			td.appendChild(document.createTextNode(convertDate(cert.lastSeen)));
@@ -149,20 +155,7 @@ function updateTable() {
 		}
 		tr.appendChild(td);
 
-		/*
-		td = document.createElement("td");
-		td.textContent = cert.serialNumber;
-		tr.appendChild(td);
-
-		td = document.createElement("td");
-		td.textContent = cert.subjectPublicKeyInfoDigest;
-		tr.appendChild(td);
-
-		td = document.createElement("td");
-		td.textContent = cert.fingerprint;
-		tr.appendChild(td);
-		*/
-
+		// remove button
 		td = document.createElement("td");
 		td.setAttribute("class", "remove");
 		const removeButton = document.createElement("input");
@@ -198,9 +191,9 @@ function clearStorage() {
 	}
 }
 
-(function() {
+(() => {
 	const removeAll = document.getElementById("removeAll");
-	removeAll.addEventListener("click", function() {
+	removeAll.addEventListener("click", () => {
 		if (confirm(browser.i18n.getMessage("storageRemoveAllConfirm"))) {
 			clearStorage();
 			updateTable();

@@ -158,7 +158,7 @@ browser.webRequest.onHeadersReceived.addListener(
  * optional permission is removed.
  * TODO: not yet implemented in firefox
  */
-/*browser.permissions.onRemoved.addListener(function (removed) {
+/*browser.permissions.onRemoved.addListener((removed) => {
 	if (removed.permissions && removed.permissions.includes("tabs")) {
 		if (CW.getSetting("certChecks") === "domain") {
 			CW.logInfo("Optional \"tabs\" permission got removed; reverting to checking all domains");

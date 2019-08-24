@@ -42,7 +42,7 @@ function storeSettings() {
 }
 
 
-CW.getSetting = function(key, dflt) {
+CW.getSetting = (key, dflt) => {
 	if (key in settings) {
 		return settings[key];
 	} else {
@@ -50,7 +50,7 @@ CW.getSetting = function(key, dflt) {
 	}
 };
 
-CW.setSetting = function(key, value) {
+CW.setSetting = (key, value) => {
 	// copy any arrays or objects to not have references to dead objects
 	// shallow copy should be enough...
 	if (typeof value === "object") {
@@ -65,7 +65,7 @@ CW.setSetting = function(key, value) {
 	storeSettings();
 };
 
-CW.deleteSetting = function(key) {
+CW.deleteSetting = (key) => {
 	delete settings[key];
 	storeSettings();
 };
@@ -96,7 +96,7 @@ migrateOldSettings();
 
 CW.enabled = true;
 
-CW.toggleEnabled = function() {
+CW.toggleEnabled = () => {
 	CW.enabled = !CW.enabled;
 
 	if (CW.enabled === false) {
@@ -206,7 +206,7 @@ CW.tabs = {
 	// [tabId]: Tab
 };
 
-CW.getTab = function(tabId) {
+CW.getTab = (tabId) => {
 	if (CW.tabs[tabId]) {
 		return CW.tabs[tabId];
 	} else {
@@ -400,19 +400,17 @@ CW.Certificate = class {
  * Logging
  */
 
-CW.logDebug = function() {
+CW.logDebug = (...args) => {
 	const level = CW.getSetting("logLevel");
 	if (level === "debug") {
-		const args = Array.prototype.slice.call(arguments);
 		args.unshift("[Certificate Watch]", "[Debug]");
 		console.log.apply(console, args);
 	}
 };
 
-CW.logInfo = function() {
+CW.logInfo = (...args) => {
 	const level = CW.getSetting("logLevel");
 	if (level === "debug" || level === "info") {
-		const args = Array.prototype.slice.call(arguments);
 		args.unshift("[Certificate Watch]", "[Info]");
 		console.log.apply(console, args);
 	}

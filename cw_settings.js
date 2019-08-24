@@ -7,7 +7,7 @@
 browser.runtime.getBackgroundPage().then((bg) => {
 const CW = bg.getCW();
 
-(function() {
+(() => {
 	// initialize values
 	const certChecks = document.getElementById("certChecks");
 	const logLevel = document.getElementById("logLevel");
