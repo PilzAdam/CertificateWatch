@@ -9,7 +9,7 @@
 function convertDate(unix) {
 	const date = new Date(unix);
 	return date.getFullYear() + "-" +
-			date.getMonth().toString().padStart(2, "0") +
+			(date.getMonth() + 1).toString().padStart(2, "0") +
 			"-" + date.getDate().toString().padStart(2, "0") +
 			" " + date.getHours().toString().padStart(2, "0") +
 			":" + date.getMinutes().toString().padStart(2, "0") +
@@ -58,21 +58,11 @@ function timeDiffToToday(date) {
 function addMessageNested(parentNode, messageName, nestedElement) {
 	const placeholder = "__CW_PLACEHOLDER__";
 	const translated = browser.i18n.getMessage(messageName, placeholder);
-	/*if (translated.startsWith(placeholder)) {
-		parentNode.appendChild(nestedElement);
-		parentNode.appendChild(document.createTextNode(translated));
 
-	} else if (translated.endsWith(placeholder)) {
-		parentNode.appendChild(nestedElement);
-		parentNode.appendChild(document.createTextNode(translated));
-
-	} else {*/
-		const [front, back] = translated.split(placeholder);
-		parentNode.appendChild(document.createTextNode(front));
-		parentNode.appendChild(nestedElement);
-		parentNode.appendChild(document.createTextNode(back));
-
-	//}
+	const [front, back] = translated.split(placeholder);
+	parentNode.appendChild(document.createTextNode(front));
+	parentNode.appendChild(nestedElement);
+	parentNode.appendChild(document.createTextNode(back));
 }
 
 /*
