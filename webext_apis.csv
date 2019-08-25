@@ -1,0 +1,39 @@
+API,Min Firefox Version
+browser.browserAction.setIcon,45
+browser.browserAction.setTitle,45
+browser.i18n.getMessage,45
+browser.permissions.request,55
+browser.permissions.request in about:addons,62
+browser.runtime.getBackgroundPage,45
+browser.runtime.onMessage,45
+browser.runtime.openOptionsPage,48
+browser.runtime.sendMessage,45
+browser.storage.local,45
+browser.tabs.create,45
+browser.tabs.get,45
+browser.tabs.onCreated,45
+browser.tabs.onRemoved,45
+browser.tabs.onUpdated,45
+browser.tabs.query,45
+browser.webRequest.getSecurityInfo,62
+browser.webRequest.onHeadersReceived,45
+manifest_version,48
+name,48
+description,48
+author,52
+homepage_url,48
+version,48
+default_locale,48
+icons,48
+background,48
+browser_action,48
+options_ui,48
+options_ui.browser_style,55
+commands,48
+permissions,48
+permissions unlimitedStorage,56
+optional_permissions,55
+incognito,48
+incognito not_allowed,67
+browser_specific_settings,48
+MAXIMUM:,67

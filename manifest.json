@@ -53,9 +53,10 @@
 
 	"incognito": "not_allowed",
 
-	"applications": {
+	"browser_specific_settings": {
 		"gecko": {
-			"id": "{ab8c066f-9e3e-4aa3-997e-dca3520fecd0}"
+			"id": "{ab8c066f-9e3e-4aa3-997e-dca3520fecd0}",
+			"strict_min_version": "67.0"
 		}
 	}
 }
