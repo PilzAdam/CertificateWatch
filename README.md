@@ -83,3 +83,9 @@ This add-on requires the following permissions to function:
 Optional permissions that enable additional features:
 * `tabs`: Access "privileged" parts of tabs. This is used to get the URL of
   tabs. Required for the setting "check only certificates of page domain".
+
+License
+-------
+This add-on is licensed under the
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0), see the
+`LICENSE` file.
