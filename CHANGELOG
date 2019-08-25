@@ -1,3 +1,8 @@
+1.10.1
+------
+- Bugfix: Dates were displayed with wrong month
+- Set appropriate minimum Firefox version
+
 1.10.0
 ------
 - Improved accessibility a bit
