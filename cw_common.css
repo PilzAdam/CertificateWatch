@@ -19,16 +19,45 @@
  */
 
 :root {
-	--color-blue: #7bc5ff;
-	--color-red: #ee0000;
-	--color-light-grey: #e0e0e0;
-	--color-dark-grey: #383838;
-	--color-diff-new: orange;
-	--color-diff-old: var(--color-blue);
+	--color-background: #ffffff;
+	--color-background-highlight: #e0e0e0;
+
+	--color-text: #000000;
+	--color-text-warning: #ee0000;
+
+	--color-border: #383838;
+
+	--color-table-header: #7bc5ff;
+
+	--color-diff-new: #ffa500;
+	--color-diff-old: #7bc5ff;
+
+	--icon-arrow-down: url("icons/arrow_down.png");
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-background: #383838;
+		--color-background-highlight: #575757;
+
+		--color-text: #ffffff;
+		--color-text-warning: #ff0000;
+
+		--color-border: #d0d0d0;
+
+		--color-table-header: #0660a6;
+
+		--color-diff-new: #be7b00;
+		--color-diff-old: #0660a6;
+
+		--icon-arrow-down: url("icons/arrow_down_dark.png");
+	}
 }
 
 body {
 	font-family: sans-serif;
+	background-color: var(--color-background);
+	color: var(--color-text);
 }
 
 .plainLink {
@@ -56,8 +85,9 @@ body {
  * Inputs
  */
 input, select, textarea {
-	background: white;
-	border: 1px solid var(--color-dark-grey);
+	color: var(--color-text);
+	background-color: var(--color-background);
+	border: 1px solid var(--color-border);
 	border-radius: 0.5em;
 	padding: 0.5em;
 	margin: 0.5em;
@@ -65,11 +95,11 @@ input, select, textarea {
 
 input[type="button"] {
 	transition-duration: 0.2s;
-	box-shadow: 1px 1px black;
+	box-shadow: 1px 1px var(--color-border);
 }
 
 input[type="button"]:hover:enabled, input[type="button"]:active {
-	background: var(--color-light-grey);
+	background: var(--color-background-highlight);
 }
 
 input[type="button"]:active {
@@ -79,14 +109,14 @@ input[type="button"]:active {
 select {
 	appearance: none;
 	-moz-appearance: none;
-	background-image: url("icons/arrow_down.png");
+	background-image: var(--icon-arrow-down);
 	background-repeat: no-repeat, repeat;
 	background-position: right .7em top 50%, 0 0;
 	background-size: .65em auto, 100%;
 }
 
 select option {
-	background: white;
+	background: var(--color-background);
 }
 
 /*
@@ -99,16 +129,16 @@ select option {
 }
 
 .cwtable .top {
-	border-top: 1px solid black;
+	border-top: 1px solid var(--color-border);
 }
 
 .cwtable td, .cwtable th {
-	border-right: 1px solid black;
-	border-bottom: 1px solid black;
+	border-right: 1px solid var(--color-border);
+	border-bottom: 1px solid var(--color-border);
 }
 
 .cwtable th:first-child, .cwtable td:first-child {
-	border-left: 1px solid black;
+	border-left: 1px solid var(--color-text);
 }
 
 .cwtable th, .cwtable td {
@@ -116,9 +146,9 @@ select option {
 }
 
 .cwtable th {
-	background: var(--color-blue);
+	background: var(--color-table-header);
 }
 
 .cwtable tr:nth-child(even) {
-	background: var(--color-light-grey);
+	background: var(--color-background-highlight);
 }

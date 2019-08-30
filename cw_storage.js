@@ -146,7 +146,7 @@ function updateTable() {
 		td.appendChild(document.createElement("br"));
 		td.appendChild(document.createTextNode("(" + timeDiffToToday(cert.validity.start) + ")"));
 		if (new Date().getTime() < cert.validity.start) {
-			td.style.color = "var(--color-red)";
+			td.style.color = "var(--color-text-warning)";
 		}
 		tr.appendChild(td);
 
@@ -156,7 +156,7 @@ function updateTable() {
 		td.appendChild(document.createElement("br"));
 		td.appendChild(document.createTextNode("(" + timeDiffToToday(cert.validity.end) + ")"));
 		if (new Date().getTime() > cert.validity.end) {
-			td.style.color = "var(--color-red)";
+			td.style.color = "var(--color-text-warning)";
 		}
 		tr.appendChild(td);
 
