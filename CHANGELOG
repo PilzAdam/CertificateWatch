@@ -1,3 +1,9 @@
+1.11.0
+------
+- Only analyze certificates when add-on storage is fully initialized
+- Improve pop-up handling of manually accepted certificates
+- Added support for dark mode (depends on browser configuration)
+
 1.10.1
 ------
 - Bugfix: Dates were displayed with wrong month
