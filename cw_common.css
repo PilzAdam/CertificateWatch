@@ -24,6 +24,7 @@
 
 	--color-text: #000000;
 	--color-text-warning: #ee0000;
+	--color-text-disabled: #666666;
 
 	--color-border: #383838;
 
@@ -42,6 +43,7 @@
 
 		--color-text: #ffffff;
 		--color-text-warning: #ff0000;
+		--color-text-disabled: #999999;
 
 		--color-border: #d0d0d0;
 
@@ -104,6 +106,11 @@ input[type="button"]:hover:enabled, input[type="button"]:active {
 
 input[type="button"]:active {
 	box-shadow: none;
+}
+
+input[type="button"]:disabled {
+	box-shadow: none;
+	color: var(--color-text-disabled);
 }
 
 select {
