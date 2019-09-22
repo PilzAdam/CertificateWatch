@@ -98,7 +98,7 @@ function analyzeCert(host, securityInfo, result) {
 }
 
 async function checkConnection(url, securityInfo, tabId) {
-	if (CW.enabled === false) {
+	if (CW.enabled === false || CW.storageInitialized === false) {
 		return;
 	}
 

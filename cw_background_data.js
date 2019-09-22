@@ -240,7 +240,7 @@ const certStore = {
 	// [host]: CW.Certificate
 };
 
-let storageInitialized = false;
+CW.storageInitialized = false;
 
 // initialize storage
 browser.storage.local.get().then(
@@ -263,7 +263,7 @@ browser.storage.local.get().then(
 		}
 
 		CW.logInfo("Initialized storage");
-		storageInitialized = true;
+		CW.storageInitialized = true;
 		browser.runtime.sendMessage({
 			type: "storage.initialized"
 		}).then(() => {}, () => {}); // ignore errors
@@ -271,14 +271,14 @@ browser.storage.local.get().then(
 	(error) => {
 		// error case
 		CW.logInfo("Could not read storage:", e);
-		storageInitialized = true;
+		CW.storageInitialized = true;
 	}
 );
 
 // helper function
 function storeCertificate(host){
 	// only actually store certificates when we got the real storage
-	if (storageInitialized) {
+	if (CW.storageInitialized) {
 		browser.storage.local.set({
 			[host]: certStore[host]
 		});
@@ -335,7 +335,7 @@ CW.Certificate = class {
 	static removeFromStorage(host) {
 		if (certStore[host]) {
 			delete certStore[host];
-			if (storageInitialized) {
+			if (CW.storageInitialized) {
 				browser.storage.local.remove(host);
 			}
 
