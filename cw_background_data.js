@@ -161,6 +161,7 @@ CW.CheckResult = class {
 	//    };
 	//    stored = <CW.Certificate>;
 	//    got = <CW.Certificate>;
+	//    accepted = <bool>;
 
 	constructor(host) {
 		this.host = host;

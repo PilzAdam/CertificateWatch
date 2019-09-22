@@ -27,6 +27,7 @@ const CW = bg.getCW();
 const changed = new Set();
 const tofu = new Set();
 const stored = new Set();
+const accepted = new Set(); // subset of changed that is accepted
 
 function showChangedValidity(validity, otherValidity, visualClass, parent) {
 	let span = document.createElement("span");
@@ -114,7 +115,15 @@ function addResult(result) {
 			insertToList("storedList", result.host);
 		}
 	} else if (result.status === CW.CERT_CHANGED) {
-		if (!changed.has(result.host)) {
+		if (result.accepted === true) {
+			changed.add(result.host);
+			accepted.add(result.host);
+			if (!stored.has(result.host)) {
+				stored.add(result.host);
+				insertToList("storedList", result.host);
+			}
+
+		} else if (!changed.has(result.host)) {
 			changed.add(result.host);
 
 			const list = document.getElementById("changedList");
@@ -194,6 +203,7 @@ function addResult(result) {
 				CW.logInfo("Storing new certificate for", result.host);
 
 				result.got.store(result.host);
+				result.accepted = true;
 
 				button.setAttribute("value", browser.i18n.getMessage("popupAddedChanged"));
 			});
@@ -220,7 +230,7 @@ function updateCounts() {
 		}
 	}
 
-	update("numChanged", changed.size, "popupChangedCerts");
+	update("numChanged", changed.size - accepted.size, "popupChangedCerts");
 	update("numTofu", tofu.size, "popupTofuCerts");
 	update("numStored", stored.size, "popupStoredCerts");
 }
@@ -291,6 +301,7 @@ async function init() {
 			changed.clear();
 			tofu.clear();
 			stored.clear();
+			accepted.clear();
 
 			clearResults();
 			updateCounts();

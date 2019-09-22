@@ -88,6 +88,7 @@ function analyzeCert(host, securityInfo, result) {
 			result.changes = changes;
 			result.stored = storedCert;
 			result.got = cert;
+			result.accepted = false;
 
 		} else {
 			result.status = CW.CERT_STORED;
