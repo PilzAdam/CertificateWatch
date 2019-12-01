@@ -62,6 +62,9 @@ function analyzeCert(host, securityInfo, result) {
 
 	} else {
 		const changes = {};
+		const checkedFields = CW.getSetting("checkedFields",
+				["subject", "issuer", "validity", "subjectPublicKeyInfoDigest", "serialNumber", "fingerprint"]);
+		let checkedFieldChanged = false;
 		// fields are roughly sorted by importance
 		for (const field of ["subject", "issuer", "validity", "subjectPublicKeyInfoDigest", "serialNumber", "fingerprint"]) {
 			if (field === "validity") {
@@ -72,6 +75,9 @@ function analyzeCert(host, securityInfo, result) {
 						stored: {start: storedCert.validity.start, end: storedCert.validity.end},
 						got: {start: cert.validity.start, end: cert.validity.end}
 					};
+					if (checkedFields.includes(field)) {
+						checkedFieldChanged = true;
+					}
 				}
 			} else {
 				if (cert[field] !== storedCert[field]) {
@@ -79,16 +85,25 @@ function analyzeCert(host, securityInfo, result) {
 						stored: storedCert[field],
 						got: cert[field]
 					};
+					if (checkedFields.includes(field)) {
+						checkedFieldChanged = true;
+					}
 				}
 			}
 		}
 
 		if (Object.keys(changes).length > 0) {
-			result.status = CW.CERT_CHANGED;
-			result.changes = changes;
-			result.stored = storedCert;
-			result.got = cert;
-			result.accepted = false;
+			if (checkedFieldChanged) {
+				result.status = CW.CERT_CHANGED;
+				result.changes = changes;
+				result.stored = storedCert;
+				result.got = cert;
+				result.accepted = false;
+			} else {
+				// if no "important" field changed, just accept it
+				result.status = CW.CERT_STORED;
+				cert.store(host);
+			}
 
 		} else {
 			result.status = CW.CERT_STORED;

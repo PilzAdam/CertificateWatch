@@ -79,6 +79,38 @@
 		"message": "Enter one ignored domain per line\nUse * as a match-all wildcard for a domain part\nE.g.: *.example.com",
 		"description": "Tooltip explaining the ignore domain textarea"
 	},
+	"settingsLblCheckedFields": {
+		"message": "Fields to check:",
+		"description": "Label for the list of fields that will be checked for modifications."
+	},
+	"settingsCheckedFieldsTooltip": {
+		"message": "Select the fields that should be checked for modifications\nCertificates that differ in unchecked fields are automatically stored",
+		"description": "Tooltip for the list of fields that will be checked for modifications."
+	},
+	"settingsLblCheckSubject": {
+		"message": "Subject",
+		"description": "The label for the checkbox to check subject field for modifications"
+	},
+	"settingsLblCheckIssuer": {
+		"message": "Issuer",
+		"description": "The label for the checkbox to check issuer field for modifications"
+	},
+	"settingsLblCheckValidity": {
+		"message": "Validity",
+		"description": "The label for the checkbox to check validity field for modifications"
+	},
+	"settingsLblCheckPublicKey": {
+		"message": "Public Key",
+		"description": "The label for the checkbox to check publicKey field for modifications"
+	},
+	"settingsLblCheckSerialNumber": {
+		"message": "Serial Number",
+		"description": "The label for the checkbox to check serialNumber field for modifications"
+	},
+	"settingsLblCheckFingerprint": {
+		"message": "Fingerprint",
+		"description": "The label for the checkbox to check fingerprint field for modifications"
+	},
 	"settingsSave": {
 		"message": "Save",
 		"description": "Button to save the modified settings."

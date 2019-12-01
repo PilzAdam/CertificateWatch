@@ -28,6 +28,7 @@ const CW = bg.getCW();
 	const certChecks = document.getElementById("certChecks");
 	const logLevel = document.getElementById("logLevel");
 	const ignoredDomains = document.getElementById("ignoredDomains");
+	const checkedFields = document.forms["checkedFields"].elements["checkedFields"];
 	const resetBtn = document.getElementById("reset");
 	const saveBtn = document.getElementById("save");
 
@@ -45,6 +46,17 @@ const CW = bg.getCW();
 		certChecks.value = CW.getSetting("certChecks", "all");
 		logLevel.value = CW.getSetting("logLevel", "none");
 		ignoredDomains.value = CW.getSetting("ignoredDomains", []).join("\n");
+
+		let fieldsSetting = CW.getSetting("checkedFields");
+		if (!fieldsSetting) {
+			// initialze value if not yet set
+			fieldsSetting = ["subject", "issuer", "subjectPublicKeyInfoDigest"];
+			CW.setSetting("checkedFields", fieldsSetting);
+		}
+
+		for (const field of checkedFields) {
+			field.checked = fieldsSetting.includes(field.value);
+		}
 	}
 
 	function save() {
@@ -80,6 +92,14 @@ const CW = bg.getCW();
 		} else {
 			CW.setSetting("certChecks", certChecks.value);
 		}
+
+		let fieldsSetting = [];
+		for (const field of checkedFields) {
+			if (field.checked) {
+				fieldsSetting.push(field.value);
+			}
+		}
+		CW.setSetting("checkedFields", fieldsSetting);
 	}
 
 	function modified() {
@@ -97,6 +117,9 @@ const CW = bg.getCW();
 	certChecks.addEventListener("change", modified);
 	logLevel.addEventListener("change", modified);
 	ignoredDomains.addEventListener("input", modified);
+	for (const field of checkedFields) {
+		field.addEventListener("change", modified);
+	}
 })();
 
 

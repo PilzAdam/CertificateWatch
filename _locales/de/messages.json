@@ -79,6 +79,38 @@
 		"message": "Eine ignorierte Domain pro Zeile\nFür beliebigen Domain-Teil * benutzen\nZ.B.: *.example.com",
 		"description": "Tooltip explaining the ignore domain textarea"
 	},
+	"settingsLblCheckedFields": {
+		"message": "Überprüfte Felder:",
+		"description": "Label for the list of fields that will be checked for modifications."
+	},
+	"settingsCheckedFieldsTooltip": {
+		"message": "Zertifikatsfelder die überprüft werden sollen\nZertifikate, die sich nur in ungeprüften Feldern unterscheiden, werden automatisch gespeichert",
+		"description": "Tooltip for the list of fields that will be checked for modifications."
+	},
+	"settingsLblCheckSubject": {
+		"message": "Subject",
+		"description": "The label for the checkbox to check subject field for modifications"
+	},
+	"settingsLblCheckIssuer": {
+		"message": "Aussteller",
+		"description": "The label for the checkbox to check issuer field for modifications"
+	},
+	"settingsLblCheckValidity": {
+		"message": "Gültigkeitszeitraum",
+		"description": "The label for the checkbox to check validity field for modifications"
+	},
+	"settingsLblCheckPublicKey": {
+		"message": "Öffentlicher Schlüssel",
+		"description": "The label for the checkbox to check publicKey field for modifications"
+	},
+	"settingsLblCheckSerialNumber": {
+		"message": "Seriennummer",
+		"description": "The label for the checkbox to check serialNumber field for modifications"
+	},
+	"settingsLblCheckFingerprint": {
+		"message": "Fingerabdruck",
+		"description": "The label for the checkbox to check fingerprint field for modifications"
+	},
 	"settingsSave": {
 		"message": "Speichern",
 		"description": "Button to save the modified settings."
