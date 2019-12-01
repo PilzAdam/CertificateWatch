@@ -343,15 +343,52 @@
 	},
 	"storageRemoveHost": {
 		"message": "Entfernen",
-		"description": "Remove a single host from storage"
+		"description": "Remove a single host from storage."
 	},
 	"storageRemoveAll": {
 		"message": "Alle Entfernen",
 		"description": "Button to clear the complete certifcate storage."
 	},
+	"storageRemoveExpired": {
+		"message": "Abgelaufene Entfernen",
+		"description": "Button to clear expired certificates."
+	},
+	"storageRemoveOld": {
+		"message": "Ungesehene Entfernen",
+		"description": "Button to clear old (unseen) certificates."
+	},
+	"storageDaySelection": {
+		"message": "$INPUT$ Tage",
+		"description": "Input field and description to select number of days to clear.",
+		"placeholders": {
+			"input": {
+				"content": "$1"
+			}
+		}
+	},
 	"storageRemoveAllConfirm": {
 		"message": "Wirklich den ganzen Speicher löschen?",
 		"description": "Confirmation question to really clear the full storage."
+	},
+	"storageRemoveOldConfirm": {
+		"message": "Wirklich Zertifikate löschen, die $DAYS$ Tage lang nicht gesehen wurden?",
+		"description": "Confirmation question to really clear old (unseen) certificates.",
+		"placeholders": {
+			"days": {
+				"content": "$1",
+				"example": "30"
+			}
+		}
+	},
+	"storageRemoveExpiredConfirm": {
+		"message": "Wirklich Zertifikate löschen, die für $DAYS$ Tage abgelaufen sind?",
+		"description": "Confirmation question to really clear expired certificates.",
+		"placeholders": {
+			"days": {
+				"content": "$1",
+				"example": "30"
+			}
+		}
 	},
 	"storageFieldDomain": {
 		"message": "Domain",

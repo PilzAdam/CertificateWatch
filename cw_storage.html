@@ -46,9 +46,38 @@
 			.remove {
 				text-align: center;
 			}
+			.daysInput {
+				width: 3em;
+			}
+			#bulkRemovals {
+				float: right;
+			}
 		</style>
 	</head>
 	<body>
+		<div id="bulkRemovals">
+			<table>
+				<tr>
+					<td class="remove">
+						<input id="removeExpired" type="button" data-i18n="value=storageRemoveExpired" />
+					</td>
+					<td rowspan="2">
+						<span id="daySelection"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="remove">
+						<input id="removeOld" type="button" data-i18n="value=storageRemoveOld" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="remove">
+						<input id="removeAll" type="button" data-i18n="value=storageRemoveAll" />
+					</td>
+				</tr>
+			</table>
+		</div>
+
 		<header>
 			<img id="logo" src="icons/cw_128.png" alt="" width="128" height="128" />
 			<h1 data-i18n="storageTitle"></h1>
@@ -68,11 +97,7 @@
 						</th>
 						<th scope="col" colspan="4" class="top" data-i18n="storageFieldCert"></th>
 						<th scope="col" rowspan="2" class="top" data-i18n="storageFieldCertLastSeen"></th>
-						<th scope="col" rowspan="2" class="top">
-							<span data-i18n="storageRemoveHost"></span>
-							<br />
-							<input id="removeAll" type="button" data-i18n="value=storageRemoveAll" />
-						</th>
+						<th scope="col" rowspan="2" class="top"></th>
 					</tr>
 					<tr class="header">
 						<th scope="col" class="noLeft" data-i18n="storageFieldCertSubject"></th>

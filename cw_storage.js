@@ -203,7 +203,7 @@ function clearStorage() {
 	CW.logInfo("Clearing all hosts");
 	const certs = CW.Certificate.getAllFromStorage();
 	for (const host of Object.keys(certs)) {
-		CW.Certificate.removeFromStorage(host);
+		CW.Certificate.removeFromStorage(host, false);
 	}
 }
 
@@ -222,6 +222,49 @@ function clearStorage() {
 		domainFilter.value = param;
 	}
 	domainFilter.addEventListener("input", updateTable);
+
+	const daySelection = document.getElementById("daySelection");
+	const numDays = document.createElement("input");
+	numDays.setAttribute("type", "number");
+	numDays.setAttribute("class", "daysInput");
+	numDays.setAttribute("id", "numDays");
+	numDays.setAttribute("value", "30");
+	numDays.setAttribute("min", "1");
+	addMessageNested(daySelection, "storageDaySelection", numDays)
+
+	const removeFct = (type) => {
+		return () => {
+			const days = numDays.value;
+			let key = (type === "old") ? "storageRemoveOldConfirm" : "storageRemoveExpiredConfirm";
+			if (confirm(browser.i18n.getMessage(key, [days]))) {
+				CW.logInfo("Clearing", type, " certificates older than", days, "days");
+				const certs = CW.Certificate.getAllFromStorage();
+				for (const host of Object.keys(certs)) {
+					let matches = false;
+					if (type === "old") {
+						const diff = numDaysToToday(certs[host].lastSeen);
+						if (-diff >= days) {
+							matches = true;
+						}
+					} else if (type === "expired") {
+						const diff = numDaysToToday(certs[host].validity.end);
+						if (-diff >= days) {
+							matches = true;
+						}
+					}
+
+					if (matches) {
+						CW.Certificate.removeFromStorage(host, false);
+					}
+				}
+				updateTable();
+			}
+		};
+	};
+	const removeOld = document.getElementById("removeOld");
+	removeOld.addEventListener("click", removeFct("old"));
+	const removeExpired = document.getElementById("removeExpired");
+	removeExpired.addEventListener("click", removeFct("expired"));
 
 	updateTable();
 })();

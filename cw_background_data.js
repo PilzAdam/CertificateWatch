@@ -333,18 +333,20 @@ CW.Certificate = class {
 		return certs;
 	}
 
-	static removeFromStorage(host) {
+	static removeFromStorage(host, sendMessage) {
 		if (certStore[host]) {
 			delete certStore[host];
 			if (CW.storageInitialized) {
 				browser.storage.local.remove(host);
 			}
 
-			browser.runtime.sendMessage({
-				type: "storage.removedHost",
-				host: host,
-				oldCert: certStore[host]
-			}).then(() => {}, () => {}); // ignore errors
+			if (sendMessage !== false) {
+				browser.runtime.sendMessage({
+					type: "storage.removedHost",
+					host: host,
+					oldCert: certStore[host]
+				}).then(() => {}, () => {}); // ignore errors
+			}
 		}
 	}
 
