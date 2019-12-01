@@ -1,3 +1,9 @@
+1.12.0
+------
+- Added setting that defines which fields of certificates are checked
+- Added buttons to storage to prune old (unseen for a long time) or
+  expired certificates
+
 1.11.0
 ------
 - Only analyze certificates when add-on storage is fully initialized
